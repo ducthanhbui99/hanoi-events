@@ -1,10 +1,10 @@
 {
   "source_type": "google_sheets",
-  "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1yUjw6cx4upm82AjxLo3U-xYfNFexxgALoTXel3ZouCk/edit?usp=sharing",
-  "spreadsheet_id": "1yUjw6cx4upm82AjxLo3U-xYfNFexxgALoTXel3ZouCk",
+  "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8/edit?usp=sharing",
+  "spreadsheet_id": "1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8",
   "sheets": {
     "events": "Events",
-    "locations": "Location"
+    "locations": "Locations"
   },
   "output_files": {
     "events": "events.json",
