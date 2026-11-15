@@ -481,6 +481,11 @@ h1 {
 }
 .simple-map-controls button + button { border-top: 1px solid #e5e7eb; }
 .simple-map-controls button:hover { background: #f3f4f6; }
+.simple-map-controls button:disabled {
+  opacity: .38;
+  cursor: default;
+  background: #fff;
+}
 .simple-map-popup {
   position: absolute;
   z-index: 9;
@@ -680,7 +685,9 @@ class SimpleOSMMap {
     this.container = typeof container === "string" ? document.getElementById(container) : container;
     this.center = options.center || [105.845, 21.028];
     this.zoom = Number.isFinite(options.zoom) ? options.zoom : 12;
-    this.minZoom = 3;
+    // Keep the widest view at roughly Hanoi / surrounding districts level.
+    // All zoom controls (wheel, buttons, pinch) are clamped through setZoom().
+    this.minZoom = 10;
     this.maxZoom = 18;
     this.tileSize = 256;
     this.events = [];
@@ -717,6 +724,9 @@ class SimpleOSMMap {
     attr.className = "simple-map-attribution";
     attr.innerHTML = '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>';
     this.container.append(attr);
+
+    this.zoomInButton = plus;
+    this.zoomOutButton = minus;
 
     plus.addEventListener("click", (e) => { e.stopPropagation(); this.setZoom(this.zoom + 1); });
     minus.addEventListener("click", (e) => { e.stopPropagation(); this.setZoom(this.zoom - 1); });
@@ -950,6 +960,7 @@ class SimpleOSMMap {
     } else {
       window.addEventListener("resize", () => this.requestRender());
     }
+    this.updateZoomControls();
     this.render();
   }
 
@@ -980,9 +991,18 @@ class SimpleOSMMap {
 
   setZoom(z) {
     const next = Math.max(this.minZoom, Math.min(this.maxZoom, Math.round(z)));
-    if (next === this.zoom) return;
+    if (next === this.zoom) {
+      this.updateZoomControls();
+      return;
+    }
     this.zoom = next;
+    this.updateZoomControls();
     this.render();
+  }
+
+  updateZoomControls() {
+    if (this.zoomInButton) this.zoomInButton.disabled = this.zoom >= this.maxZoom;
+    if (this.zoomOutButton) this.zoomOutButton.disabled = this.zoom <= this.minZoom;
   }
 
   getZoom() { return this.zoom; }
