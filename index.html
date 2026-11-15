@@ -398,24 +398,23 @@ h1 {
 }
 .simple-map.is-dragging { cursor: grabbing; }
 .simple-map-tiles, .simple-map-markers { position: absolute; inset: 0; overflow: hidden; }
-.simple-map-schematic { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
-.simple-map-label {
-  position:absolute;
-  transform:translate(-50%,-50%);
-  padding:2px 5px;
-  border-radius:5px;
-  background:rgba(255,255,255,.78);
-  color:#6b7280;
-  font-size:10px;
-  white-space:nowrap;
-  pointer-events:none;
+.simple-map-tile {
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  max-width: none;
+  user-select: none;
+  pointer-events: none;
+  background: #eef1f4;
 }
-.simple-map-water { fill:#dbeafe; stroke:#93c5fd; stroke-width:1.5; }
-.simple-map-river { fill:none; stroke:#bfdbfe; stroke-width:18; stroke-linecap:round; stroke-linejoin:round; opacity:.95; }
-.simple-map-road-major { fill:none; stroke:#d1d5db; stroke-width:5; stroke-linecap:round; }
-.simple-map-road-minor { fill:none; stroke:#e5e7eb; stroke-width:2.5; stroke-linecap:round; }
-.simple-map-district { fill:none; stroke:#e5e7eb; stroke-width:1; stroke-dasharray:4 5; }
-.simple-map-center-dot { fill:#9ca3af; }
+
+
+
+
+
+
+
+
 .simple-map-marker {
   position: absolute;
   width: 16px;
@@ -556,7 +555,7 @@ h1 {
         <div id="map"></div>
         <div class="map-note">
           <span class="dot dot-mapped"></span>
-          Bản đồ giản lược; marker chỉ hiển thị cho địa điểm đã có tọa độ.
+          Marker chỉ hiển thị cho địa điểm đã có tọa độ.
         </div>
       </section>
     </section>
@@ -3672,7 +3671,7 @@ class SimpleOSMMap {
 
     const attr = document.createElement("div");
     attr.className = "simple-map-attribution";
-    attr.textContent = "Bản đồ Hà Nội giản lược";
+    attr.innerHTML = '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>';
     this.container.append(attr);
 
     plus.addEventListener("click", (e) => { e.stopPropagation(); this.setZoom(this.zoom + 1); });
@@ -3775,103 +3774,41 @@ class SimpleOSMMap {
 
   renderTiles() {
     const v = this.viewport();
+    const z = this.zoom;
+    const count = Math.pow(2, z);
+    const minX = Math.floor(v.left / this.tileSize) - 1;
+    const maxX = Math.floor((v.left + v.w) / this.tileSize) + 1;
+    const minY = Math.floor(v.top / this.tileSize) - 1;
+    const maxY = Math.floor((v.top + v.h) / this.tileSize) + 1;
+
     this.tileLayer.replaceChildren();
+    const frag = document.createDocumentFragment();
 
-    const NS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(NS, "svg");
-    svg.setAttribute("class", "simple-map-schematic");
-    svg.setAttribute("viewBox", "0 0 " + v.w + " " + v.h);
-    svg.setAttribute("preserveAspectRatio", "none");
+    for (let tx = minX; tx <= maxX; tx++) {
+      for (let ty = minY; ty <= maxY; ty++) {
+        if (ty < 0 || ty >= count) continue;
 
-    const bg = document.createElementNS(NS, "rect");
-    bg.setAttribute("x", "0"); bg.setAttribute("y", "0");
-    bg.setAttribute("width", v.w); bg.setAttribute("height", v.h);
-    bg.setAttribute("fill", "#f8fafc");
-    svg.append(bg);
+        const wrappedX = ((tx % count) + count) % count;
+        const img = document.createElement("img");
+        img.className = "simple-map-tile";
+        img.alt = "";
+        img.draggable = false;
+        img.loading = "eager";
+        img.referrerPolicy = "strict-origin-when-cross-origin";
+        img.src = "https://basemaps.cartocdn.com/rastertiles/voyager/" +
+          z + "/" + wrappedX + "/" + ty + ".png?key=cb1_59d5_1_43ab046c61e979e5d685707e";
+        img.style.left = Math.round(tx * this.tileSize - v.left) + "px";
+        img.style.top = Math.round(ty * this.tileSize - v.top) + "px";
 
-    const project = (lng, lat) => {
-      const p = this.lngLatToWorld(lng, lat, this.zoom);
-      return [p.x - v.left, p.y - v.top];
-    };
+        img.addEventListener("error", () => {
+          img.style.display = "none";
+        });
 
-    const pathFrom = (coords, cls, close = false) => {
-      const pts = coords.map(([lng,lat]) => project(lng,lat));
-      const path = document.createElementNS(NS, "path");
-      const d = pts.map((p,i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ") + (close ? " Z" : "");
-      path.setAttribute("d", d);
-      path.setAttribute("class", cls);
-      svg.append(path);
-    };
-
-    // Soft district/grid guides.
-    for (const lng of [105.78,105.80,105.82,105.84,105.86,105.88,105.90]) {
-      pathFrom([[lng,20.98],[lng,21.08]], "simple-map-district");
-    }
-    for (const lat of [21.00,21.02,21.04,21.06]) {
-      pathFrom([[105.76,lat],[105.92,lat]], "simple-map-district");
+        frag.append(img);
+      }
     }
 
-    // Red River — schematic only.
-    pathFrom([
-      [105.88,21.095],[105.875,21.075],[105.872,21.055],[105.875,21.038],
-      [105.885,21.020],[105.897,21.000],[105.905,20.980]
-    ], "simple-map-river");
-
-    // West Lake.
-    pathFrom([
-      [105.805,21.074],[105.818,21.082],[105.835,21.078],[105.842,21.066],
-      [105.838,21.051],[105.822,21.045],[105.807,21.050],[105.800,21.061]
-    ], "simple-map-water", true);
-
-    // Hoàn Kiếm Lake.
-    pathFrom([
-      [105.8514,21.0338],[105.8537,21.0320],[105.8548,21.0289],
-      [105.8537,21.0264],[105.8517,21.0251],[105.8507,21.0285]
-    ], "simple-map-water", true);
-
-    // Major roads / corridors, intentionally simplified.
-    const majorRoads = [
-      [[105.846,21.055],[105.849,21.040],[105.850,21.020],[105.848,21.000]], // N-S old center
-      [[105.810,21.033],[105.830,21.031],[105.850,21.030],[105.870,21.030]], // W-E center
-      [[105.800,21.010],[105.820,21.012],[105.845,21.013],[105.865,21.014]], // south center
-      [[105.820,21.060],[105.835,21.050],[105.850,21.040],[105.865,21.030]], // diagonal
-      [[105.785,21.025],[105.805,21.025],[105.825,21.025],[105.845,21.025]], // west-center
-      [[105.835,21.075],[105.845,21.060],[105.855,21.045],[105.865,21.030]]  // NE-SW
-    ];
-    majorRoads.forEach(r => pathFrom(r, "simple-map-road-major"));
-
-    const minorRoads = [
-      [[105.838,21.045],[105.855,21.045],[105.870,21.045]],
-      [[105.835,21.038],[105.852,21.038],[105.866,21.038]],
-      [[105.830,21.020],[105.850,21.020],[105.866,21.020]],
-      [[105.820,21.005],[105.840,21.005],[105.860,21.005]],
-      [[105.830,21.055],[105.830,21.035],[105.830,21.015]],
-      [[105.860,21.060],[105.860,21.040],[105.860,21.020],[105.860,21.000]]
-    ];
-    minorRoads.forEach(r => pathFrom(r, "simple-map-road-minor"));
-
-    this.tileLayer.append(svg);
-
-    const labels = [
-      ["Hồ Tây",105.820,21.063],
-      ["Ba Đình",105.820,21.035],
-      ["Hoàn Kiếm",105.852,21.030],
-      ["Đống Đa",105.829,21.018],
-      ["Hai Bà Trưng",105.856,21.008],
-      ["Long Biên",105.885,21.040],
-      ["Sông Hồng",105.892,21.020]
-    ];
-
-    for (const [name,lng,lat] of labels) {
-      const [x,y] = project(lng,lat);
-      if (x < -60 || x > v.w + 60 || y < -30 || y > v.h + 30) continue;
-      const label = document.createElement("div");
-      label.className = "simple-map-label";
-      label.textContent = name;
-      label.style.left = x + "px";
-      label.style.top = y + "px";
-      this.tileLayer.append(label);
-    }
+    this.tileLayer.append(frag);
   }
 
   renderMarkers() {
