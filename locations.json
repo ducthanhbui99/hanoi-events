@@ -6,8 +6,8 @@
     "source_sheet": "Locations",
     "spreadsheet_id": "1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8",
     "total_locations": 57,
-    "mapped_locations": 52,
-    "unmapped_locations": 5,
+    "mapped_locations": 51,
+    "unmapped_locations": 6,
     "note": "Locations are keyed by canonical venue name from the Google Sheet."
   },
   "locations": {
