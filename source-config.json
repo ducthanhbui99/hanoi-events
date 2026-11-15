@@ -1,0 +1,15 @@
+{
+  "source_type": "google_sheets",
+  "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1yUjw6cx4upm82AjxLo3U-xYfNFexxgALoTXel3ZouCk/edit?usp=sharing",
+  "spreadsheet_id": "1yUjw6cx4upm82AjxLo3U-xYfNFexxgALoTXel3ZouCk",
+  "sheets": {
+    "events": "Events",
+    "locations": "Location"
+  },
+  "output_files": {
+    "events": "events.json",
+    "locations": "locations.json"
+  },
+  "publish_branch": "main",
+  "updated_at": "2026-11-15"
+}
