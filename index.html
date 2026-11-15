@@ -7,8 +7,6 @@
   <meta name="theme-color" content="#111827" />
   <title>Hanoi Events</title>
 
-  <link rel="preconnect" href="https://tiles.openfreemap.org" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@6.18.0/dist/maplibre-gl.css" />
   <style>
 :root {
   --bg: #f5f5f3;
@@ -387,6 +385,101 @@ h1 {
   .workspace { height: calc(100vh - 410px); }
 }
 
+
+.simple-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #e5e7eb;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.simple-map.is-dragging { cursor: grabbing; }
+.simple-map-tiles, .simple-map-markers { position: absolute; inset: 0; overflow: hidden; }
+.simple-map-tile {
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  max-width: none;
+  user-select: none;
+  pointer-events: none;
+}
+.simple-map-marker {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #111827;
+  box-shadow: 0 2px 8px rgba(0,0,0,.35);
+  cursor: pointer;
+  z-index: 4;
+}
+.simple-map-marker:hover { width: 20px; height: 20px; }
+.simple-map-controls {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(0,0,0,.14);
+}
+.simple-map-controls button {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  background: #fff;
+  cursor: pointer;
+  font-size: 21px;
+  line-height: 1;
+}
+.simple-map-controls button + button { border-top: 1px solid #e5e7eb; }
+.simple-map-controls button:hover { background: #f3f4f6; }
+.simple-map-popup {
+  position: absolute;
+  z-index: 9;
+  width: min(300px, calc(100% - 28px));
+  padding: 13px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(0,0,0,.22);
+  transform: translate(-50%, calc(-100% - 14px));
+  font-size: 12px;
+}
+.simple-map-popup::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  transform: translateX(-50%) rotate(45deg);
+}
+.simple-map-popup h3 { margin: 0 0 7px; font-size: 15px; line-height: 1.3; }
+.simple-map-popup p { margin: 5px 0; color: #52525b; line-height: 1.4; }
+.simple-map-popup .popup-actions { position: relative; z-index: 1; margin-top: 9px; }
+.simple-map-attribution {
+  position: absolute;
+  right: 6px;
+  bottom: 5px;
+  z-index: 6;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(255,255,255,.88);
+  color: #52525b;
+  font-size: 10px;
+}
+.simple-map-attribution a { color: inherit; }
+
 </style>
 </head>
 <body>
@@ -476,7 +569,6 @@ h1 {
     </article>
   </template>
 
-  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@6.18.0/dist/maplibre-gl.js"></script>
   <script>
 window.EVENT_DATA = {
   "meta": {
@@ -3532,6 +3624,257 @@ window.EVENT_DATA = {
 
 </script>
   <script>
+
+class SimpleOSMMap {
+  constructor(container, options = {}) {
+    this.container = typeof container === "string" ? document.getElementById(container) : container;
+    this.center = options.center || [105.845, 21.028];
+    this.zoom = Number.isFinite(options.zoom) ? options.zoom : 12;
+    this.minZoom = 3;
+    this.maxZoom = 18;
+    this.tileSize = 256;
+    this.events = [];
+    this.onEventClick = options.onEventClick || null;
+    this.popupEvent = null;
+    this.drag = null;
+
+    this.container.classList.add("simple-map");
+    this.container.innerHTML = "";
+
+    this.tileLayer = document.createElement("div");
+    this.tileLayer.className = "simple-map-tiles";
+    this.markerLayer = document.createElement("div");
+    this.markerLayer.className = "simple-map-markers";
+    this.container.append(this.tileLayer, this.markerLayer);
+
+    const controls = document.createElement("div");
+    controls.className = "simple-map-controls";
+    const plus = document.createElement("button");
+    plus.type = "button";
+    plus.textContent = "+";
+    plus.setAttribute("aria-label", "Phóng to bản đồ");
+    const minus = document.createElement("button");
+    minus.type = "button";
+    minus.textContent = "−";
+    minus.setAttribute("aria-label", "Thu nhỏ bản đồ");
+    controls.append(plus, minus);
+    this.container.append(controls);
+
+    const attr = document.createElement("div");
+    attr.className = "simple-map-attribution";
+    attr.innerHTML = '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
+    this.container.append(attr);
+
+    plus.addEventListener("click", (e) => { e.stopPropagation(); this.setZoom(this.zoom + 1); });
+    minus.addEventListener("click", (e) => { e.stopPropagation(); this.setZoom(this.zoom - 1); });
+
+    this.container.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      this.setZoom(this.zoom + (e.deltaY < 0 ? 1 : -1));
+    }, { passive: false });
+
+    this.container.addEventListener("pointerdown", (e) => {
+      if (e.target.closest(".simple-map-marker, .simple-map-controls, .simple-map-popup, a")) return;
+      this.drag = { x: e.clientX, y: e.clientY, centerWorld: this.lngLatToWorld(this.center[0], this.center[1], this.zoom) };
+      this.container.classList.add("is-dragging");
+      try { this.container.setPointerCapture(e.pointerId); } catch (_) {}
+      this.closePopup();
+    });
+
+    this.container.addEventListener("pointermove", (e) => {
+      if (!this.drag) return;
+      const dx = e.clientX - this.drag.x;
+      const dy = e.clientY - this.drag.y;
+      const world = { x: this.drag.centerWorld.x - dx, y: this.drag.centerWorld.y - dy };
+      this.center = this.worldToLngLat(world.x, world.y, this.zoom);
+      this.render();
+    });
+
+    const endDrag = (e) => {
+      if (!this.drag) return;
+      this.drag = null;
+      this.container.classList.remove("is-dragging");
+      try { this.container.releasePointerCapture(e.pointerId); } catch (_) {}
+    };
+    this.container.addEventListener("pointerup", endDrag);
+    this.container.addEventListener("pointercancel", endDrag);
+
+    if (window.ResizeObserver) {
+      this.resizeObserver = new ResizeObserver(() => this.render());
+      this.resizeObserver.observe(this.container);
+    } else {
+      window.addEventListener("resize", () => this.render());
+    }
+    this.render();
+  }
+
+  lngLatToWorld(lng, lat, z = this.zoom) {
+    const n = Math.pow(2, z) * this.tileSize;
+    const clampedLat = Math.max(-85.05112878, Math.min(85.05112878, lat));
+    const sin = Math.sin(clampedLat * Math.PI / 180);
+    return {
+      x: (lng + 180) / 360 * n,
+      y: (0.5 - Math.log((1 + sin) / (1 - sin)) / (4 * Math.PI)) * n
+    };
+  }
+
+  worldToLngLat(x, y, z = this.zoom) {
+    const n = Math.pow(2, z) * this.tileSize;
+    const lng = x / n * 360 - 180;
+    const a = Math.PI - 2 * Math.PI * y / n;
+    const lat = 180 / Math.PI * Math.atan(0.5 * (Math.exp(a) - Math.exp(-a)));
+    return [lng, lat];
+  }
+
+  viewport() {
+    const w = this.container.clientWidth || 800;
+    const h = this.container.clientHeight || 600;
+    const centerWorld = this.lngLatToWorld(this.center[0], this.center[1], this.zoom);
+    return { w, h, left: centerWorld.x - w / 2, top: centerWorld.y - h / 2 };
+  }
+
+  setZoom(z) {
+    const next = Math.max(this.minZoom, Math.min(this.maxZoom, Math.round(z)));
+    if (next === this.zoom) return;
+    this.zoom = next;
+    this.render();
+  }
+
+  getZoom() { return this.zoom; }
+
+  setEvents(events) {
+    this.events = Array.isArray(events) ? events : [];
+    this.renderMarkers();
+  }
+
+  focusEvent(event) {
+    if (!Number.isFinite(event.longitude) || !Number.isFinite(event.latitude)) return;
+    this.center = [event.longitude, event.latitude];
+    this.zoom = Math.max(this.zoom, 14);
+    this.popupEvent = event;
+    this.render();
+  }
+
+  resize() { this.render(); }
+
+  render() {
+    this.renderTiles();
+    this.renderMarkers();
+    if (this.popupEvent) this.renderPopup(this.popupEvent);
+  }
+
+  renderTiles() {
+    const v = this.viewport();
+    const z = this.zoom;
+    const count = Math.pow(2, z);
+    const minX = Math.floor(v.left / this.tileSize) - 1;
+    const maxX = Math.floor((v.left + v.w) / this.tileSize) + 1;
+    const minY = Math.floor(v.top / this.tileSize) - 1;
+    const maxY = Math.floor((v.top + v.h) / this.tileSize) + 1;
+    this.tileLayer.replaceChildren();
+    const frag = document.createDocumentFragment();
+
+    for (let tx = minX; tx <= maxX; tx++) {
+      for (let ty = minY; ty <= maxY; ty++) {
+        if (ty < 0 || ty >= count) continue;
+        const wrappedX = ((tx % count) + count) % count;
+        const img = document.createElement("img");
+        img.className = "simple-map-tile";
+        img.alt = "";
+        img.draggable = false;
+        img.src = "https://tile.openstreetmap.org/" + z + "/" + wrappedX + "/" + ty + ".png";
+        img.style.left = Math.round(tx * this.tileSize - v.left) + "px";
+        img.style.top = Math.round(ty * this.tileSize - v.top) + "px";
+        frag.append(img);
+      }
+    }
+    this.tileLayer.append(frag);
+  }
+
+  renderMarkers() {
+    const v = this.viewport();
+    this.markerLayer.replaceChildren();
+    const frag = document.createDocumentFragment();
+
+    for (const event of this.events) {
+      if (!Number.isFinite(event.longitude) || !Number.isFinite(event.latitude)) continue;
+      const world = this.lngLatToWorld(event.longitude, event.latitude, this.zoom);
+      const x = world.x - v.left;
+      const y = world.y - v.top;
+      if (x < -30 || x > v.w + 30 || y < -30 || y > v.h + 30) continue;
+
+      const marker = document.createElement("button");
+      marker.type = "button";
+      marker.className = "simple-map-marker";
+      marker.style.left = x + "px";
+      marker.style.top = y + "px";
+      marker.title = event.name || "Sự kiện";
+      marker.setAttribute("aria-label", event.name || "Sự kiện");
+      marker.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.popupEvent = event;
+        this.renderPopup(event);
+        if (this.onEventClick) this.onEventClick(event);
+      });
+      frag.append(marker);
+    }
+    this.markerLayer.append(frag);
+  }
+
+  renderPopup(event) {
+    this.closePopup(false);
+    if (!Number.isFinite(event.longitude) || !Number.isFinite(event.latitude)) return;
+    const v = this.viewport();
+    const world = this.lngLatToWorld(event.longitude, event.latitude, this.zoom);
+    let x = world.x - v.left;
+    let y = world.y - v.top;
+    x = Math.max(160, Math.min(v.w - 160, x));
+    y = Math.max(130, Math.min(v.h - 20, y));
+
+    const popup = document.createElement("div");
+    popup.className = "simple-map-popup";
+    popup.style.left = x + "px";
+    popup.style.top = y + "px";
+
+    const title = document.createElement("h3");
+    title.textContent = event.name || "Sự kiện";
+    const time = document.createElement("p");
+    time.textContent = "🗓 " + (event.schedule_raw || "Chưa cập nhật thời gian");
+    const venue = document.createElement("p");
+    venue.textContent = "📍 " + (event.venue || "Chưa cập nhật địa điểm");
+    popup.append(title, time, venue);
+
+    const actions = document.createElement("div");
+    actions.className = "popup-actions";
+    if (event.url) {
+      const a = document.createElement("a");
+      a.href = event.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Chi tiết ↗";
+      actions.append(a);
+    }
+    if (event.maps_url) {
+      const a = document.createElement("a");
+      a.href = event.maps_url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Google Maps ↗";
+      actions.append(a);
+    }
+    popup.append(actions);
+    popup.addEventListener("click", (e) => e.stopPropagation());
+    this.container.append(popup);
+    this.popupNode = popup;
+  }
+
+  closePopup(clearEvent = true) {
+    if (this.popupNode) this.popupNode.remove();
+    this.popupNode = null;
+    if (clearEvent) this.popupEvent = null;
+  }
+}
+
 (() => {
   "use strict";
 
@@ -3607,135 +3950,18 @@ window.EVENT_DATA = {
   }
 
   function initMap() {
-    if (typeof window.maplibregl === "undefined") {
-      showMapError("Không tải được thư viện bản đồ. Hãy thử refresh trang hoặc kiểm tra kết nối tới CDN.");
-      return;
-    }
-
     try {
-      map = new maplibregl.Map({
-        container: "map",
-        style: "https://tiles.openfreemap.org/styles/liberty",
+      map = new SimpleOSMMap("map", {
         center: [105.845, 21.028],
-        zoom: 11.7,
-        attributionControl: true
+        zoom: 12,
+        onEventClick: (event) => selectEvent(event, true)
       });
-
-      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-
-      map.on("load", () => {
-        mapReady = true;
-
-        map.addSource("events", {
-          type: "geojson",
-          data: emptyGeoJSON(),
-          cluster: true,
-          clusterMaxZoom: 14,
-          clusterRadius: 42
-        });
-
-        map.addLayer({
-          id: "clusters",
-          type: "circle",
-          source: "events",
-          filter: ["has", "point_count"],
-          paint: {
-            "circle-color": "#111827",
-            "circle-radius": [
-              "step", ["get", "point_count"],
-              17, 10, 21, 30, 26
-            ],
-            "circle-stroke-width": 2,
-            "circle-stroke-color": "#ffffff"
-          }
-        });
-
-        map.addLayer({
-          id: "cluster-count",
-          type: "symbol",
-          source: "events",
-          filter: ["has", "point_count"],
-          layout: {
-            "text-field": ["get", "point_count_abbreviated"],
-            "text-size": 12
-          },
-          paint: { "text-color": "#ffffff" }
-        });
-
-        map.addLayer({
-          id: "event-points",
-          type: "circle",
-          source: "events",
-          filter: ["!", ["has", "point_count"]],
-          paint: {
-            "circle-color": [
-              "match", ["get", "type_group"],
-              "Triển lãm & sắp đặt", TYPE_COLORS["Triển lãm & sắp đặt"],
-              "Trải nghiệm & workshop", TYPE_COLORS["Trải nghiệm & workshop"],
-              "Biểu diễn & phim", TYPE_COLORS["Biểu diễn & phim"],
-              "Talk & trao đổi", TYPE_COLORS["Talk & trao đổi"],
-              "Lễ & khai mạc", TYPE_COLORS["Lễ & khai mạc"],
-              TYPE_COLORS["Khác"]
-            ],
-            "circle-radius": 7,
-            "circle-stroke-width": 2,
-            "circle-stroke-color": "#ffffff"
-          }
-        });
-
-        map.on("mouseenter", "event-points", () => map.getCanvas().style.cursor = "pointer");
-        map.on("mouseleave", "event-points", () => map.getCanvas().style.cursor = "");
-
-        map.on("click", "clusters", async (ev) => {
-          const feature = map.queryRenderedFeatures(ev.point, { layers: ["clusters"] })[0];
-          if (!feature) return;
-          const clusterId = feature.properties.cluster_id;
-          const zoom = await map.getSource("events").getClusterExpansionZoom(clusterId);
-          map.easeTo({ center: feature.geometry.coordinates, zoom });
-        });
-
-        map.on("click", "event-points", (ev) => {
-          const feature = ev.features && ev.features[0];
-          if (!feature) return;
-          const id = Number(feature.properties.id);
-          const event = DATA.events.find(item => Number(item.id) === id);
-          if (event) selectEvent(event, true);
-        });
-
-        renderMap(latestFiltered);
-      });
-
-      map.on("error", (ev) => {
-        console.error("MapLibre error:", ev && ev.error ? ev.error : ev);
-      });
+      mapReady = true;
+      renderMap(latestFiltered);
     } catch (err) {
       console.error("Map initialization failed:", err);
-      showMapError("Có lỗi khi khởi tạo bản đồ trên trình duyệt này.");
+      showMapError("Có lỗi khi khởi tạo bản đồ.");
     }
-  }
-
-  function emptyGeoJSON() {
-    return { type: "FeatureCollection", features: [] };
-  }
-
-  function toGeoJSON(events) {
-    return {
-      type: "FeatureCollection",
-      features: events
-        .filter(e => Number.isFinite(e.longitude) && Number.isFinite(e.latitude))
-        .map(e => ({
-          type: "Feature",
-          id: e.id,
-          geometry: { type: "Point", coordinates: [e.longitude, e.latitude] },
-          properties: {
-            id: e.id,
-            name: e.name,
-            type_group: e.type_group,
-            venue: e.venue,
-            schedule_raw: e.schedule_raw
-          }
-        }))
-    };
   }
 
   function localISODate(date = new Date()) {
@@ -3895,8 +4121,8 @@ window.EVENT_DATA = {
   }
 
   function renderMap(events) {
-    if (!mapReady) return;
-    map.getSource("events").setData(toGeoJSON(events));
+    if (!mapReady || !map) return;
+    map.setEvents(events);
   }
 
   function renderStatus(events) {
@@ -3917,56 +4143,6 @@ window.EVENT_DATA = {
     els.summary.textContent = bits.join(" · ");
   }
 
-  function popupContent(event) {
-    const root = document.createElement("div");
-
-    const title = document.createElement("h3");
-    title.className = "popup-title";
-    title.textContent = event.name;
-    root.append(title);
-
-    const time = document.createElement("p");
-    time.className = "popup-line";
-    time.textContent = `🗓 ${event.schedule_raw || "Chưa cập nhật"}`;
-    root.append(time);
-
-    const venue = document.createElement("p");
-    venue.className = "popup-line";
-    venue.textContent = `📍 ${event.venue || "Chưa cập nhật"}`;
-    root.append(venue);
-
-    const type = document.createElement("p");
-    type.className = "popup-line";
-    type.textContent = event.event_type || event.type_group || "";
-    root.append(type);
-
-    const actions = document.createElement("div");
-    actions.className = "popup-actions";
-
-    const eventUrl = validHttpUrl(event.url);
-    if (eventUrl) {
-      const a = document.createElement("a");
-      a.href = eventUrl;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.textContent = "Chi tiết ↗";
-      actions.append(a);
-    }
-
-    const mapsUrl = validHttpUrl(event.maps_url);
-    if (mapsUrl) {
-      const a = document.createElement("a");
-      a.href = mapsUrl;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.textContent = "Maps ↗";
-      actions.append(a);
-    }
-
-    root.append(actions);
-    return root;
-  }
-
   function selectEvent(event, fromMap) {
     selectedId = Number(event.id);
 
@@ -3977,13 +4153,8 @@ window.EVENT_DATA = {
     const card = document.querySelector(`.event-card[data-event-id="${CSS.escape(String(event.id))}"]`);
     if (fromMap && card) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-    if (Number.isFinite(event.longitude) && Number.isFinite(event.latitude) && mapReady) {
-      map.easeTo({ center: [event.longitude, event.latitude], zoom: Math.max(map.getZoom(), 14), duration: 700 });
-      new maplibregl.Popup({ offset: 12 })
-        .setLngLat([event.longitude, event.latitude])
-        .setDOMContent(popupContent(event))
-        .addTo(map);
-
+    if (Number.isFinite(event.longitude) && Number.isFinite(event.latitude) && mapReady && map) {
+      map.focusEvent(event);
       if (window.innerWidth <= 720 && !fromMap) setMobileView("map");
     }
   }
