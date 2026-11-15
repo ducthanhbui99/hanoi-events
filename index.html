@@ -74,7 +74,7 @@ h1 {
 
 .filters {
   display: grid;
-  grid-template-columns: minmax(240px, 2fr) minmax(150px, 1fr) minmax(180px, 1fr) auto auto;
+  grid-template-columns: minmax(180px, 1fr) minmax(220px, 1fr) auto auto;
   gap: 10px;
   align-items: end;
   margin-bottom: 12px;
@@ -335,7 +335,6 @@ h1 {
     grid-template-columns: 1fr 1fr;
   }
 
-  .field-search { grid-column: 1 / -1; }
   .quick-actions { grid-column: auto; }
   .checkbox-field { justify-self: start; }
 
@@ -379,7 +378,7 @@ h1 {
 
 @media (max-width: 480px) {
   .filters { grid-template-columns: 1fr; }
-  .field-search, .quick-actions { grid-column: auto; }
+  .quick-actions { grid-column: auto; }
   .checkbox-field { min-height: 32px; }
   .quick-actions .button { flex: 1; }
   .workspace { height: calc(100vh - 410px); }
@@ -503,11 +502,6 @@ h1 {
 
   <main class="app-shell">
     <section class="filters" aria-label="Bộ lọc sự kiện">
-      <label class="field field-search">
-        <span>Tìm kiếm</span>
-        <input id="search-input" type="search" placeholder="Tên sự kiện, địa điểm..." autocomplete="off" />
-      </label>
-
       <label class="field">
         <span>Ngày</span>
         <input id="date-input" type="date" />
@@ -573,7 +567,6 @@ h1 {
       <p class="event-note"></p>
       <div class="event-actions">
         <a class="event-link" target="_blank" rel="noopener noreferrer">Chi tiết ↗</a>
-        <a class="maps-link" target="_blank" rel="noopener noreferrer">Google Maps ↗</a>
       </div>
     </article>
   </template>
@@ -3874,14 +3867,6 @@ class SimpleOSMMap {
       a.textContent = "Chi tiết ↗";
       actions.append(a);
     }
-    if (event.maps_url) {
-      const a = document.createElement("a");
-      a.href = event.maps_url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.textContent = "Google Maps ↗";
-      actions.append(a);
-    }
     popup.append(actions);
     popup.addEventListener("click", (e) => e.stopPropagation());
     this.container.append(popup);
@@ -3914,7 +3899,6 @@ class SimpleOSMMap {
   };
 
   const els = {
-    search: document.getElementById("search-input"),
     date: document.getElementById("date-input"),
     type: document.getElementById("type-select"),
     hidePast: document.getElementById("hide-past"),
@@ -3933,7 +3917,6 @@ class SimpleOSMMap {
   });
 
   const params = new URLSearchParams(window.location.search);
-  els.search.value = params.get("q") || "";
   els.date.value = params.get("date") || "";
   els.type.value = params.get("type") || "";
 
@@ -4048,7 +4031,6 @@ class SimpleOSMMap {
   }
 
   function filteredEvents() {
-    const q = normalizedText(els.search.value.trim());
     const selectedDate = els.date.value;
     const selectedType = els.type.value;
     const today = localISODate();
@@ -4059,12 +4041,6 @@ class SimpleOSMMap {
         if (selectedDate && !isOnSelectedDate(event, selectedDate)) return false;
         if (selectedType && event.type_group !== selectedType) return false;
 
-        if (q) {
-          const haystack = normalizedText([
-            event.name, event.venue, event.event_type, event.type_group, event.schedule_raw, event.note
-          ].filter(Boolean).join(" "));
-          if (!haystack.includes(q)) return false;
-        }
         return true;
       })
       .sort((a, b) => eventSortKey(a).localeCompare(eventSortKey(b), "vi"));
@@ -4124,10 +4100,6 @@ class SimpleOSMMap {
       if (eventUrl) eventLink.href = eventUrl;
       else eventLink.hidden = true;
 
-      const mapsUrl = validHttpUrl(event.maps_url);
-      const mapsLink = node.querySelector(".maps-link");
-      if (mapsUrl) mapsLink.href = mapsUrl;
-      else mapsLink.hidden = true;
 
       node.addEventListener("click", (ev) => {
         if (ev.target.closest("a")) return;
@@ -4158,7 +4130,6 @@ class SimpleOSMMap {
       bits.push("toàn bộ dữ liệu");
     }
     if (els.type.value) bits.push(els.type.value);
-    if (els.search.value.trim()) bits.push(`“${els.search.value.trim()}”`);
 
     els.summary.textContent = bits.join(" · ");
   }
@@ -4180,14 +4151,12 @@ class SimpleOSMMap {
   }
 
   function syncQueryParams() {
-    const q = els.search.value.trim();
     const date = els.date.value;
     const type = els.type.value;
 
     const next = new URLSearchParams();
     if (date) next.set("date", date);
     if (type) next.set("type", type);
-    if (q) next.set("q", q);
 
     const query = next.toString();
     const url = `${window.location.pathname}${query ? "?" + query : ""}${window.location.hash}`;
@@ -4202,11 +4171,6 @@ class SimpleOSMMap {
     if (view === "map" && map) setTimeout(() => map.resize(), 60);
   }
 
-  let searchTimer = null;
-  els.search.addEventListener("input", () => {
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(render, 120);
-  });
   els.date.addEventListener("change", render);
   els.type.addEventListener("change", render);
   els.hidePast.addEventListener("change", render);
@@ -4218,7 +4182,6 @@ class SimpleOSMMap {
   });
 
   els.clear.addEventListener("click", () => {
-    els.search.value = "";
     els.date.value = "";
     els.type.value = "";
     els.hidePast.checked = true;
