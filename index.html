@@ -8,7 +8,7 @@
   <title>Hanoi Events</title>
 
   <link rel="preconnect" href="https://tiles.openfreemap.org" />
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.18.0/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@6.18.0/dist/maplibre-gl.css" />
   <style>
 :root {
   --bg: #f5f5f3;
@@ -476,7 +476,7 @@ h1 {
     </article>
   </template>
 
-  <script src="https://unpkg.com/maplibre-gl@6.18.0/dist/maplibre-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@6.18.0/dist/maplibre-gl.js"></script>
   <script>
 window.EVENT_DATA = {
   "meta": {
@@ -3588,103 +3588,133 @@ window.EVENT_DATA = {
 
   document.body.dataset.mobileView = "list";
 
-  const map = new maplibregl.Map({
-    container: "map",
-    style: "https://tiles.openfreemap.org/styles/liberty",
-    center: [105.845, 21.028],
-    zoom: 11.7,
-    attributionControl: true
-  });
-
-  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-
+  let map = null;
   let mapReady = false;
   let selectedId = null;
   let latestFiltered = [];
 
-  map.on("load", () => {
-    mapReady = true;
+  function showMapError(message) {
+    const mapEl = document.getElementById("map");
+    if (!mapEl) return;
+    mapEl.innerHTML = `
+      <div style="height:100%;display:flex;align-items:center;justify-content:center;padding:28px;text-align:center;color:#6b7280;background:#fafafa">
+        <div>
+          <strong style="display:block;color:#151515;margin-bottom:8px">Bản đồ chưa tải được</strong>
+          <span>${message}</span>
+          <div style="margin-top:8px;font-size:12px">Danh sách sự kiện bên trái vẫn hoạt động bình thường.</div>
+        </div>
+      </div>`;
+  }
 
-    map.addSource("events", {
-      type: "geojson",
-      data: emptyGeoJSON(),
-      cluster: true,
-      clusterMaxZoom: 14,
-      clusterRadius: 42
-    });
+  function initMap() {
+    if (typeof window.maplibregl === "undefined") {
+      showMapError("Không tải được thư viện bản đồ. Hãy thử refresh trang hoặc kiểm tra kết nối tới CDN.");
+      return;
+    }
 
-    map.addLayer({
-      id: "clusters",
-      type: "circle",
-      source: "events",
-      filter: ["has", "point_count"],
-      paint: {
-        "circle-color": "#111827",
-        "circle-radius": [
-          "step", ["get", "point_count"],
-          17, 10, 21, 30, 26
-        ],
-        "circle-stroke-width": 2,
-        "circle-stroke-color": "#ffffff"
-      }
-    });
+    try {
+      map = new maplibregl.Map({
+        container: "map",
+        style: "https://tiles.openfreemap.org/styles/liberty",
+        center: [105.845, 21.028],
+        zoom: 11.7,
+        attributionControl: true
+      });
 
-    map.addLayer({
-      id: "cluster-count",
-      type: "symbol",
-      source: "events",
-      filter: ["has", "point_count"],
-      layout: {
-        "text-field": ["get", "point_count_abbreviated"],
-        "text-size": 12
-      },
-      paint: { "text-color": "#ffffff" }
-    });
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
 
-    map.addLayer({
-      id: "event-points",
-      type: "circle",
-      source: "events",
-      filter: ["!", ["has", "point_count"]],
-      paint: {
-        "circle-color": [
-          "match", ["get", "type_group"],
-          "Triển lãm & sắp đặt", TYPE_COLORS["Triển lãm & sắp đặt"],
-          "Trải nghiệm & workshop", TYPE_COLORS["Trải nghiệm & workshop"],
-          "Biểu diễn & phim", TYPE_COLORS["Biểu diễn & phim"],
-          "Talk & trao đổi", TYPE_COLORS["Talk & trao đổi"],
-          "Lễ & khai mạc", TYPE_COLORS["Lễ & khai mạc"],
-          TYPE_COLORS["Khác"]
-        ],
-        "circle-radius": 7,
-        "circle-stroke-width": 2,
-        "circle-stroke-color": "#ffffff"
-      }
-    });
+      map.on("load", () => {
+        mapReady = true;
 
-    map.on("mouseenter", "event-points", () => map.getCanvas().style.cursor = "pointer");
-    map.on("mouseleave", "event-points", () => map.getCanvas().style.cursor = "");
+        map.addSource("events", {
+          type: "geojson",
+          data: emptyGeoJSON(),
+          cluster: true,
+          clusterMaxZoom: 14,
+          clusterRadius: 42
+        });
 
-    map.on("click", "clusters", async (ev) => {
-      const feature = map.queryRenderedFeatures(ev.point, { layers: ["clusters"] })[0];
-      if (!feature) return;
-      const clusterId = feature.properties.cluster_id;
-      const zoom = await map.getSource("events").getClusterExpansionZoom(clusterId);
-      map.easeTo({ center: feature.geometry.coordinates, zoom });
-    });
+        map.addLayer({
+          id: "clusters",
+          type: "circle",
+          source: "events",
+          filter: ["has", "point_count"],
+          paint: {
+            "circle-color": "#111827",
+            "circle-radius": [
+              "step", ["get", "point_count"],
+              17, 10, 21, 30, 26
+            ],
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#ffffff"
+          }
+        });
 
-    map.on("click", "event-points", (ev) => {
-      const feature = ev.features && ev.features[0];
-      if (!feature) return;
-      const id = Number(feature.properties.id);
-      const event = DATA.events.find(item => Number(item.id) === id);
-      if (event) selectEvent(event, true);
-    });
+        map.addLayer({
+          id: "cluster-count",
+          type: "symbol",
+          source: "events",
+          filter: ["has", "point_count"],
+          layout: {
+            "text-field": ["get", "point_count_abbreviated"],
+            "text-size": 12
+          },
+          paint: { "text-color": "#ffffff" }
+        });
 
-    render();
-  });
+        map.addLayer({
+          id: "event-points",
+          type: "circle",
+          source: "events",
+          filter: ["!", ["has", "point_count"]],
+          paint: {
+            "circle-color": [
+              "match", ["get", "type_group"],
+              "Triển lãm & sắp đặt", TYPE_COLORS["Triển lãm & sắp đặt"],
+              "Trải nghiệm & workshop", TYPE_COLORS["Trải nghiệm & workshop"],
+              "Biểu diễn & phim", TYPE_COLORS["Biểu diễn & phim"],
+              "Talk & trao đổi", TYPE_COLORS["Talk & trao đổi"],
+              "Lễ & khai mạc", TYPE_COLORS["Lễ & khai mạc"],
+              TYPE_COLORS["Khác"]
+            ],
+            "circle-radius": 7,
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#ffffff"
+          }
+        });
 
-  function emptyGeoJSON() {
+        map.on("mouseenter", "event-points", () => map.getCanvas().style.cursor = "pointer");
+        map.on("mouseleave", "event-points", () => map.getCanvas().style.cursor = "");
+
+        map.on("click", "clusters", async (ev) => {
+          const feature = map.queryRenderedFeatures(ev.point, { layers: ["clusters"] })[0];
+          if (!feature) return;
+          const clusterId = feature.properties.cluster_id;
+          const zoom = await map.getSource("events").getClusterExpansionZoom(clusterId);
+          map.easeTo({ center: feature.geometry.coordinates, zoom });
+        });
+
+        map.on("click", "event-points", (ev) => {
+          const feature = ev.features && ev.features[0];
+          if (!feature) return;
+          const id = Number(feature.properties.id);
+          const event = DATA.events.find(item => Number(item.id) === id);
+          if (event) selectEvent(event, true);
+        });
+
+        renderMap(latestFiltered);
+      });
+
+      map.on("error", (ev) => {
+        console.error("MapLibre error:", ev && ev.error ? ev.error : ev);
+      });
+    } catch (err) {
+      console.error("Map initialization failed:", err);
+      showMapError("Có lỗi khi khởi tạo bản đồ trên trình duyệt này.");
+    }
+  }
+
+  function emptyGeoJSON()  function emptyGeoJSON() {
     return { type: "FeatureCollection", features: [] };
   }
 
@@ -3978,7 +4008,7 @@ window.EVENT_DATA = {
     document.querySelectorAll(".view-button").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.view === view);
     });
-    if (view === "map") setTimeout(() => map.resize(), 60);
+    if (view === "map" && map) setTimeout(() => map.resize(), 60);
   }
 
   let searchTimer = null;
@@ -4009,6 +4039,7 @@ window.EVENT_DATA = {
   });
 
   render();
+  initMap();
 })();
 
 </script>
