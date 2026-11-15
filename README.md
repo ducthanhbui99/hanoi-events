@@ -39,6 +39,16 @@ Dữ liệu dùng 4 nhóm:
 
 Category hiện không phải là filter trên giao diện nhưng vẫn được lưu trong `events.json`.
 
+## Nguồn dữ liệu master
+
+Google Sheet:
+https://docs.google.com/spreadsheets/d/1yUjw6cx4upm82AjxLo3U-xYfNFexxgALoTXel3ZouCk/edit?usp=sharing
+
+- Sheet sự kiện: `Events`
+- Sheet địa điểm: `Location`
+- Output tương ứng: `events.json` và `locations.json`
+- Google Sheet này là source of truth cho các lần publish hàng tuần.
+
 ## Cập nhật hàng tuần
 
 Workflow đề xuất:
