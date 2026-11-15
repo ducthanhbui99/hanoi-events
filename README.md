@@ -15,7 +15,7 @@ Website tải `events.json` và `locations.json` khi mở trang, sau đó ghép 
 ## Dataset hiện tại
 
 - Sự kiện: **177**
-- Địa điểm đã lưu tọa độ: **52**
+- Địa điểm đã lưu tọa độ: **51**
 - Sự kiện hiện có marker: **163**
 - Sự kiện chưa có marker: **14**
 
