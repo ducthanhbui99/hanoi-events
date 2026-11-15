@@ -388,7 +388,7 @@ h1 {
   .quick-actions .button { flex: 1; }
   .workspace {
     height: calc(100vh - 72px);
-    height: calc(100dvh - 72px);
+    height: calc(100dvh - 72px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -564,12 +564,12 @@ h1 {
   right: 5px;
   top: 50%;
   transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border: 0;
   border-radius: 50%;
   background: transparent;
-  line-height: 30px;
+  line-height: 42px;
   text-align: center;
   color: var(--muted);
   font-size: 20px;
@@ -588,13 +588,14 @@ h1 {
   cursor: pointer;
   border: 0;
 }
+.date-filter-wrap.has-date .calendar-filter { padding-right: 48px; }
 .date-filter-wrap.has-date .date-picker-input {
-  right: 38px;
-  width: calc(100% - 38px);
+  right: 44px;
+  width: calc(100% - 44px);
 }
 .workspace {
   height: calc(100vh - 78px);
-  height: calc(100dvh - 78px);
+  height: calc(100dvh - 78px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   min-height: 560px;
 }
 @media (max-width: 720px) {
@@ -607,13 +608,23 @@ h1 {
   .compact-toolbar { margin-bottom: 8px; }
   .workspace {
     height: calc(100vh - 72px);
-    height: calc(100dvh - 72px);
-    min-height: 360px;
+    height: calc(100dvh - 72px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    min-height: 280px;
   }
   .mobile-view-switch { display: inline-flex; }
   .calendar-filter { min-height: 44px; padding: 7px 10px; font-size: 13px; }
   .calendar-icon { width: 18px; height: 18px; }
   .view-button { min-height: 44px; }
+
+  @media (pointer: coarse) {
+    .event-actions a,
+    .popup-actions a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 6px 2px;
+    }
+  }
 }
 
 </style>
@@ -1167,9 +1178,11 @@ class SimpleOSMMap {
       }
     }
 
-    if (Number.isFinite(event.longitude) && Number.isFinite(event.latitude) && mapReady && map) {
-      map.focusEvent(event);
+    if (Number.isFinite(event.longitude) && Number.isFinite(event.latitude)) {
       if (window.innerWidth <= 720 && !fromMap) setMobileView("map");
+      else if (!mapReady) initMap();
+
+      if (mapReady && map) map.focusEvent(event);
     }
   }
 
