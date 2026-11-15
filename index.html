@@ -4852,12 +4852,19 @@ class SimpleOSMMap {
 
   function isOnSelectedDate(event, iso) {
     if (!iso) return true;
+
     const start = event.filter_start_date || event.start_date;
     const end = event.filter_end_date || event.end_date;
+
+    // Date rules:
+    // 1) Start + end: active throughout the inclusive date range.
+    // 2) Start only: active indefinitely from the start date onward.
+    // 3) End only: active indefinitely up to and including the end date.
+    // 4) No start/end: always active.
     if (start && end) return iso >= start && iso <= end;
-    if (start) return iso === start;
-    if (end) return iso === end;
-    return false;
+    if (start) return iso >= start;
+    if (end) return iso <= end;
+    return true;
   }
 
   function eventSortKey(event) {
