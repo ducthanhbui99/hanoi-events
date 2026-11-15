@@ -3,19 +3,21 @@
     "title": "Hanoi Events",
     "subtitle": "Sự kiện văn hóa & sáng tạo tại Hà Nội",
     "data_as_of": "2026-11-15",
-    "source_sheet": "Weekly input",
-    "source_file": "Pasted markdown.md",
+    "source_type": "google_sheets",
+    "source_sheet": "Events",
+    "source_file": "Hanoi Events - Master",
+    "spreadsheet_id": "1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8",
     "total_events": 177,
-    "mapped_events": 137,
-    "unmapped_events": 40,
-    "timezone": "Asia/Bangkok"
+    "mapped_events": 163,
+    "unmapped_events": 14,
+    "timezone": "Asia/Saigon"
   },
   "events": [
     {
       "id": 1,
       "name": "Trưng bày 'Mịt Mù Khói Toả Ngàn Sương",
       "url": "https://www.instagram.com/p/DZZwAk3GdPg/",
-      "venue": "Kỳ Lân House 34C Trần Phú",
+      "venue": "Kỳ Lân House, 34C Trần Phú",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "Chưa cập nhật thời gian",
@@ -27,13 +29,14 @@
       "date_precision": "unknown",
       "recurrence": null,
       "filter_start_date": null,
-      "filter_end_date": null
+      "filter_end_date": null,
+      "status": "Active"
     },
     {
       "id": 2,
       "name": "Kịch (nhiều vở khác nhau)",
       "url": "https://nhahattuoitre.vn/trang-chu",
-      "venue": "Nhà hát Tuổi Trẻ - 11 Ngô Thì Nhậm",
+      "venue": "Nhà hát Tuổi Trẻ, 11 Ngô Thì Nhậm",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "Chưa cập nhật thời gian",
@@ -45,13 +48,14 @@
       "date_precision": "unknown",
       "recurrence": null,
       "filter_start_date": null,
-      "filter_end_date": null
+      "filter_end_date": null,
+      "status": "Active"
     },
     {
       "id": 3,
       "name": "Kịch (nhiều vở khác nhau)",
       "url": "https://www.facebook.com/nhahatkichvietnam.doingoai/posts/pfbid0KDbbUvosjWB7fMMPs4zLcfvvUG3N2GsNUVGnnnXtKjhXXwwS6myaws2sxHaGDkzRl",
-      "venue": "Nhà hát Kịch Việt Nam",
+      "venue": "Nhà hát Kịch Việt Nam, 1 Tràng Tiền",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "Chưa cập nhật thời gian",
@@ -63,7 +67,8 @@
       "date_precision": "unknown",
       "recurrence": null,
       "filter_start_date": null,
-      "filter_end_date": null
+      "filter_end_date": null,
+      "status": "Active"
     },
     {
       "id": 4,
@@ -81,13 +86,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-10-03",
-      "filter_end_date": "2026-11-25"
+      "filter_end_date": "2026-11-25",
+      "status": "Active"
     },
     {
       "id": 5,
       "name": "Triển lãm \"Huyễn Sắc Xoay Vần\"",
       "url": "https://web.facebook.com/japanfoundation.vietnam/posts/1089080030675026:1089080030675026",
-      "venue": "Trung tâm Giao lưu Văn hóa Nhật Bản tại Việt Nam",
+      "venue": "Trung tâm Giao lưu Văn hóa Nhật Bản tại Việt Nam, 27 Quang Trung",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "09/10/2026 – 06/12/2026",
@@ -99,7 +105,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-10-09",
-      "filter_end_date": "2026-12-06"
+      "filter_end_date": "2026-12-06",
+      "status": "Active"
     },
     {
       "id": 6,
@@ -117,7 +124,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-10-01",
-      "filter_end_date": "2026-12-31"
+      "filter_end_date": "2026-12-31",
+      "status": "Active"
     },
     {
       "id": 7,
@@ -135,13 +143,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-01",
-      "filter_end_date": "2026-12-09"
+      "filter_end_date": "2026-12-09",
+      "status": "Active"
     },
     {
       "id": 8,
       "name": "Trưng bày \"Trong một thế giới chung\"",
       "url": "https://www.instagram.com/p/Dejp4SXo522/?img_index=1",
-      "venue": "Indochine House, Tầng 3, số 8 Tràng Thi",
+      "venue": "Indochine House, 8 Tràng Thi",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "01/11/2026 – 27/12/2026",
@@ -153,13 +162,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-01",
-      "filter_end_date": "2026-12-27"
+      "filter_end_date": "2026-12-27",
+      "status": "Active"
     },
     {
       "id": 9,
       "name": "Nốt nhạc thanh trong lòng phố thị",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438994",
-      "venue": "Ngôi nhà Di sản – 87 Mã Mây",
+      "venue": "Ngôi nhà Di sản, 87 Mã Mây",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "10/11/2026 – 30/11/2026",
@@ -171,13 +181,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-10",
-      "filter_end_date": "2026-11-30"
+      "filter_end_date": "2026-11-30",
+      "status": "Active"
     },
     {
       "id": 10,
       "name": "Chuyện Tuồng xưa, Chuyện Tuồng nay",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438995",
-      "venue": "Trung tâm Giao lưu Văn hóa Phố cổ Hà Nội – 50 Đào Duy Từ",
+      "venue": "Trung tâm Giao lưu Văn hóa Phố cổ Hà Nội, 50 Đào Duy Từ",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "03/11/2026 – 18/12/2026",
@@ -189,13 +200,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-03",
-      "filter_end_date": "2026-12-18"
+      "filter_end_date": "2026-12-18",
+      "status": "Active"
     },
     {
       "id": 11,
       "name": "Tinh hoa hội tụ",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438996",
-      "venue": "Trung tâm Thông tin Văn hóa Hồ Gươm – 2 Lê Thái Tổ",
+      "venue": "Trung tâm Thông tin Văn hóa Hồ Gươm, 2 Lê Thái Tổ",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "03/11/2026 – 01/03/2027",
@@ -207,13 +219,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-03",
-      "filter_end_date": "2027-03-01"
+      "filter_end_date": "2027-03-01",
+      "status": "Active"
     },
     {
       "id": 12,
       "name": "Dòng chảy bách nghệ",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438997",
-      "venue": "Đình Kim Ngân – 42–44 Hàng Bạc",
+      "venue": "Đình Kim Ngân, 42–44 Hàng Bạc",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "01/11/2026 – 30/11/2026",
@@ -225,13 +238,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-01",
-      "filter_end_date": "2026-11-30"
+      "filter_end_date": "2026-11-30",
+      "status": "Active"
     },
     {
       "id": 13,
       "name": "Làng nghề Sơn Đồng",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438998",
-      "venue": "Trung tâm Văn hóa Nghệ thuật – 22 Hàng Buồm",
+      "venue": "Trung tâm Văn hóa Nghệ thuật, 22 Hàng Buồm",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "06/11/2026 – 30/11/2026",
@@ -243,13 +257,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-06",
-      "filter_end_date": "2026-11-30"
+      "filter_end_date": "2026-11-30",
+      "status": "Active"
     },
     {
       "id": 14,
       "name": "Đôi lời từ sơn mài Đường Lâm",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438999",
-      "venue": "Đình Hà Vĩ – 11 Hàng Hòm",
+      "venue": "Đình Hà Vĩ, 11 Hàng Hòm",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "04/11/2026 – 30/11/2026",
@@ -261,13 +276,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-04",
-      "filter_end_date": "2026-11-30"
+      "filter_end_date": "2026-11-30",
+      "status": "Active"
     },
     {
       "id": 15,
       "name": "Dược trà",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551439000",
-      "venue": "Di tích 40 Lãn Ông",
+      "venue": "Hội quán Phúc Kiến, 40 Lãn Ông",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "04/11/2026 – 30/11/2026",
@@ -279,13 +295,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-04",
-      "filter_end_date": "2026-11-30"
+      "filter_end_date": "2026-11-30",
+      "status": "Active"
     },
     {
       "id": 16,
       "name": "Nốt hương di sản",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551439001",
-      "venue": "Trung tâm Thông tin Di sản Phố cổ – 28 Hàng Buồm",
+      "venue": "Trung tâm Thông tin Di sản Phố cổ, 28 Hàng Buồm",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "04/11/2026 – 30/11/2026",
@@ -297,13 +314,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-04",
-      "filter_end_date": "2026-11-30"
+      "filter_end_date": "2026-11-30",
+      "status": "Active"
     },
     {
       "id": 17,
       "name": "Nghề dệt & lụa truyền thống",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551439002",
-      "venue": "Đình Yên Thái – 8 Tạm Thương",
+      "venue": "Đình Yên Thái, 8 Tạm Thương",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "04/11/2026 – 30/11/2026",
@@ -315,13 +333,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-04",
-      "filter_end_date": "2026-11-30"
+      "filter_end_date": "2026-11-30",
+      "status": "Active"
     },
     {
       "id": 18,
       "name": "Nghệ thuật thêu truyền thống",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551439003",
-      "venue": "Đình Tú Thị – 2 Yên Thái",
+      "venue": "Đình Tú Thị, 2 Yên Thái",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "04/11/2026 – 30/11/2026",
@@ -333,13 +352,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-04",
-      "filter_end_date": "2026-11-30"
+      "filter_end_date": "2026-11-30",
+      "status": "Active"
     },
     {
       "id": 19,
       "name": "Triển lãm \"Mạch sống vô hình\"",
       "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0eaVUZeEgfzL8U445AjQ6Vmdj64MXRX5gz9eDHv37XGDifyBXzb3MkuhThjCJqhV3l&id=100068361370969",
-      "venue": "Tòa nhà Di sản 24 Lý Thái Tổ",
+      "venue": "Tòa nhà Di sản, 24 Lý Thái Tổ",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "14/11/2026 – 28/11/2026",
@@ -351,13 +371,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 20,
       "name": "Triển lãm \"Loài khác\"",
       "url": "https://www.facebook.com/events/1550201943828011/1550202047161334/",
-      "venue": "Long Biên Art Space, tầng 2 toà nhà Mipec Long Biên",
+      "venue": "Long Biên Art Space",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "14/11/2026 – 15/12/2026",
@@ -369,13 +390,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-12-15"
+      "filter_end_date": "2026-12-15",
+      "status": "Active"
     },
     {
       "id": 21,
       "name": "Trưng bày \"𝟯𝟯.𝟮𝟯.𝟰𝟱\"",
       "url": "https://www.facebook.com/events/1438698015141615",
-      "venue": "Sóng Mây Gallery.S – 48 đường 5 Khu F361 An Dương",
+      "venue": "Sóng Mây Gallery.S, 48 đường 5 Khu F361 An Dương",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "07/11/2026 – 27/12/2026 · 00:00-18:00",
@@ -387,13 +409,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-07",
-      "filter_end_date": "2026-12-27"
+      "filter_end_date": "2026-12-27",
+      "status": "Active"
     },
     {
       "id": 22,
       "name": "Triển lãm: Kể chuyện và tái thiết nhà thờ Đức Bà",
-      "url": "https://www.facebook.com/events/4577125842559230/?acontext=%7B%22event_action_history%22%3A\\\\[%7B%22surface%22%3A%22external_search_engine%22%7D%2C%7B%22mechanism%22%3A%22attachment%22%2C%22surface%22%3A%22newsfeed%22%7D]%2C%22ref_notif_type%22%3Anull%7D",
-      "venue": "Viện Pháp tại Việt Nam – 15 Thiền Quang",
+      "url": "https://www.facebook.com/events/4577125842559230/?acontext=%7B%22event_action_history%22%3A\\[%7B%22surface%22%3A%22external_search_engine%22%7D%2C%7B%22mechanism%22%3A%22attachment%22%2C%22surface%22%3A%22newsfeed%22%7D]%2C%22ref_notif_type%22%3Anull%7D",
+      "venue": "Viện Pháp tại Việt Nam, 15 Thiền Quang",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "11/01/2026 – 10/01/2027",
@@ -405,7 +428,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-01-11",
-      "filter_end_date": "2027-01-10"
+      "filter_end_date": "2027-01-10",
+      "status": "Active"
     },
     {
       "id": 23,
@@ -423,7 +447,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-13",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 24,
@@ -441,7 +466,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 25,
@@ -459,13 +485,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-25"
+      "filter_end_date": "2026-11-25",
+      "status": "Active"
     },
     {
       "id": 26,
       "name": "Đại Tiệc Tam Sắc – Một Chiếu Ngự, Hai Đêm Diễn, Ba Dòng Sân Khấu!",
       "url": "https://sktt.vn/nhap-cung-so-dac-biet-dai-tiec-tam-sac/",
-      "venue": "Rạp Hồng Hà (51A Đường Thành)",
+      "venue": "Rạp Hồng Hà, 51A Đường Thành",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "21/11/2026 · 18:30-21:30",
@@ -477,13 +504,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 27,
       "name": "Tác phẩm NÄSS (Những con người)",
       "url": "https://www.facebook.com/IFVHanoi/posts/pfbid02WwejeqQDpEW4rMQ6iPJbBcYoxyN8UDEgcQeAZwM7wmxTtd6HJs3vCAH8f4vjuPtGl",
-      "venue": "Nhà hát Tuổi trẻ",
+      "venue": "Nhà hát Tuổi Trẻ, 11 Ngô Thì Nhậm",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "21/11/2026",
@@ -495,13 +523,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 28,
       "name": "Dạo đêm Hà Nội",
       "url": "https://www.facebook.com/hanoitrainghiemmoi/posts/pfbid02hFgYQmDGrM9vwgGK74sk2S3aBrs7fqMhE3dNkC3Sm3Ti7EQMxQmbpht4Fcu44UdHl",
-      "venue": "TBD (nhắn chương trình)",
+      "venue": "Chưa rõ (nhắn BTC)",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "20/11/2026",
@@ -513,13 +542,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-20",
-      "filter_end_date": "2026-11-20"
+      "filter_end_date": "2026-11-20",
+      "status": "Active"
     },
     {
       "id": 29,
       "name": "Walking tour Dạo phố thưởng quà",
       "url": "https://www.facebook.com/photo?fbid=122189680124726617&set=pcb.122189680412726617",
-      "venue": "TBD (nhắn chương trình)",
+      "venue": "Chưa rõ (nhắn BTC)",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "21/11/2026",
@@ -531,13 +561,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 30,
       "name": "Walking tour Dấu án người Hoa",
       "url": "https://www.facebook.com/photo?fbid=122189680124726617&set=pcb.122189680412726617",
-      "venue": "TBD (nhắn chương trình)",
+      "venue": "Chưa rõ (nhắn BTC)",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "22/11/2026",
@@ -549,13 +580,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 31,
       "name": "Birding Tour sông Hồng",
       "url": "https://www.facebook.com/thinkplaygrounds/posts/pfbid02TuiV8WioQkeZwF8G5jsstTCEpSMfa92VTJbKPMNtrjZG9J7LHwnciorFPTkevSUSl?locale=vi_VN",
-      "venue": "bờ vở sông Hồng",
+      "venue": "Bờ vở sông Hồng",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "21/11/2026 · 06:00-08:00",
@@ -567,7 +599,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 32,
@@ -585,13 +618,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-18",
-      "filter_end_date": "2026-11-18"
+      "filter_end_date": "2026-11-18",
+      "status": "Active"
     },
     {
       "id": 33,
       "name": "Trình diễn âm nhạc x Trao đổi chuyên môn \"Ong Bay\"",
       "url": "https://www.facebook.com/photo/?fbid=1426475226317741&set=pcb.1426478406317423&locale=vi_VN",
-      "venue": "DUYÊN – Rạp Đông Đô, 18 phố Lương Ngọc Quyến",
+      "venue": "DUYÊN – Rạp Đông Đô, 18 Lương Ngọc Quyến",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "17/11/2026 · 19:30",
@@ -603,7 +637,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-17",
-      "filter_end_date": "2026-11-17"
+      "filter_end_date": "2026-11-17",
+      "status": "Active"
     },
     {
       "id": 34,
@@ -621,13 +656,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-23",
-      "filter_end_date": "2026-11-23"
+      "filter_end_date": "2026-11-23",
+      "status": "Active"
     },
     {
       "id": 35,
       "name": "Kịch múa đương đại \"Đối diện với vô cùng\"",
       "url": "https://www.facebook.com/photo/?fbid=1426576279640969&set=pcb.1426478406317423&locale=vi_VN",
-      "venue": "Rạp Hồng Hà (51A Đường Thành)",
+      "venue": "Rạp Hồng Hà, 51A Đường Thành",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "20/11/2026 · 20:00",
@@ -639,7 +675,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-20",
-      "filter_end_date": "2026-11-20"
+      "filter_end_date": "2026-11-20",
+      "status": "Active"
     },
     {
       "id": 36,
@@ -657,7 +694,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-18",
-      "filter_end_date": "2026-11-18"
+      "filter_end_date": "2026-11-18",
+      "status": "Active"
     },
     {
       "id": 37,
@@ -675,13 +713,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 38,
       "name": "Trao đổi chuyên môn \"Khao khát nguyên bản\"",
       "url": "https://www.facebook.com/photo/?fbid=1426474622984468&set=pcb.1426478406317423&locale=vi_VN",
-      "venue": "TT Giao lưu Văn hóa Phổ Cổ 50 Đào Duy Từ",
+      "venue": "Trung tâm Giao lưu Văn hóa Phố cổ Hà Nội, 50 Đào Duy Từ",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "18/11/2026 · 14:00",
@@ -693,7 +732,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-18",
-      "filter_end_date": "2026-11-18"
+      "filter_end_date": "2026-11-18",
+      "status": "Active"
     },
     {
       "id": 39,
@@ -711,7 +751,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 40,
@@ -729,7 +770,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-13",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 41,
@@ -747,13 +789,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-13",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 42,
       "name": "“Chuyện Đình trong phố”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "12 đình & di tích phố cổ",
+      "venue": "Chưa rõ (nhắn BTC)",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "14/11/2026 – 28/11/2026 · 09:00-17:00",
@@ -765,7 +808,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 43,
@@ -783,7 +827,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 44,
@@ -801,7 +846,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-13",
-      "filter_end_date": "2026-11-18"
+      "filter_end_date": "2026-11-18",
+      "status": "Active"
     },
     {
       "id": 45,
@@ -819,7 +865,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-13",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 46,
@@ -837,7 +884,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-13",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 47,
@@ -855,7 +903,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 48,
@@ -873,7 +922,8 @@
       "date_precision": "partial",
       "recurrence": null,
       "filter_start_date": null,
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 49,
@@ -891,7 +941,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 50,
@@ -909,7 +960,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-15",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 51,
@@ -927,7 +979,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 52,
@@ -945,7 +998,8 @@
       "date_precision": "partial",
       "recurrence": null,
       "filter_start_date": null,
-      "filter_end_date": "2026-11-27"
+      "filter_end_date": "2026-11-27",
+      "status": "Active"
     },
     {
       "id": 53,
@@ -963,7 +1017,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 54,
@@ -981,7 +1036,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 55,
@@ -999,7 +1055,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 56,
@@ -1017,7 +1074,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 57,
@@ -1035,7 +1093,8 @@
       "date_precision": "partial",
       "recurrence": null,
       "filter_start_date": null,
-      "filter_end_date": "2027-01-30"
+      "filter_end_date": "2027-01-30",
+      "status": "Active"
     },
     {
       "id": 58,
@@ -1053,7 +1112,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 59,
@@ -1071,7 +1131,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 60,
@@ -1089,7 +1150,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-14",
-      "filter_end_date": "2026-11-19"
+      "filter_end_date": "2026-11-19",
+      "status": "Active"
     },
     {
       "id": 61,
@@ -1107,13 +1169,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-16",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 62,
       "name": "“Vén Lớp Họa Điệp”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Hội quán Phúc Kiến",
+      "venue": "Hội quán Phúc Kiến, 40 Lãn Ông",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "Đến 28/11/2026 · 08:00-20:00",
@@ -1125,13 +1188,14 @@
       "date_precision": "partial",
       "recurrence": null,
       "filter_start_date": null,
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 63,
       "name": "“Theo bước di sản cộng đồng 2026”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Hội quán Phúc Kiến",
+      "venue": "Hội quán Phúc Kiến, 40 Lãn Ông",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
       "schedule_raw": "16/11/2026 – 28/11/2026 · 09:00-17:00",
@@ -1143,7 +1207,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-16",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 64,
@@ -1161,7 +1226,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-17",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 65,
@@ -1179,7 +1245,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-17",
-      "filter_end_date": "2026-12-13"
+      "filter_end_date": "2026-12-13",
+      "status": "Active"
     },
     {
       "id": 66,
@@ -1197,7 +1264,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-20",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 67,
@@ -1215,7 +1283,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 68,
@@ -1233,7 +1302,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 69,
@@ -1251,7 +1321,8 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 70,
@@ -1269,13 +1340,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-16",
-      "filter_end_date": "2026-11-16"
+      "filter_end_date": "2026-11-16",
+      "status": "Active"
     },
     {
       "id": 71,
       "name": "Khai mạc “Theo bước di sản cộng đồng 2026”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "40 Lãn Ông",
+      "venue": "Hội quán Phúc Kiến, 40 Lãn Ông",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "16/11/2026 · 14:00",
@@ -1287,7 +1359,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-16",
-      "filter_end_date": "2026-11-16"
+      "filter_end_date": "2026-11-16",
+      "status": "Active"
     },
     {
       "id": 72,
@@ -1305,7 +1378,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-16",
-      "filter_end_date": "2026-11-16"
+      "filter_end_date": "2026-11-16",
+      "status": "Active"
     },
     {
       "id": 73,
@@ -1323,7 +1397,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-16",
-      "filter_end_date": "2026-11-16"
+      "filter_end_date": "2026-11-16",
+      "status": "Active"
     },
     {
       "id": 74,
@@ -1341,7 +1416,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-16",
-      "filter_end_date": "2026-11-16"
+      "filter_end_date": "2026-11-16",
+      "status": "Active"
     },
     {
       "id": 75,
@@ -1359,16 +1435,17 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-17",
-      "filter_end_date": "2026-11-17"
+      "filter_end_date": "2026-11-17",
+      "status": "Active"
     },
     {
       "id": 76,
       "name": "Khai mạc “Sống cùng dòng sông”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "49 Trần Hưng Đạo",
+      "venue": "Villa 49 Trần Hưng Đạo",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
-      "schedule_raw": "17/11/2026 · 09:00",
+      "schedule_raw": "17/11/2026 · 9:00",
       "note": null,
       "start_date": "2026-11-17",
       "end_date": "2026-11-17",
@@ -1377,7 +1454,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-17",
-      "filter_end_date": "2026-11-17"
+      "filter_end_date": "2026-11-17",
+      "status": "Active"
     },
     {
       "id": 77,
@@ -1395,7 +1473,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-17",
-      "filter_end_date": "2026-11-17"
+      "filter_end_date": "2026-11-17",
+      "status": "Active"
     },
     {
       "id": 78,
@@ -1413,7 +1492,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-17",
-      "filter_end_date": "2026-11-17"
+      "filter_end_date": "2026-11-17",
+      "status": "Active"
     },
     {
       "id": 79,
@@ -1431,7 +1511,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-17",
-      "filter_end_date": "2026-11-17"
+      "filter_end_date": "2026-11-17",
+      "status": "Active"
     },
     {
       "id": 80,
@@ -1449,7 +1530,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-18",
-      "filter_end_date": "2026-11-18"
+      "filter_end_date": "2026-11-18",
+      "status": "Active"
     },
     {
       "id": 81,
@@ -1467,7 +1549,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-18",
-      "filter_end_date": "2026-11-18"
+      "filter_end_date": "2026-11-18",
+      "status": "Active"
     },
     {
       "id": 82,
@@ -1485,7 +1568,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-18",
-      "filter_end_date": "2026-11-18"
+      "filter_end_date": "2026-11-18",
+      "status": "Active"
     },
     {
       "id": 83,
@@ -1503,7 +1587,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-18",
-      "filter_end_date": "2026-11-18"
+      "filter_end_date": "2026-11-18",
+      "status": "Active"
     },
     {
       "id": 84,
@@ -1521,13 +1606,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-19",
-      "filter_end_date": "2026-11-19"
+      "filter_end_date": "2026-11-19",
+      "status": "Active"
     },
     {
       "id": 85,
       "name": "“Trình diễn đọc và nghe sâu”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "24 Lý Thái Tổ",
+      "venue": "Tòa nhà Di sản, 24 Lý Thái Tổ",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "19/11/2026 · 14:00-16:00",
@@ -1539,7 +1625,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-19",
-      "filter_end_date": "2026-11-19"
+      "filter_end_date": "2026-11-19",
+      "status": "Active"
     },
     {
       "id": 86,
@@ -1557,7 +1644,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-19",
-      "filter_end_date": "2026-11-19"
+      "filter_end_date": "2026-11-19",
+      "status": "Active"
     },
     {
       "id": 87,
@@ -1575,7 +1663,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-20",
-      "filter_end_date": "2026-11-20"
+      "filter_end_date": "2026-11-20",
+      "status": "Active"
     },
     {
       "id": 88,
@@ -1593,13 +1682,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-20",
-      "filter_end_date": "2026-11-20"
+      "filter_end_date": "2026-11-20",
+      "status": "Active"
     },
     {
       "id": 89,
       "name": "“Tranh Hàng Trống: Cắt & Ghép”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "75 Hàng Trống",
+      "venue": "Đình Nam Hương, 75 Hàng Trống",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "20/11/2026 · 09:30-11:30; 14:00-16:00",
@@ -1611,7 +1701,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-20",
-      "filter_end_date": "2026-11-20"
+      "filter_end_date": "2026-11-20",
+      "status": "Active"
     },
     {
       "id": 90,
@@ -1629,7 +1720,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-20",
-      "filter_end_date": "2026-11-20"
+      "filter_end_date": "2026-11-20",
+      "status": "Active"
     },
     {
       "id": 91,
@@ -1647,7 +1739,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-20",
-      "filter_end_date": "2026-11-20"
+      "filter_end_date": "2026-11-20",
+      "status": "Active"
     },
     {
       "id": 92,
@@ -1665,13 +1758,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-20",
-      "filter_end_date": "2026-11-20"
+      "filter_end_date": "2026-11-20",
+      "status": "Active"
     },
     {
       "id": 93,
       "name": "Workshop “Màu của lá”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "75 Hàng Trống",
+      "venue": "Đình Nam Hương, 75 Hàng Trống",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "21/11/2026 · 08:30-11:30",
@@ -1683,7 +1777,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 94,
@@ -1701,7 +1796,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 95,
@@ -1719,7 +1815,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 96,
@@ -1737,7 +1834,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 97,
@@ -1755,13 +1853,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 98,
       "name": "Vẽ tranh lụa truyền thống",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Đình Yên Thái",
+      "venue": "Đình Yên Thái, 8 Tạm Thương",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "21/11/2026 · 09:00-11:30; 14:00-16:30",
@@ -1773,13 +1872,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 99,
       "name": "“Trong vườn hoa Hàng Trống”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "75 Hàng Trống",
+      "venue": "Đình Nam Hương, 75 Hàng Trống",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "21/11/2026 · 09:00-12:00",
@@ -1791,13 +1891,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 100,
       "name": "In tranh Mộc Bản 12 con giáp",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "75 Hàng Trống",
+      "venue": "Đình Nam Hương, 75 Hàng Trống",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "21/11/2026 · 09:00-12:00; 14:00-17:00",
@@ -1809,13 +1910,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 101,
       "name": "Workshop Tranh khắc gỗ",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "85 Hàng Gai",
+      "venue": "Đình Cổ Vũ, 85 Hàng Gai",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "21/11/2026 · 09:00-12:00; 14:00-17:00",
@@ -1827,7 +1929,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 102,
@@ -1845,13 +1948,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 103,
       "name": "“Tranh Hàng Trống: Cắt & Ghép”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "75 Hàng Trống",
+      "venue": "Đình Nam Hương, 75 Hàng Trống",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "21/11/2026 · 09:30-11:30; 14:00-16:00",
@@ -1863,13 +1967,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 104,
       "name": "Tour “Mạch sống vô hình”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "24 Lý Thái Tổ",
+      "venue": "Tòa nhà Di sản, 24 Lý Thái Tổ",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "21/11/2026 · 10:00-12:00",
@@ -1881,7 +1986,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 105,
@@ -1899,7 +2005,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 106,
@@ -1917,7 +2024,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 107,
@@ -1935,13 +2043,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 108,
       "name": "“Hà Nội sôi động”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Đông Kinh Nghĩa Thục",
+      "venue": "Quảng trường Đông Kinh Nghĩa Thục",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "21/11/2026 · 14:30-17:00",
@@ -1953,7 +2062,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 109,
@@ -1971,7 +2081,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 110,
@@ -1989,7 +2100,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 111,
@@ -2007,7 +2119,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 112,
@@ -2025,7 +2138,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 113,
@@ -2043,7 +2157,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-21",
-      "filter_end_date": "2026-11-21"
+      "filter_end_date": "2026-11-21",
+      "status": "Active"
     },
     {
       "id": 114,
@@ -2061,7 +2176,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 115,
@@ -2079,7 +2195,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 116,
@@ -2097,13 +2214,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 117,
       "name": "Vẽ tranh lụa truyền thống",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Đình Yên Thái",
+      "venue": "Đình Yên Thái, 8 Tạm Thương",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "22/11/2026 · 09:00-11:30; 14:00-16:30",
@@ -2115,13 +2233,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 118,
       "name": "“Hà Nội sôi động”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Đông Kinh Nghĩa Thục",
+      "venue": "Quảng trường Đông Kinh Nghĩa Thục",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "22/11/2026 · 09:00-11:30",
@@ -2133,13 +2252,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 119,
       "name": "“Trong vườn hoa Hàng Trống”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "75 Hàng Trống",
+      "venue": "Đình Nam Hương, 75 Hàng Trống",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "22/11/2026 · 09:00-12:00",
@@ -2151,7 +2271,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 120,
@@ -2169,13 +2290,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 121,
       "name": "In tranh Mộc Bản 12 con giáp",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "75 Hàng Trống",
+      "venue": "Đình Nam Hương, 75 Hàng Trống",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "22/11/2026 · 09:00-12:00; 14:00-17:00",
@@ -2187,13 +2309,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 122,
       "name": "Workshop Tranh khắc gỗ",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "85 Hàng Gai",
+      "venue": "Đình Cổ Vũ, 85 Hàng Gai",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "22/11/2026 · 09:00-12:00; 14:00-17:00",
@@ -2205,7 +2328,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 123,
@@ -2223,13 +2347,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 124,
       "name": "Gặp nghệ sĩ “Mạch sống vô hình” – Fustic & Phạm Ngọc Lân",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "24 Lý Thái Tổ",
+      "venue": "Tòa nhà Di sản, 24 Lý Thái Tổ",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "22/11/2026 · 10:00-12:00",
@@ -2241,7 +2366,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 125,
@@ -2259,7 +2385,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 126,
@@ -2277,7 +2404,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 127,
@@ -2295,7 +2423,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 128,
@@ -2313,7 +2442,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 129,
@@ -2331,13 +2461,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 130,
       "name": "Gặp nghệ sĩ – Linh San & Bách Vũ",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "24 Lý Thái Tổ",
+      "venue": "Tòa nhà Di sản, 24 Lý Thái Tổ",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "22/11/2026 · 14:00-16:00",
@@ -2349,13 +2480,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 131,
       "name": "Workshop “Màu của lá”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "75 Hàng Trống",
+      "venue": "Đình Nam Hương, 75 Hàng Trống",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "22/11/2026 · 14:00-16:30",
@@ -2367,7 +2499,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 132,
@@ -2385,7 +2518,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 133,
@@ -2403,7 +2537,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 134,
@@ -2421,7 +2556,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 135,
@@ -2439,7 +2575,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 136,
@@ -2457,7 +2594,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 137,
@@ -2475,7 +2613,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 138,
@@ -2493,13 +2632,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-22",
-      "filter_end_date": "2026-11-22"
+      "filter_end_date": "2026-11-22",
+      "status": "Active"
     },
     {
       "id": 139,
       "name": "Đại Tiệc Tam Sắc – Một Chiếu Ngự, Hai Đêm Diễn, Ba Dòng Sân Khấu!",
       "url": "https://sktt.vn/nhap-cung-so-dac-biet-dai-tiec-tam-sac/",
-      "venue": "Rạp Hồng Hà (51A Đường Thành)",
+      "venue": "Rạp Hồng Hà, 51A Đường Thành",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "24/11/2026 · 18:30-21:30",
@@ -2511,13 +2651,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-24",
-      "filter_end_date": "2026-11-24"
+      "filter_end_date": "2026-11-24",
+      "status": "Active"
     },
     {
       "id": 140,
       "name": "Biểu diễn: Hà Nội, những vang động",
       "url": "https://www.facebook.com/IFVHanoi/posts/pfbid02WwejeqQDpEW4rMQ6iPJbBcYoxyN8UDEgcQeAZwM7wmxTtd6HJs3vCAH8f4vjuPtGl",
-      "venue": "Quảng trường trước chợ Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "28/11/2026",
@@ -2529,13 +2670,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 141,
       "name": "Dạo đêm Hà Nội",
       "url": "https://www.facebook.com/hanoitrainghiemmoi/posts/pfbid02hFgYQmDGrM9vwgGK74sk2S3aBrs7fqMhE3dNkC3Sm3Ti7EQMxQmbpht4Fcu44UdHl",
-      "venue": "TBD (nhắn chương trình)",
+      "venue": "Chưa rõ (nhắn BTC)",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "27/11/2026",
@@ -2547,13 +2689,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-27",
-      "filter_end_date": "2026-11-27"
+      "filter_end_date": "2026-11-27",
+      "status": "Active"
     },
     {
       "id": 142,
       "name": "Walking tour Hồn thêu trong phố",
       "url": "https://www.facebook.com/photo?fbid=122189680124726617&set=pcb.122189680412726617",
-      "venue": "TBD (nhắn chương trình)",
+      "venue": "Chưa rõ (nhắn BTC)",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "29/11/2026",
@@ -2565,13 +2708,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-29",
-      "filter_end_date": "2026-11-29"
+      "filter_end_date": "2026-11-29",
+      "status": "Active"
     },
     {
       "id": 143,
       "name": "Tour khám phá hệ sinh thái bờ vở sông Hồng",
       "url": "https://www.facebook.com/thinkplaygrounds/posts/pfbid02TuiV8WioQkeZwF8G5jsstTCEpSMfa92VTJbKPMNtrjZG9J7LHwnciorFPTkevSUSl?locale=vi_VN",
-      "venue": "bờ vở sông Hồng",
+      "venue": "Bờ vở sông Hồng",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "27/11/2026 · 14:00-16:30",
@@ -2583,13 +2727,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-27",
-      "filter_end_date": "2026-11-27"
+      "filter_end_date": "2026-11-27",
+      "status": "Active"
     },
     {
       "id": 144,
       "name": "Cải lương đương đại \"Vẫn vậy mà khác\"",
       "url": "http://l.facebook.com/l.php?u=https%3A%2F%2Fforms.gle%2FY1Vsh1asaW6Uyh6NA%3Ffbclid%3DIwZXh0bgNhZW0CMTAAcGRvZgVicmlkETFsTmJsMDBYNjZxQmhaNmZEc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABH4oxI_XOKZNxBLSkdYDJwIoHv4Iu8GvgKvFySwAEd-oafnOUXZhnM_VS2vJi_aem_P9LK5lpk6eaJbWztT72brw&h=AUBCIDXuSzQjIjrJiFAs7_0hmjaNdMnL5YOGwkVH9XDRErbx2kqbA_Q-Ns7mEeSvB7N6kfQioQbO_FuQ7mE6XfUCx2D_t1jvNS6O9X3HivPSw-9pidbV2QVEhFfoJA24ASWBQ0fijjXsBStuDsaMjecZKTZ_ICZl&__tn__=-UK*F",
-      "venue": "Rạp Chuông Vàng",
+      "venue": "Rạp Chuông Vàng, 72 phố Hàng Bạc",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "26/11/2026 · 20:00",
@@ -2601,13 +2746,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-26",
-      "filter_end_date": "2026-11-26"
+      "filter_end_date": "2026-11-26",
+      "status": "Active"
     },
     {
       "id": 145,
       "name": "Múa rối đương đại \"Phá rối\"",
       "url": "https://l.facebook.com/l.php?u=https%3A%2F%2Fforms.gle%2FdB3UVuVkcD7A82cdA%3Ffbclid%3DIwZXh0bgNhZW0CMTAAcGRvZgVicmlkETFsTmJsMDBYNjZxQmhaNmZEc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABH181XLIgfUAOSu0ed188Jt4K1UEvIvA7dz7Qwx7ezZwPR9W4428IsL2FfO13_aem_aLKHDIsLBB4CgEuup-QrTQ&h=AUBzCpB321UB3oHLpDaIn7q0DGYBDOeKSpWGtZW1eWHgXIk04ZBlFdP9yWzdkeW06kDShoKEsJjEtNCWDOZWwcVPbI7UAypex9lhTZiXnr6YS3WRt4AE6UkOMEzGH1-I-m3AaPWic7U9xkAFKC13jro2mChTQFxY&__tn__=-UK*F",
-      "venue": "DUYÊN – Rạp Đông Đô, 18 phố Lương Ngọc Quyến",
+      "venue": "DUYÊN – Rạp Đông Đô, 18 Lương Ngọc Quyến",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "24/11/2026 – 25/11/2026 · 20:00-21:30",
@@ -2619,13 +2765,14 @@
       "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-24",
-      "filter_end_date": "2026-11-25"
+      "filter_end_date": "2026-11-25",
+      "status": "Active"
     },
     {
       "id": 146,
       "name": "Nhạc phục vụ cộng đồng",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Sân mái Chợ Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "23/11/2026 · 20:00-20:30",
@@ -2637,13 +2784,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-23",
-      "filter_end_date": "2026-11-23"
+      "filter_end_date": "2026-11-23",
+      "status": "Active"
     },
     {
       "id": 147,
       "name": "Bộ hành “Phố cổ Thong dong”",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Khu Phố cổ, Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "24/11/2026 · 08:30-11:30; 13:30-16:30",
@@ -2655,7 +2803,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-24",
-      "filter_end_date": "2026-11-24"
+      "filter_end_date": "2026-11-24",
+      "status": "Active"
     },
     {
       "id": 148,
@@ -2673,13 +2822,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-24",
-      "filter_end_date": "2026-11-24"
+      "filter_end_date": "2026-11-24",
+      "status": "Active"
     },
     {
       "id": 149,
       "name": "Chiếu phim “Quán Kỳ Nam”",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "COMPLEX 01, Kim Liên",
+      "venue": "COMPLEX 01",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "24/11/2026 · 19:00-21:00",
@@ -2691,13 +2841,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-24",
-      "filter_end_date": "2026-11-24"
+      "filter_end_date": "2026-11-24",
+      "status": "Active"
     },
     {
       "id": 150,
       "name": "Chiếu phim cộng đồng",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Sân mái Chợ Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "24/11/2026 · 19:00-21:30",
@@ -2709,13 +2860,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-24",
-      "filter_end_date": "2026-11-24"
+      "filter_end_date": "2026-11-24",
+      "status": "Active"
     },
     {
       "id": 151,
       "name": "Múa rối đương đại “Phá Rối”",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "DUYÊN, Rạp Đông Đô",
+      "venue": "DUYÊN – Rạp Đông Đô, 18 Lương Ngọc Quyến",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "24/11/2026 · 20:00-21:30",
@@ -2727,13 +2879,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-24",
-      "filter_end_date": "2026-11-24"
+      "filter_end_date": "2026-11-24",
+      "status": "Active"
     },
     {
       "id": 152,
       "name": "Ngày Di sản SIS 2026",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "COMPLEX 01, Kim Liên",
+      "venue": "COMPLEX 01",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "24/11/2026",
@@ -2745,7 +2898,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-24",
-      "filter_end_date": "2026-11-24"
+      "filter_end_date": "2026-11-24",
+      "status": "Active"
     },
     {
       "id": 153,
@@ -2763,13 +2917,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-25",
-      "filter_end_date": "2026-11-25"
+      "filter_end_date": "2026-11-25",
+      "status": "Active"
     },
     {
       "id": 154,
       "name": "Vẽ kí họa đa chất liệu cùng HWA",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Sân mái Chợ Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Tọa đàm, workshop, trao đổi",
       "type_group": "Tọa đàm, workshop, trao đổi",
       "schedule_raw": "25/11/2026 · 16:00-18:00",
@@ -2781,7 +2936,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-25",
-      "filter_end_date": "2026-11-25"
+      "filter_end_date": "2026-11-25",
+      "status": "Active"
     },
     {
       "id": 155,
@@ -2799,13 +2955,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-25",
-      "filter_end_date": "2026-11-25"
+      "filter_end_date": "2026-11-25",
+      "status": "Active"
     },
     {
       "id": 156,
       "name": "Nhạc phục vụ cộng đồng",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Sân mái Chợ Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "25/11/2026 · 18:00-18:30",
@@ -2817,13 +2974,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-25",
-      "filter_end_date": "2026-11-25"
+      "filter_end_date": "2026-11-25",
+      "status": "Active"
     },
     {
       "id": 157,
       "name": "Nhạc phục vụ cộng đồng",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Sân mái Chợ Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "25/11/2026 · 19:00-19:30; 19:45-20:15",
@@ -2835,13 +2993,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-25",
-      "filter_end_date": "2026-11-25"
+      "filter_end_date": "2026-11-25",
+      "status": "Active"
     },
     {
       "id": 158,
       "name": "Múa rối đương đại “Phá Rối”",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "DUYÊN, Rạp Đông Đô",
+      "venue": "DUYÊN – Rạp Đông Đô, 18 Lương Ngọc Quyến",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "25/11/2026 · 20:00-21:30",
@@ -2853,7 +3012,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-25",
-      "filter_end_date": "2026-11-25"
+      "filter_end_date": "2026-11-25",
+      "status": "Active"
     },
     {
       "id": 159,
@@ -2871,13 +3031,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-26",
-      "filter_end_date": "2026-11-26"
+      "filter_end_date": "2026-11-26",
+      "status": "Active"
     },
     {
       "id": 160,
       "name": "Nhạc phục vụ cộng đồng",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Sân mái Chợ Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "26/11/2026 · 18:00-18:30",
@@ -2889,13 +3050,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-26",
-      "filter_end_date": "2026-11-26"
+      "filter_end_date": "2026-11-26",
+      "status": "Active"
     },
     {
       "id": 161,
       "name": "Chiếu phim “Song Lang” và giao lưu",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "COMPLEX 01, Kim Liên",
+      "venue": "COMPLEX 01",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "26/11/2026 · 19:00-21:00",
@@ -2907,13 +3069,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-26",
-      "filter_end_date": "2026-11-26"
+      "filter_end_date": "2026-11-26",
+      "status": "Active"
     },
     {
       "id": 162,
       "name": "Cải lương đương đại “Vẫn vậy, mà khác”",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Rạp Chuông Vàng",
+      "venue": "Rạp Chuông Vàng, 72 phố Hàng Bạc",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "26/11/2026 · 20:00-21:30",
@@ -2925,7 +3088,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-26",
-      "filter_end_date": "2026-11-26"
+      "filter_end_date": "2026-11-26",
+      "status": "Active"
     },
     {
       "id": 163,
@@ -2943,7 +3107,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-27",
-      "filter_end_date": "2026-11-27"
+      "filter_end_date": "2026-11-27",
+      "status": "Active"
     },
     {
       "id": 164,
@@ -2961,7 +3126,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-27",
-      "filter_end_date": "2026-11-27"
+      "filter_end_date": "2026-11-27",
+      "status": "Active"
     },
     {
       "id": 165,
@@ -2979,13 +3145,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-27",
-      "filter_end_date": "2026-11-27"
+      "filter_end_date": "2026-11-27",
+      "status": "Active"
     },
     {
       "id": 166,
       "name": "Chiếu phim cộng đồng",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Sân mái Chợ Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "27/11/2026 · 19:00-21:30",
@@ -2997,13 +3164,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-27",
-      "filter_end_date": "2026-11-27"
+      "filter_end_date": "2026-11-27",
+      "status": "Active"
     },
     {
       "id": 167,
       "name": "Biểu diễn & giao lưu Gánh Cải lương Thiên Lý",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "COMPLEX 01, Kim Liên",
+      "venue": "COMPLEX 01",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "27/11/2026 · 19:30-21:30",
@@ -3015,7 +3183,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-27",
-      "filter_end_date": "2026-11-27"
+      "filter_end_date": "2026-11-27",
+      "status": "Active"
     },
     {
       "id": 168,
@@ -3033,7 +3202,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 169,
@@ -3051,7 +3221,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 170,
@@ -3069,7 +3240,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 171,
@@ -3087,13 +3259,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 172,
       "name": "Tour Nghệ thuật “Mạch sống vô hình”",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "24 Lý Thái Tổ",
+      "venue": "Tòa nhà Di sản, 24 Lý Thái Tổ",
       "event_type": "Trải nghiệm, giao lưu",
       "type_group": "Trải nghiệm, giao lưu",
       "schedule_raw": "28/11/2026 · 10:00-12:00",
@@ -3105,7 +3278,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 173,
@@ -3123,13 +3297,14 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 174,
       "name": "Nhạc phục vụ cộng đồng",
       "url": "https://www.threads.com/?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Sân mái Chợ Đồng Xuân",
+      "venue": "Chợ Đồng Xuân",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
       "schedule_raw": "28/11/2026 · 18:00-18:30",
@@ -3141,7 +3316,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 175,
@@ -3159,7 +3335,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 176,
@@ -3177,7 +3354,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     },
     {
       "id": 177,
@@ -3195,7 +3373,8 @@
       "date_precision": "single",
       "recurrence": null,
       "filter_start_date": "2026-11-28",
-      "filter_end_date": "2026-11-28"
+      "filter_end_date": "2026-11-28",
+      "status": "Active"
     }
   ]
 }
