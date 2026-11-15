@@ -1,0 +1,4016 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="description" content="Bản đồ và danh sách sự kiện văn hóa, nghệ thuật, workshop tại Hà Nội." />
+  <meta name="theme-color" content="#111827" />
+  <title>Hanoi Events</title>
+
+  <link rel="preconnect" href="https://tiles.openfreemap.org" />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.18.0/dist/maplibre-gl.css" />
+  <style>
+:root {
+  --bg: #f5f5f3;
+  --panel: #ffffff;
+  --text: #151515;
+  --muted: #6b7280;
+  --border: #dfdfda;
+  --accent: #111827;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button, input, select { font: inherit; }
+
+a { color: inherit; }
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 28px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(245, 245, 243, 0.95);
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 46px);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  color: var(--muted);
+  max-width: 720px;
+}
+
+.header-meta {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: right;
+  white-space: nowrap;
+  align-self: flex-end;
+}
+
+.app-shell { padding: 16px 20px 24px; }
+
+.filters {
+  display: grid;
+  grid-template-columns: minmax(240px, 2fr) minmax(150px, 1fr) minmax(180px, 1fr) auto auto;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.field input, .field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  padding: 9px 11px;
+  color: var(--text);
+  outline: none;
+}
+
+.field input:focus, .field select:focus {
+  border-color: #9ca3af;
+  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+}
+
+.quick-actions { display: flex; gap: 8px; }
+
+.button, .view-button {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 10px;
+  min-height: 42px;
+  padding: 9px 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.button:hover, .view-button:hover { border-color: #9ca3af; }
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 2px;
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 34px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+#result-count { color: var(--text); }
+
+#filter-summary::before {
+  content: " · ";
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(340px, 430px) minmax(0, 1fr);
+  gap: 12px;
+  height: calc(100vh - 235px);
+  min-height: 560px;
+}
+
+.event-panel, .map-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.event-panel { overflow-y: auto; }
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.event-card:hover, .event-card.is-selected { background: #f4f4f0; }
+
+.event-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.event-type {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: #efefeb;
+  color: #3f3f46;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.map-status {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.event-name {
+  margin: 0 0 8px;
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.event-time, .event-venue, .event-note {
+  margin: 5px 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.event-time { font-weight: 750; }
+
+.event-venue, .event-note { color: var(--muted); }
+
+.event-note {
+  padding-left: 10px;
+  border-left: 2px solid #d4d4d0;
+}
+
+.event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.event-actions a {
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.event-actions a[hidden] { display: none; }
+
+.map-panel { position: relative; }
+
+#map { width: 100%; height: 100%; }
+
+.map-note {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  bottom: 12px;
+  padding: 7px 9px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .12);
+  font-size: 11px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  border-radius: 50%;
+}
+
+.dot-mapped { background: #111827; }
+
+.empty-state {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.empty-state h2 { color: var(--text); font-size: 18px; }
+
+.mobile-view-switch { display: none; }
+
+.maplibregl-popup-content {
+  min-width: 240px;
+  max-width: min(320px, 80vw);
+  border-radius: 12px;
+  padding: 14px;
+  font-family: inherit;
+}
+
+.popup-title {
+  margin: 0 0 8px;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.popup-line {
+  margin: 5px 0;
+  color: #52525b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.popup-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.popup-actions a { text-decoration: underline; }
+
+@media (max-width: 1000px) {
+  .filters {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .quick-actions { grid-column: span 2; }
+  .checkbox-field { justify-self: end; }
+}
+
+@media (max-width: 720px) {
+  .site-header {
+    padding: 18px 16px 14px;
+    display: block;
+  }
+
+  .header-meta {
+    text-align: left;
+    margin-top: 10px;
+  }
+
+  .app-shell { padding: 10px; }
+
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .field-search { grid-column: 1 / -1; }
+  .quick-actions { grid-column: auto; }
+  .checkbox-field { justify-self: start; }
+
+  .mobile-view-switch {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .view-button {
+    border: 0;
+    border-radius: 0;
+    min-height: 34px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .view-button.active {
+    background: var(--accent);
+    color: white;
+  }
+
+  .workspace {
+    display: block;
+    height: calc(100vh - 330px);
+    min-height: 500px;
+  }
+
+  .event-panel, .map-panel {
+    width: 100%;
+    height: 100%;
+  }
+
+  .map-panel { display: none; }
+  body[data-mobile-view="map"] .event-panel { display: none; }
+  body[data-mobile-view="map"] .map-panel { display: block; }
+
+  #filter-summary { display: none; }
+}
+
+@media (max-width: 480px) {
+  .filters { grid-template-columns: 1fr; }
+  .field-search, .quick-actions { grid-column: auto; }
+  .checkbox-field { min-height: 32px; }
+  .quick-actions .button { flex: 1; }
+  .workspace { height: calc(100vh - 410px); }
+}
+
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">HANOI EVENTS</p>
+      <h1>Sự kiện ở Hà Nội</h1>
+      <p class="subtitle">Tìm theo ngày, loại sự kiện hoặc địa điểm — xem trên bản đồ và danh sách.</p>
+    </div>
+    <div class="header-meta" id="data-meta" aria-live="polite"></div>
+  </header>
+
+  <main class="app-shell">
+    <section class="filters" aria-label="Bộ lọc sự kiện">
+      <label class="field field-search">
+        <span>Tìm kiếm</span>
+        <input id="search-input" type="search" placeholder="Tên sự kiện, địa điểm..." autocomplete="off" />
+      </label>
+
+      <label class="field">
+        <span>Ngày</span>
+        <input id="date-input" type="date" />
+      </label>
+
+      <label class="field">
+        <span>Loại</span>
+        <select id="type-select">
+          <option value="">Tất cả loại</option>
+        </select>
+      </label>
+
+      <div class="quick-actions">
+        <button class="button button-secondary" id="today-button" type="button">Hôm nay</button>
+        <button class="button button-secondary" id="clear-button" type="button">Xóa lọc</button>
+      </div>
+
+      <label class="checkbox-field">
+        <input id="hide-past" type="checkbox" checked />
+        <span>Ẩn sự kiện đã kết thúc</span>
+      </label>
+    </section>
+
+    <section class="status-row">
+      <div>
+        <strong id="result-count">0 sự kiện</strong>
+        <span id="filter-summary"></span>
+      </div>
+      <div class="mobile-view-switch" role="group" aria-label="Chuyển chế độ hiển thị">
+        <button type="button" class="view-button active" data-view="list">Danh sách</button>
+        <button type="button" class="view-button" data-view="map">Bản đồ</button>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <aside class="event-panel" id="list-panel" aria-label="Danh sách sự kiện">
+        <div id="event-list" class="event-list"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <h2>Không có sự kiện phù hợp</h2>
+          <p>Thử đổi ngày, loại sự kiện hoặc từ khóa tìm kiếm.</p>
+        </div>
+      </aside>
+
+      <section class="map-panel" id="map-panel" aria-label="Bản đồ sự kiện">
+        <div id="map"></div>
+        <div class="map-note">
+          <span class="dot dot-mapped"></span>
+          Marker chỉ hiển thị cho địa điểm đã có tọa độ được xác minh.
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <template id="event-card-template">
+    <article class="event-card">
+      <div class="event-card-top">
+        <span class="event-type"></span>
+        <span class="map-status" title=""></span>
+      </div>
+      <h2 class="event-name"></h2>
+      <p class="event-time"></p>
+      <p class="event-venue"></p>
+      <p class="event-note"></p>
+      <div class="event-actions">
+        <a class="event-link" target="_blank" rel="noopener noreferrer">Chi tiết ↗</a>
+        <a class="maps-link" target="_blank" rel="noopener noreferrer">Google Maps ↗</a>
+      </div>
+    </article>
+  </template>
+
+  <script src="https://unpkg.com/maplibre-gl@6.18.0/dist/maplibre-gl.js"></script>
+  <script>
+window.EVENT_DATA = {
+  "meta": {
+    "title": "Hanoi Events",
+    "subtitle": "Sự kiện văn hóa & sáng tạo tại Hà Nội",
+    "data_as_of": "2026-11-16",
+    "source_sheet": "16 Nov",
+    "source_file": "Hanoi Event - To Share.xlsx",
+    "total_events": 138,
+    "mapped_events": 86,
+    "unmapped_events": 52,
+    "timezone": "Asia/Bangkok"
+  },
+  "events": [
+    {
+      "id": 1,
+      "name": "Trưng bày 'Mịt Mù Khói Toả Ngàn Sương",
+      "url": "https://www.instagram.com/p/DZZwAk3GdPg/",
+      "venue": "Kỳ Lân House 34C Trần Phú",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "TBD",
+      "note": "Đặt trc qua link: https://docs.google.com/forms/d/e/1FAIpQLSeoOjX3YxLWIFtWhj-JLRqeJR59D9D-ZtPvo2jn2gxWkHrp6w/viewform",
+      "start_date": null,
+      "end_date": null,
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "unknown",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=K%E1%BB%B3+L%C3%A2n+House+34C+Tr%E1%BA%A7n+Ph%C3%BA%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": null,
+      "filter_end_date": null
+    },
+    {
+      "id": 2,
+      "name": "Kịch (nhiều vở khác nhau)",
+      "url": "https://nhahattuoitre.vn/trang-chu",
+      "venue": "Nhà hát Tuổi Trẻ - 11 Ngô Thì Nhậm",
+      "event_type": "Kịch",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "Thứ 7 & Chủ Nhật các tuần",
+      "note": null,
+      "start_date": null,
+      "end_date": null,
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "recurring",
+      "recurrence": "weekends",
+      "longitude": 105.85306,
+      "latitude": 21.01772,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01772,105.85306",
+      "filter_start_date": null,
+      "filter_end_date": null
+    },
+    {
+      "id": 3,
+      "name": "Kịch (nhiều vở khác nhau)",
+      "url": "https://www.facebook.com/nhahatkichvietnam.doingoai/posts/pfbid0KDbbUvosjWB7fMMPs4zLcfvvUG3N2GsNUVGnnnXtKjhXXwwS6myaws2sxHaGDkzRl",
+      "venue": "Nhà hát Kịch Việt Nam",
+      "event_type": "Kịch",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "Các ngày trong tháng",
+      "note": null,
+      "start_date": null,
+      "end_date": null,
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "recurring",
+      "recurrence": "monthly_unspecified",
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Nh%C3%A0+h%C3%A1t+K%E1%BB%8Bch+Vi%E1%BB%87t+Nam%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": null,
+      "filter_end_date": null
+    },
+    {
+      "id": 4,
+      "name": "MỞ XƯỞNG – VŨ DÂN TÂN. GỠ MẶT NẠ NHÀ VĂN: MỘT TRÒ CHƠI KÝ ỨC VĂN CHƯƠNG",
+      "url": "https://web.facebook.com/events/1460165449361333/1460165456027999",
+      "venue": "Bảo tàng Vũ Dân Tân, 443 Ngọc Thụy",
+      "event_type": "Mở xưởng",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "3/10 – 25/11",
+      "note": null,
+      "start_date": "2026-10-03",
+      "end_date": "2026-11-25",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.865696,
+      "latitude": 21.063609,
+      "coordinate_source": "HanoiMaps events dataset / Google Maps link",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.063609,105.865696",
+      "filter_start_date": "2026-10-03",
+      "filter_end_date": "2026-11-25"
+    },
+    {
+      "id": 5,
+      "name": "Triển lãm \"Huyễn Sắc Xoay Vần\"",
+      "url": "https://web.facebook.com/japanfoundation.vietnam/posts/1089080030675026:1089080030675026",
+      "venue": "Trung tâm Giao lưu Văn hóa Nhật Bản tại Việt Nam",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "09/10 – 06/12",
+      "note": null,
+      "start_date": "2026-10-09",
+      "end_date": "2026-12-06",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.8488,
+      "latitude": 21.02179,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.02179,105.8488",
+      "filter_start_date": "2026-10-09",
+      "filter_end_date": "2026-12-06"
+    },
+    {
+      "id": 6,
+      "name": "Cùng đọc nhé #16: Nhiếp ảnh, những mối liên hệ",
+      "url": "https://web.facebook.com/events/1814719383051465?_rdc=1&_rdr#",
+      "venue": "Sóng Sánh Café, 48 Ngọc Hà",
+      "event_type": "Nhiếp Ảnh",
+      "type_group": "Khác",
+      "schedule_raw": "01/10 – 31/12",
+      "note": null,
+      "start_date": "2026-10-01",
+      "end_date": "2026-12-31",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.831525,
+      "latitude": 21.034763,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.034763,105.831525",
+      "filter_start_date": "2026-10-01",
+      "filter_end_date": "2026-12-31"
+    },
+    {
+      "id": 7,
+      "name": "Triển lãm \"Hanoi Traces of Time\"",
+      "url": "https://www.facebook.com/hello.photohanoi/posts/photo-hanoi-%C4%91%C6%B0a-tin-photography-news-in-vietnam-english-belowhanoi-traces-of-tim/1438312888396782/",
+      "venue": "15 Ngô Quyền, Hoàn Kiếm",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "Đến 9/12",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-12-09",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.856375,
+      "latitude": 21.025413,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.025413,105.856375",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-12-09"
+    },
+    {
+      "id": 8,
+      "name": "Trưng bày \"Trong một thế giới chung\"",
+      "url": "https://www.instagram.com/p/Dejp4SXo522/?img_index=1",
+      "venue": "Indochine House, Tầng 3, số 8 Tràng Thi",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "Đến 27/12",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-12-27",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.84944,
+      "latitude": 21.02671,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.02671,105.84944",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-12-27"
+    },
+    {
+      "id": 9,
+      "name": "Nốt nhạc thanh trong lòng phố thị",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438994",
+      "venue": "Ngôi nhà Di sản – 87 Mã Mây",
+      "event_type": "Trưng bày & trải nghiệm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "10/11 – 30/11",
+      "note": null,
+      "start_date": "2026-11-10",
+      "end_date": "2026-11-30",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ng%C3%B4i+nh%C3%A0+Di+s%E1%BA%A3n+%E2%80%93+87+M%C3%A3+M%C3%A2y%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-10",
+      "filter_end_date": "2026-11-30"
+    },
+    {
+      "id": 10,
+      "name": "Chuyện Tuồng xưa, Chuyện Tuồng nay",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438995",
+      "venue": "Trung tâm Giao lưu Văn hóa Phố cổ Hà Nội – 50 Đào Duy Từ",
+      "event_type": "Trưng bày, biểu diễn & giao lưu",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "Từ 03/11; hoạt động chuyên đề đến 18/12",
+      "note": null,
+      "start_date": "2026-11-03",
+      "end_date": "2026-12-18",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.85279,
+      "latitude": 21.03552,
+      "coordinate_source": "OpenStreetMap/Mapcarta",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03552,105.85279",
+      "filter_start_date": "2026-11-03",
+      "filter_end_date": "2026-12-18"
+    },
+    {
+      "id": 11,
+      "name": "Tinh hoa hội tụ",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438996",
+      "venue": "Trung tâm Thông tin Văn hóa Hồ Gươm – 2 Lê Thái Tổ",
+      "event_type": "Trưng bày & trải nghiệm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "Từ 03/11",
+      "note": null,
+      "start_date": "2026-11-03",
+      "end_date": "2026-11-03",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Trung+t%C3%A2m+Th%C3%B4ng+tin+V%C4%83n+h%C3%B3a+H%E1%BB%93+G%C6%B0%C6%A1m+%E2%80%93+2+L%C3%AA+Th%C3%A1i+T%E1%BB%95%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-03",
+      "filter_end_date": "2026-11-03"
+    },
+    {
+      "id": 12,
+      "name": "Dòng chảy bách nghệ",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438997",
+      "venue": "Đình Kim Ngân – 42–44 Hàng Bạc",
+      "event_type": "Trưng bày & trải nghiệm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "Tháng 11",
+      "note": null,
+      "start_date": "2026-11-01",
+      "end_date": "2026-11-30",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "month",
+      "recurrence": null,
+      "longitude": 105.85291,
+      "latitude": 21.03413,
+      "coordinate_source": "OpenStreetMap/GeoView",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03413,105.85291",
+      "filter_start_date": "2026-11-01",
+      "filter_end_date": "2026-11-30"
+    },
+    {
+      "id": 13,
+      "name": "Làng nghề Sơn Đồng",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438998",
+      "venue": "Trung tâm Văn hóa Nghệ thuật – 22 Hàng Buồm",
+      "event_type": "Trưng bày, tọa đàm & workshop",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "06/11 – 30/11",
+      "note": null,
+      "start_date": "2026-11-06",
+      "end_date": "2026-11-30",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Trung+t%C3%A2m+V%C4%83n+h%C3%B3a+Ngh%E1%BB%87+thu%E1%BA%ADt+%E2%80%93+22+H%C3%A0ng+Bu%E1%BB%93m%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-06",
+      "filter_end_date": "2026-11-30"
+    },
+    {
+      "id": 14,
+      "name": "Đôi lời từ sơn mài Đường Lâm",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551438999",
+      "venue": "Đình Hà Vĩ – 11 Hàng Hòm",
+      "event_type": "Trưng bày & workshop",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "04/11 – 30/11",
+      "note": null,
+      "start_date": "2026-11-04",
+      "end_date": "2026-11-30",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%ACnh+H%C3%A0+V%C4%A9+%E2%80%93+11+H%C3%A0ng+H%C3%B2m%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-04",
+      "filter_end_date": "2026-11-30"
+    },
+    {
+      "id": 15,
+      "name": "Dược trà",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551439000",
+      "venue": "Di tích 40 Lãn Ông",
+      "event_type": "Trải nghiệm văn hóa",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "04/11 – 30/11",
+      "note": null,
+      "start_date": "2026-11-04",
+      "end_date": "2026-11-30",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.84871,
+      "latitude": 21.03543,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03543,105.84871",
+      "filter_start_date": "2026-11-04",
+      "filter_end_date": "2026-11-30"
+    },
+    {
+      "id": 16,
+      "name": "Nốt hương di sản",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551439001",
+      "venue": "Trung tâm Thông tin Di sản Phố cổ – 28 Hàng Buồm",
+      "event_type": "Trưng bày & trải nghiệm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "04/11 – 30/11",
+      "note": null,
+      "start_date": "2026-11-04",
+      "end_date": "2026-11-30",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Trung+t%C3%A2m+Th%C3%B4ng+tin+Di+s%E1%BA%A3n+Ph%E1%BB%91+c%E1%BB%95+%E2%80%93+28+H%C3%A0ng+Bu%E1%BB%93m%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-04",
+      "filter_end_date": "2026-11-30"
+    },
+    {
+      "id": 17,
+      "name": "Nghề dệt & lụa truyền thống",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551439002",
+      "venue": "Đình Yên Thái – 8 Tạm Thương",
+      "event_type": "Trưng bày & trải nghiệm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "04/11 – 30/11",
+      "note": null,
+      "start_date": "2026-11-04",
+      "end_date": "2026-11-30",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%ACnh+Y%C3%AAn+Th%C3%A1i+%E2%80%93+8+T%E1%BA%A1m+Th%C6%B0%C6%A1ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-04",
+      "filter_end_date": "2026-11-30"
+    },
+    {
+      "id": 18,
+      "name": "Nghệ thuật thêu truyền thống",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0Gd77QtRYHGDaLApGt5BSf5m5hnxPSnrasUtdAFV8GgNYBq5a9XGKPXQXJYpjWfhXl&id=61578551439003",
+      "venue": "Đình Tú Thị – 2 Yên Thái",
+      "event_type": "Trưng bày & trải nghiệm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "04/11 – 30/11",
+      "note": null,
+      "start_date": "2026-11-04",
+      "end_date": "2026-11-30",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%ACnh+T%C3%BA+Th%E1%BB%8B+%E2%80%93+2+Y%C3%AAn+Th%C3%A1i%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-04",
+      "filter_end_date": "2026-11-30"
+    },
+    {
+      "id": 19,
+      "name": "Triển lãm \"Mạch sống vô hình\"",
+      "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid0eaVUZeEgfzL8U445AjQ6Vmdj64MXRX5gz9eDHv37XGDifyBXzb3MkuhThjCJqhV3l&id=100068361370969",
+      "venue": "Tòa nhà Di sản 24 Lý Thái Tổ",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "14/11 – 28/11",
+      "note": null,
+      "start_date": "2026-11-14",
+      "end_date": "2026-11-28",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.85491,
+      "latitude": 21.03011,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03011,105.85491",
+      "filter_start_date": "2026-11-14",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 20,
+      "name": "Triển lãm \"Loài khác\"",
+      "url": "https://www.facebook.com/events/1550201943828011/1550202047161334/",
+      "venue": "Long Biên Art Space, tầng 2 toà nhà Mipec Long Biên",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "14/11 – 15/12",
+      "note": null,
+      "start_date": "2026-11-14",
+      "end_date": "2026-12-15",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Long+Bi%C3%AAn+Art+Space%2C+t%E1%BA%A7ng+2+to%C3%A0+nh%C3%A0+Mipec+Long+Bi%C3%AAn%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-14",
+      "filter_end_date": "2026-12-15"
+    },
+    {
+      "id": 21,
+      "name": "Trưng bày \"𝟯𝟯.𝟮𝟯.𝟰𝟱\"",
+      "url": "https://www.facebook.com/events/1438698015141615",
+      "venue": "Sóng Mây Gallery.S – 48 đường 5 Khu F361 An Dương",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "0:00 – 18:00 | 07/11 – 27/12",
+      "note": null,
+      "start_date": "2026-11-07",
+      "end_date": "2026-12-27",
+      "start_time": "00:00",
+      "end_time": "18:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=S%C3%B3ng+M%C3%A2y+Gallery.S+%E2%80%93+48+%C4%91%C6%B0%E1%BB%9Dng+5+Khu+F361+An+D%C6%B0%C6%A1ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-07",
+      "filter_end_date": "2026-12-27"
+    },
+    {
+      "id": 22,
+      "name": "Triển lãm: Kể chuyện và tái thiết nhà thờ Đức Bà",
+      "url": "https://www.facebook.com/events/4577125842559230/?acontext=%7B%22event_action_history%22%3A[%7B%22surface%22%3A%22external_search_engine%22%7D%2C%7B%22mechanism%22%3A%22attachment%22%2C%22surface%22%3A%22newsfeed%22%7D]%2C%22ref_notif_type%22%3Anull%7D",
+      "venue": "Viện Pháp tại Việt Nam – 15 Thiền Quang",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "Đến 10/01/2027",
+      "note": null,
+      "start_date": null,
+      "end_date": "2027-01-10",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Vi%E1%BB%87n+Ph%C3%A1p+t%E1%BA%A1i+Vi%E1%BB%87t+Nam+%E2%80%93+15+Thi%E1%BB%81n+Quang%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2027-01-10"
+    },
+    {
+      "id": 23,
+      "name": "Triển lãm Wildlife (Thế giới động vật kỳ thú)",
+      "url": "https://www.facebook.com/IFVHanoi/posts/pfbid02WwejeqQDpEW4rMQ6iPJbBcYoxyN8UDEgcQeAZwM7wmxTtd6HJs3vCAH8f4vjuPtGl",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "13 đến 28/11",
+      "note": null,
+      "start_date": "2026-11-13",
+      "end_date": "2026-11-28",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-13",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 24,
+      "name": "Triển lãm \"Chạm Đồng Xuân\"",
+      "url": "https://www.facebook.com/lehoithietkesangtaohn/posts/pfbid024os3MXJoocR5vrTAgnhyWvdPVLW2m7Wvs88CvZfGf7CeC87ik1SkRUjz7JPVa9Cl?locale=vi_VN",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "14/11 – 28/11",
+      "note": null,
+      "start_date": "2026-11-14",
+      "end_date": "2026-11-28",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-14",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 25,
+      "name": "Sắp đặt âm thanh \"Tháp Ẩn Ca\"",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSd0az__g-G0Kx6y2B9vn-fK3dBp3VYjQPIbGuoLspvfs-Hezg/viewform",
+      "venue": "Tháp nước Hàng Đậu",
+      "event_type": "Sắp đặt",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "14/11 – 25/11",
+      "note": null,
+      "start_date": "2026-11-14",
+      "end_date": "2026-11-25",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.85395,
+      "latitude": 21.03127,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03127,105.85395",
+      "filter_start_date": "2026-11-14",
+      "filter_end_date": "2026-11-25"
+    },
+    {
+      "id": 26,
+      "name": "Đại Tiệc Tam Sắc – Một Chiếu Ngự, Hai Đêm Diễn, Ba Dòng Sân Khấu!",
+      "url": "https://sktt.vn/nhap-cung-so-dac-biet-dai-tiec-tam-sac/",
+      "venue": "Rạp Hồng Hà (51A Đường Thành)",
+      "event_type": "Biểu diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "18:30 – 21:30 | 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "18:30",
+      "end_time": "21:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=R%E1%BA%A1p+H%E1%BB%93ng+H%C3%A0+%2851A+%C4%90%C6%B0%E1%BB%9Dng+Th%C3%A0nh%29%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 27,
+      "name": "Tác phẩm NÄSS (Những con người)",
+      "url": "https://www.facebook.com/IFVHanoi/posts/pfbid02WwejeqQDpEW4rMQ6iPJbBcYoxyN8UDEgcQeAZwM7wmxTtd6HJs3vCAH8f4vjuPtGl",
+      "venue": "Nhà hát Tuổi trẻ",
+      "event_type": "Múa đương đại",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85306,
+      "latitude": 21.01772,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01772,105.85306",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 28,
+      "name": "Dạo đêm Hà Nội",
+      "url": "https://www.facebook.com/hanoitrainghiemmoi/posts/pfbid02hFgYQmDGrM9vwgGK74sk2S3aBrs7fqMhE3dNkC3Sm3Ti7EQMxQmbpht4Fcu44UdHl",
+      "venue": "TBD (nhắn chương trình)",
+      "event_type": "Dạo đêm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "20/11",
+      "note": null,
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-20",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": null,
+      "filter_start_date": "2026-11-20",
+      "filter_end_date": "2026-11-20"
+    },
+    {
+      "id": 29,
+      "name": "Walking tour Dạo phố thưởng quà",
+      "url": "https://www.facebook.com/photo?fbid=122189680124726617&set=pcb.122189680412726617",
+      "venue": "TBD (nhắn chương trình)",
+      "event_type": "Dạo bộ",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": null,
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 30,
+      "name": "Walking tour Dấu án người Hoa",
+      "url": "https://www.facebook.com/photo?fbid=122189680124726617&set=pcb.122189680412726617",
+      "venue": "TBD (nhắn chương trình)",
+      "event_type": "Dạo bộ",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": null,
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 31,
+      "name": "Birding Tour sông Hồng",
+      "url": "https://www.facebook.com/thinkplaygrounds/posts/pfbid02TuiV8WioQkeZwF8G5jsstTCEpSMfa92VTJbKPMNtrjZG9J7LHwnciorFPTkevSUSl?locale=vi_VN",
+      "venue": "bờ vở sông Hồng",
+      "event_type": "Tour",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "06:00–08:00 ngày 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "06:00",
+      "end_time": "08:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=b%E1%BB%9D+v%E1%BB%9F+s%C3%B4ng+H%E1%BB%93ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 32,
+      "name": "Múa đương đại \"Thu Hương\"",
+      "url": "https://www.facebook.com/photo/?fbid=1426475009651096&set=pcb.1426478406317423&locale=vi_VN",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Múa đương đại",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "18/11",
+      "note": null,
+      "start_date": "2026-11-18",
+      "end_date": "2026-11-18",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-18",
+      "filter_end_date": "2026-11-18"
+    },
+    {
+      "id": 33,
+      "name": "Trình diễn âm nhạc x Trao đổi chuyên môn \"Ong Bay\"",
+      "url": "https://www.facebook.com/photo/?fbid=1426475226317741&set=pcb.1426478406317423&locale=vi_VN",
+      "venue": "DUYÊN – Rạp Đông Đô, 18 phố Lương Ngọc Quyến",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "19h30 17/11",
+      "note": null,
+      "start_date": "2026-11-17",
+      "end_date": "2026-11-17",
+      "start_time": "19:30",
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85278,
+      "latitude": 21.03494,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03494,105.85278",
+      "filter_start_date": "2026-11-17",
+      "filter_end_date": "2026-11-17"
+    },
+    {
+      "id": 34,
+      "name": "Trình diễn âm thanh \"“Truyện ở Chân trời mờ, Mơ sự kiện”",
+      "url": "https://www.facebook.com/photo/?fbid=1426475349651062&set=pcb.1426478406317423&locale=vi_VN",
+      "venue": "Rạp Chuông Vàng, 72 phố Hàng Bạc",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "20h 23/11",
+      "note": null,
+      "start_date": "2026-11-23",
+      "end_date": "2026-11-23",
+      "start_time": "20:00",
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.8532,
+      "latitude": 21.0341,
+      "coordinate_source": "Kho dữ liệu Văn hóa / public cultural data",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.0341,105.8532",
+      "filter_start_date": "2026-11-23",
+      "filter_end_date": "2026-11-23"
+    },
+    {
+      "id": 35,
+      "name": "Kịch múa đương đại \"Đối diện với vô cùng\"",
+      "url": "https://www.facebook.com/photo/?fbid=1426576279640969&set=pcb.1426478406317423&locale=vi_VN",
+      "venue": "Rạp Hồng Hà (51A Đường Thành)",
+      "event_type": "Kịch múa đương đại",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "20h 20/11",
+      "note": null,
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-20",
+      "start_time": "20:00",
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=R%E1%BA%A1p+H%E1%BB%93ng+H%C3%A0+%2851A+%C4%90%C6%B0%E1%BB%9Dng+Th%C3%A0nh%29%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-20",
+      "filter_end_date": "2026-11-20"
+    },
+    {
+      "id": 36,
+      "name": "Chương trình điền dã “Gió Gió Mây Mây”",
+      "url": "https://www.facebook.com/photo/?fbid=1426474576317806&set=pcb.1426478406317423&locale=vi_VN",
+      "venue": "Sân đình làng Triều Khúc",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "18/11",
+      "note": null,
+      "start_date": "2026-11-18",
+      "end_date": "2026-11-18",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.80261,
+      "latitude": 20.98012,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=20.98012,105.80261",
+      "filter_start_date": "2026-11-18",
+      "filter_end_date": "2026-11-18"
+    },
+    {
+      "id": 37,
+      "name": "Trao đổi chuyên môn \"Cổ vật chuyển động\"",
+      "url": "https://www.facebook.com/photo/?fbid=1426474612984469&set=pcb.1426478406317423&locale=vi_VN",
+      "venue": "Bảo tàng Hà Nội",
+      "event_type": "Trao đổi",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "14h 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "14:00",
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.785776,
+      "latitude": 21.009212,
+      "coordinate_source": "Wikidata / public reference",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.009212,105.785776",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 38,
+      "name": "Trao đổi chuyên môn \"Khao khát nguyên bản\"",
+      "url": "https://www.facebook.com/photo/?fbid=1426474622984468&set=pcb.1426478406317423&locale=vi_VN",
+      "venue": "TT Giao lưu Văn hóa Phổ Cổ 50 Đào Duy Từ",
+      "event_type": "Trao đổi",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "14h 18/11",
+      "note": null,
+      "start_date": "2026-11-18",
+      "end_date": "2026-11-18",
+      "start_time": "14:00",
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85279,
+      "latitude": 21.03552,
+      "coordinate_source": "OpenStreetMap/Mapcarta",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03552,105.85279",
+      "filter_start_date": "2026-11-18",
+      "filter_end_date": "2026-11-18"
+    },
+    {
+      "id": 39,
+      "name": "Trao đổi chuyên môn \"Di sản tự sinh\"",
+      "url": "https://www.facebook.com/photo/?fbid=1426474606317803&set=pcb.1426478406317423&locale=vi_VN",
+      "venue": "Bảo tàng Hà Nội",
+      "event_type": "Trao đổi",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "10h 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "10:00",
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.785776,
+      "latitude": 21.009212,
+      "coordinate_source": "Wikidata / public reference",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.009212,105.785776",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 40,
+      "name": "Pavilion Kiến trúc và Nghệ thuật “Art Hanoi 2026”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Quảng trường Sáng tạo",
+      "event_type": "Pavilion",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "13–28/11, 09:00–19:00",
+      "note": null,
+      "start_date": "2026-11-13",
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "19:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Qu%E1%BA%A3ng+tr%C6%B0%E1%BB%9Dng+S%C3%A1ng+t%E1%BA%A1o%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-13",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 41,
+      "name": "Pavilion “Hồ Gương”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Quảng trường Sáng tạo",
+      "event_type": "Pavilion",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "13–28/11, 09:00–19:00",
+      "note": null,
+      "start_date": "2026-11-13",
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "19:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Qu%E1%BA%A3ng+tr%C6%B0%E1%BB%9Dng+S%C3%A1ng+t%E1%BA%A1o%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-13",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 42,
+      "name": "“Chuyện Đình trong phố”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "12 đình & di tích phố cổ",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "14–28/11, 09:00–17:00",
+      "note": null,
+      "start_date": "2026-11-14",
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "17:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=12+%C4%91%C3%ACnh+%26+di+t%C3%ADch+ph%E1%BB%91+c%E1%BB%95%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-14",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 43,
+      "name": "“Tổ nghề và Danh Nho nước Việt”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Văn Miếu – Quốc Tử Giám",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "14–28/11, 08:00–17:00",
+      "note": null,
+      "start_date": "2026-11-14",
+      "end_date": "2026-11-28",
+      "start_time": "08:00",
+      "end_time": "17:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=V%C4%83n+Mi%E1%BA%BFu+%E2%80%93+Qu%E1%BB%91c+T%E1%BB%AD+Gi%C3%A1m%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-14",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 44,
+      "name": "“Kết duyên sáng tạo”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "47 Hàng Dầu",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 18/11, 10:00–18:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-18",
+      "start_time": "10:00",
+      "end_time": "18:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.85403,
+      "latitude": 21.03046,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03046,105.85403",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-18"
+    },
+    {
+      "id": 45,
+      "name": "“Lưu dấu thủ mộc”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "47 Hàng Dầu",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 10:00–18:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "10:00",
+      "end_time": "18:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.85403,
+      "latitude": 21.03046,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03046,105.85403",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 46,
+      "name": "“Con đường sơn mài Việt-Nhật”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "47 Hàng Dầu",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 10:00–18:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "10:00",
+      "end_time": "18:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.85403,
+      "latitude": 21.03046,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03046,105.85403",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 47,
+      "name": "“Muôn màu kẻ chợ”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Hội quán Phúc Kiến, 40 Lãn Ông",
+      "event_type": "Triển lãm / Open studio",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 09:00–17:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "17:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.84871,
+      "latitude": 21.03543,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03543,105.84871",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 48,
+      "name": "Tác phẩm “Tri Âm”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Phố Phùng Hưng",
+      "event_type": "Sắp đặt",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 09:00–23:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "23:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%91+Ph%C3%B9ng+H%C6%B0ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 49,
+      "name": "“Cổng Đoài Làng Đường Lâm”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Công viên Thống Nhất",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 09:00–18:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.844819,
+      "latitude": 21.015761,
+      "coordinate_source": "Wikidata",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.015761,105.844819",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 50,
+      "name": "Craft Toolkit Hà Nội 2026",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "47 Tràng Tiền",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 09:00–17:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "17:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=47+Tr%C3%A0ng+Ti%E1%BB%81n%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 51,
+      "name": "“Mũi Thêu Kẻ Nghề”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "61 Tràng Tiền",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 09:00–19:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "19:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=61+Tr%C3%A0ng+Ti%E1%BB%81n%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 52,
+      "name": "Gameplay “Trấn Lục Bảo”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Làng Khai Cuốc & phố cổ",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "đến 27/11",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-27",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=L%C3%A0ng+Khai+Cu%E1%BB%91c+%26+ph%E1%BB%91+c%E1%BB%95%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-27"
+    },
+    {
+      "id": 53,
+      "name": "“Làng Khai Cuốc”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân sau Chợ Đồng Xuân",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "đến 28/11",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 54,
+      "name": "“Cột Điện Mainstream”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Sắp đặt",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 10:00–18:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "10:00",
+      "end_time": "18:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 55,
+      "name": "Kiot Zone Sáng tạo Đồng Xuân",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Tầng 3 Chợ Đồng Xuân",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "đến 28/11, 10:00–18:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "10:00",
+      "end_time": "18:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 56,
+      "name": "“Đông Đồng Xuân”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân mái Chợ Đồng Xuân",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 06:00–21:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "06:00",
+      "end_time": "21:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 57,
+      "name": "Sắp đặt “THAP : SANG”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Quảng trường Lotte",
+      "event_type": "Sắp đặt",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 30/01/2027",
+      "note": null,
+      "start_date": null,
+      "end_date": "2027-01-30",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.8126,
+      "latitude": 21.03235,
+      "coordinate_source": "Lotte Center Hanoi public coordinates",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03235,105.8126",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2027-01-30"
+    },
+    {
+      "id": 58,
+      "name": "Triển lãm Ý tưởng Sáng tạo Hà Nội 2026",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Công viên Thống Nhất",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 09:00–18:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.844819,
+      "latitude": 21.015761,
+      "coordinate_source": "Wikidata",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.015761,105.844819",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 59,
+      "name": "“Chất Xưa, Chuyện Mới”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Công viên Thống Nhất",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 09:00–18:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.844819,
+      "latitude": 21.015761,
+      "coordinate_source": "Wikidata",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.015761,105.844819",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 60,
+      "name": "“Một chữ, 15 phút”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Công viên Thống Nhất",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 19/11, 09:00–18:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-19",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.844819,
+      "latitude": 21.015761,
+      "coordinate_source": "Wikidata",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.015761,105.844819",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-19"
+    },
+    {
+      "id": 61,
+      "name": "Trung tâm Thiên nhiên Lưu động",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Công viên Thống Nhất",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "16–22/11, 09:00–22:00",
+      "note": null,
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-22",
+      "start_time": "09:00",
+      "end_time": "22:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.844819,
+      "latitude": 21.015761,
+      "coordinate_source": "Wikidata",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.015761,105.844819",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 62,
+      "name": "“Vén Lớp Họa Điệp”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Hội quán Phúc Kiến",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "đến 28/11, 08:00–20:00",
+      "note": null,
+      "start_date": null,
+      "end_date": "2026-11-28",
+      "start_time": "08:00",
+      "end_time": "20:00",
+      "date_precision": "end_only",
+      "recurrence": null,
+      "longitude": 105.84871,
+      "latitude": 21.03543,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03543,105.84871",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 63,
+      "name": "“Theo bước di sản cộng đồng 2026”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Hội quán Phúc Kiến",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "16–28/11, 09:00–17:00",
+      "note": null,
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "17:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.84871,
+      "latitude": 21.03543,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03543,105.84871",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 64,
+      "name": "“Nối miền Sáng tạo”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "45 Tràng Tiền",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "17–28/11, 08:30–20:00",
+      "note": null,
+      "start_date": "2026-11-17",
+      "end_date": "2026-11-28",
+      "start_time": "08:30",
+      "end_time": "20:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=45+Tr%C3%A0ng+Ti%E1%BB%81n%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-17",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 65,
+      "name": "“Sống cùng dòng sông”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Villa 49 Trần Hưng Đạo",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "17/11–13/12, 09:00–18:00",
+      "note": null,
+      "start_date": "2026-11-17",
+      "end_date": "2026-12-13",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.851957,
+      "latitude": 21.020781,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.020781,105.851957",
+      "filter_start_date": "2026-11-17",
+      "filter_end_date": "2026-12-13"
+    },
+    {
+      "id": 66,
+      "name": "“Con chim từ núi lạ”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Nương Náu Art Hub",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "20–28/11, 09:00–18:00",
+      "note": null,
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=N%C6%B0%C6%A1ng+N%C3%A1u+Art+Hub%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-20",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 67,
+      "name": "Pavilion “Kén” & “Mây”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Công viên Thống Nhất",
+      "event_type": "Pavilion",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "21–28/11, 09:00–18:00",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-28",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.844819,
+      "latitude": 21.015761,
+      "coordinate_source": "Wikidata",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.015761,105.844819",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 68,
+      "name": "Nghê Nghệ Art Salon “Màu xưa, Sắc nay”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "21–28/11, 10:00–20:00",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-28",
+      "start_time": "10:00",
+      "end_time": "20:00",
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 69,
+      "name": "Hà Nội Mở 2 “Thành phố không lề”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "21–28/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-28",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-28"
+    },
+    {
+      "id": 70,
+      "name": "Yoga cộng đồng: Yoga Nhạc",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Tầng 4 Chợ Đồng Xuân",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "12:00–13:00 16/11",
+      "note": null,
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-16",
+      "start_time": "12:00",
+      "end_time": "13:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-16"
+    },
+    {
+      "id": 71,
+      "name": "Khai mạc “Theo bước di sản cộng đồng 2026”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "40 Lãn Ông",
+      "event_type": "Lễ",
+      "type_group": "Lễ & khai mạc",
+      "schedule_raw": "14h 16/11",
+      "note": null,
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-16",
+      "start_time": "14:00",
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.84871,
+      "latitude": 21.03543,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03543,105.84871",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-16"
+    },
+    {
+      "id": 72,
+      "name": "Bàn tròn “Nghệ thuật liên ngành”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "19 Hàng Buồm",
+      "event_type": "Trao đổi",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "14:00–17:00 16/11",
+      "note": null,
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-16",
+      "start_time": "14:00",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=19+H%C3%A0ng+Bu%E1%BB%93m%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-16"
+    },
+    {
+      "id": 73,
+      "name": "Trao giải Thiết kế Không gian Sáng tạo 2026",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "40 Tăng Bạt Hổ",
+      "event_type": "Lễ",
+      "type_group": "Lễ & khai mạc",
+      "schedule_raw": "14:00–17:00 16/11",
+      "note": null,
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-16",
+      "start_time": "14:00",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=40+T%C4%83ng+B%E1%BA%A1t+H%E1%BB%95%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-16"
+    },
+    {
+      "id": 74,
+      "name": "Nhạc phục vụ cộng đồng",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân mái Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "18:00–18:30 16/11",
+      "note": null,
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-16",
+      "start_time": "18:00",
+      "end_time": "18:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-16",
+      "filter_end_date": "2026-11-16"
+    },
+    {
+      "id": 75,
+      "name": "Bộ hành “Phố cổ Thong dong”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Phố cổ",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "08:30–11:30; 13:30–16:30 17/11",
+      "note": null,
+      "start_date": "2026-11-17",
+      "end_date": "2026-11-17",
+      "start_time": "08:30",
+      "end_time": "11:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%91+c%E1%BB%95%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-17",
+      "filter_end_date": "2026-11-17"
+    },
+    {
+      "id": 76,
+      "name": "Khai mạc “Sống cùng dòng sông”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "49 Trần Hưng Đạo",
+      "event_type": "Lễ",
+      "type_group": "Lễ & khai mạc",
+      "schedule_raw": "9h 17/11",
+      "note": null,
+      "start_date": "2026-11-17",
+      "end_date": "2026-11-17",
+      "start_time": "09:00",
+      "end_time": null,
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.851957,
+      "latitude": 21.020781,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.020781,105.851957",
+      "filter_start_date": "2026-11-17",
+      "filter_end_date": "2026-11-17"
+    },
+    {
+      "id": 77,
+      "name": "Thực hành thử nghiệm âm thanh",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "14:00–17:00 17/11",
+      "note": null,
+      "start_date": "2026-11-17",
+      "end_date": "2026-11-17",
+      "start_time": "14:00",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-17",
+      "filter_end_date": "2026-11-17"
+    },
+    {
+      "id": 78,
+      "name": "Yoga cộng đồng: Yoga Cười",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "15:00–15:40 17/11",
+      "note": null,
+      "start_date": "2026-11-17",
+      "end_date": "2026-11-17",
+      "start_time": "15:00",
+      "end_time": "15:40",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-17",
+      "filter_end_date": "2026-11-17"
+    },
+    {
+      "id": 79,
+      "name": "Chiếu phim cộng đồng",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân mái Chợ Đồng Xuân",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "19:00–21:30 17/11",
+      "note": null,
+      "start_date": "2026-11-17",
+      "end_date": "2026-11-17",
+      "start_time": "19:00",
+      "end_time": "21:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-17",
+      "filter_end_date": "2026-11-17"
+    },
+    {
+      "id": 80,
+      "name": "Chợ Đồng Xuân: Từ di sản Kẻ Chợ đến Tổ hợp kinh doanh sáng tạo",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trao đổi",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "09:00–12:00 18/11",
+      "note": null,
+      "start_date": "2026-11-18",
+      "end_date": "2026-11-18",
+      "start_time": "09:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-18",
+      "filter_end_date": "2026-11-18"
+    },
+    {
+      "id": 81,
+      "name": "Workshop nghệ thuật thiết kế hoa",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Tầng 4 Chợ Đồng Xuân",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "14:00–17:00 18/11",
+      "note": null,
+      "start_date": "2026-11-18",
+      "end_date": "2026-11-18",
+      "start_time": "14:00",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-18",
+      "filter_end_date": "2026-11-18"
+    },
+    {
+      "id": 82,
+      "name": "Vẽ kí họa đa chất liệu cùng HWA",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Công viên Thống Nhất",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "14:00–17:00 18/11",
+      "note": null,
+      "start_date": "2026-11-18",
+      "end_date": "2026-11-18",
+      "start_time": "14:00",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.844819,
+      "latitude": 21.015761,
+      "coordinate_source": "Wikidata",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.015761,105.844819",
+      "filter_start_date": "2026-11-18",
+      "filter_end_date": "2026-11-18"
+    },
+    {
+      "id": 83,
+      "name": "Nhạc phục vụ cộng đồng",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân mái Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "18:00–18:30 18/11",
+      "note": null,
+      "start_date": "2026-11-18",
+      "end_date": "2026-11-18",
+      "start_time": "18:00",
+      "end_time": "18:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-18",
+      "filter_end_date": "2026-11-18"
+    },
+    {
+      "id": 84,
+      "name": "Bộ hành “Phố cổ Thong dong”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Phố cổ",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "08:30–11:30; 13:30–16:30 19/11",
+      "note": null,
+      "start_date": "2026-11-19",
+      "end_date": "2026-11-19",
+      "start_time": "08:30",
+      "end_time": "11:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%91+c%E1%BB%95%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-19",
+      "filter_end_date": "2026-11-19"
+    },
+    {
+      "id": 85,
+      "name": "“Trình diễn đọc và nghe sâu”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "24 Lý Thái Tổ",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "14:00–16:00 19/11",
+      "note": null,
+      "start_date": "2026-11-19",
+      "end_date": "2026-11-19",
+      "start_time": "14:00",
+      "end_time": "16:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85491,
+      "latitude": 21.03011,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03011,105.85491",
+      "filter_start_date": "2026-11-19",
+      "filter_end_date": "2026-11-19"
+    },
+    {
+      "id": 86,
+      "name": "Nhạc phục vụ cộng đồng",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân mái Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "18:00–18:30 19/11",
+      "note": null,
+      "start_date": "2026-11-19",
+      "end_date": "2026-11-19",
+      "start_time": "18:00",
+      "end_time": "18:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-19",
+      "filter_end_date": "2026-11-19"
+    },
+    {
+      "id": 87,
+      "name": "“Hoa giấy dung đưa”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "08:00–12:00 20/11",
+      "note": null,
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-20",
+      "start_time": "08:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-20",
+      "filter_end_date": "2026-11-20"
+    },
+    {
+      "id": 88,
+      "name": "“Hà Nội qua nét vẽ”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Villa 49 Trần Hưng Đạo",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "09:00–18:00 20/11",
+      "note": null,
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-20",
+      "start_time": "09:00",
+      "end_time": "18:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.851957,
+      "latitude": 21.020781,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.020781,105.851957",
+      "filter_start_date": "2026-11-20",
+      "filter_end_date": "2026-11-20"
+    },
+    {
+      "id": 89,
+      "name": "“Tranh Hàng Trống: Cắt & Ghép”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "75 Hàng Trống",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:30–11:30; 14:00–16:00 20/11",
+      "note": null,
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-20",
+      "start_time": "09:30",
+      "end_time": "11:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=75+H%C3%A0ng+Tr%E1%BB%91ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-20",
+      "filter_end_date": "2026-11-20"
+    },
+    {
+      "id": 90,
+      "name": "“Trơn tru trong chiều chập choạng”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "17:00–19:00 20/11",
+      "note": null,
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-20",
+      "start_time": "17:00",
+      "end_time": "19:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-20",
+      "filter_end_date": "2026-11-20"
+    },
+    {
+      "id": 91,
+      "name": "Đêm “Re:imagine” x Fustic",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Quảng trường Lotte",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "18:00–21:00 20/11",
+      "note": null,
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-20",
+      "start_time": "18:00",
+      "end_time": "21:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.8126,
+      "latitude": 21.03235,
+      "coordinate_source": "Lotte Center Hanoi public coordinates",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03235,105.8126",
+      "filter_start_date": "2026-11-20",
+      "filter_end_date": "2026-11-20"
+    },
+    {
+      "id": 92,
+      "name": "Chiếu phim cộng đồng",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân mái Chợ Đồng Xuân",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "19:00–21:30 20/11",
+      "note": null,
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-20",
+      "start_time": "19:00",
+      "end_time": "21:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-20",
+      "filter_end_date": "2026-11-20"
+    },
+    {
+      "id": 93,
+      "name": "Workshop “Màu của lá”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "75 Hàng Trống",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "08:30–11:30 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "08:30",
+      "end_time": "11:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=75+H%C3%A0ng+Tr%E1%BB%91ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 94,
+      "name": "Bộ hành “Phố cổ Thong dong”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Phố cổ",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "08:30–11:30; 13:30–16:30 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "08:30",
+      "end_time": "11:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%91+c%E1%BB%95%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 95,
+      "name": "“Sắc Quạt Chàng Sơn”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "4 Hàng Quạt",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–10:30 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "09:00",
+      "end_time": "10:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=4+H%C3%A0ng+Qu%E1%BA%A1t%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 96,
+      "name": "Workshop “Vẫn Ở Đây”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Công viên Thống Nhất",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–11:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "09:00",
+      "end_time": "11:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.844819,
+      "latitude": 21.015761,
+      "coordinate_source": "Wikidata",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.015761,105.844819",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 97,
+      "name": "Mô hình kiến trúc & Talk nhà truyền thống",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân mái Chợ Đồng Xuân",
+      "event_type": "Triển lãm/Talk",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "09:00–11:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "09:00",
+      "end_time": "11:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 98,
+      "name": "Vẽ tranh lụa truyền thống",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Đình Yên Thái",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–11:30; 14:00–16:30 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "09:00",
+      "end_time": "11:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%ACnh+Y%C3%AAn+Th%C3%A1i%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 99,
+      "name": "“Trong vườn hoa Hàng Trống”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "75 Hàng Trống",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–12:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "09:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=75+H%C3%A0ng+Tr%E1%BB%91ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 100,
+      "name": "In tranh Mộc Bản 12 con giáp",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "75 Hàng Trống",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–12:00; 14:00–17:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "09:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=75+H%C3%A0ng+Tr%E1%BB%91ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 101,
+      "name": "Workshop Tranh khắc gỗ",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "85 Hàng Gai",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–12:00; 14:00–17:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "09:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=85+H%C3%A0ng+Gai%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 102,
+      "name": "Lễ hội xe và đam mê 2026",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Làng Văn hóa các dân tộc",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "09:00–22:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "09:00",
+      "end_time": "22:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=L%C3%A0ng+V%C4%83n+h%C3%B3a+c%C3%A1c+d%C3%A2n+t%E1%BB%99c%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 103,
+      "name": "“Tranh Hàng Trống: Cắt & Ghép”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "75 Hàng Trống",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:30–11:30; 14:00–16:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "09:30",
+      "end_time": "11:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=75+H%C3%A0ng+Tr%E1%BB%91ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 104,
+      "name": "Tour “Mạch sống vô hình”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "24 Lý Thái Tổ",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "10:00–12:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "10:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85491,
+      "latitude": 21.03011,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03011,105.85491",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 105,
+      "name": "Nhiếp ảnh bản ướt Pop-up Studio",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "10:00–20:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "10:00",
+      "end_time": "20:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 106,
+      "name": "The HOP Spot",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "10:00–22:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "10:00",
+      "end_time": "22:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 107,
+      "name": "Talk/Workshop “Làm màu có lý”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "40 Tăng Bạt Hổ",
+      "event_type": "Talk",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "14:30–17:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "14:30",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=40+T%C4%83ng+B%E1%BA%A1t+H%E1%BB%95%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 108,
+      "name": "“Hà Nội sôi động”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Đông Kinh Nghĩa Thục",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "14:30–17:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "14:30",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%B4ng+Kinh+Ngh%C4%A9a+Th%E1%BB%A5c%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 109,
+      "name": "Chiếu phim “Đoạn Trường Vinh Hoa”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Phim",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "15:00–17:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "15:00",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 110,
+      "name": "Nhạc phục vụ cộng đồng",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "19:15–19:45 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "19:15",
+      "end_time": "19:45",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 111,
+      "name": "Culture Show: Xẩm, Ca trù",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Quảng trường Lotte",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "19:30–21:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "19:30",
+      "end_time": "21:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.8126,
+      "latitude": 21.03235,
+      "coordinate_source": "Lotte Center Hanoi public coordinates",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03235,105.8126",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 112,
+      "name": "“mười thương”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "19:30–21:30 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "19:30",
+      "end_time": "21:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 113,
+      "name": "Đêm nhạc Reggae – Best Friend Band",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "21:00–23:00 21/11",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "21:00",
+      "end_time": "23:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21"
+    },
+    {
+      "id": 114,
+      "name": "Book Show & No-phone Reading Party",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân mái Chợ Đồng Xuân",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "06:30–09:30 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "06:30",
+      "end_time": "09:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 115,
+      "name": "Workshop “Vẫn Ở Đây”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Công viên Thống Nhất",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "08:00–09:45 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "08:00",
+      "end_time": "09:45",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.844819,
+      "latitude": 21.015761,
+      "coordinate_source": "Wikidata",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.015761,105.844819",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 116,
+      "name": "Lễ hội xe và đam mê 2026",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Đồng Mô",
+      "event_type": "Triển lãm",
+      "type_group": "Triển lãm & sắp đặt",
+      "schedule_raw": "08:00–10:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "08:00",
+      "end_time": "10:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%C4%90%E1%BB%93ng+M%C3%B4%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 117,
+      "name": "Vẽ tranh lụa truyền thống",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Đình Yên Thái",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–11:30; 14:00–16:30 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "09:00",
+      "end_time": "11:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%ACnh+Y%C3%AAn+Th%C3%A1i%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 118,
+      "name": "“Hà Nội sôi động”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Đông Kinh Nghĩa Thục",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "09:00–11:30 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "09:00",
+      "end_time": "11:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%B4ng+Kinh+Ngh%C4%A9a+Th%E1%BB%A5c%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 119,
+      "name": "“Trong vườn hoa Hàng Trống”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "75 Hàng Trống",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–12:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "09:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=75+H%C3%A0ng+Tr%E1%BB%91ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 120,
+      "name": "“Vượt qua đường biên chữ”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "47 Hàng Dầu",
+      "event_type": "Trao đổi",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "09:00–12:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "09:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85403,
+      "latitude": 21.03046,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03046,105.85403",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 121,
+      "name": "In tranh Mộc Bản 12 con giáp",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "75 Hàng Trống",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–12:00; 14:00–17:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "09:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=75+H%C3%A0ng+Tr%E1%BB%91ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 122,
+      "name": "Workshop Tranh khắc gỗ",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "85 Hàng Gai",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "09:00–12:00; 14:00–17:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "09:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=85+H%C3%A0ng+Gai%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 123,
+      "name": "Tour “Chạm Đồng Xuân”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "10:00–12:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "10:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 124,
+      "name": "Gặp nghệ sĩ “Mạch sống vô hình” – Fustic & Phạm Ngọc Lân",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "24 Lý Thái Tổ",
+      "event_type": "Trao đổi",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "10:00–12:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "10:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85491,
+      "latitude": 21.03011,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03011,105.85491",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 125,
+      "name": "Nhiếp ảnh bản ướt Pop-up Studio",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "10:00–20:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "10:00",
+      "end_time": "20:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 126,
+      "name": "The HOP Spot",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Trải nghiệm",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "10:00–22:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "10:00",
+      "end_time": "22:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 127,
+      "name": "Workshop ảnh Cyanotype",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "10:30–18:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "10:30",
+      "end_time": "18:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 128,
+      "name": "“Dòng sông quá vãng”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "11:00–12:00; 14:00–16:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "11:00",
+      "end_time": "12:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 129,
+      "name": "“Bách Hoa Bộ Hành”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Phố cổ",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "11:00–13:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "11:00",
+      "end_time": "13:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=Ph%E1%BB%91+c%E1%BB%95%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 130,
+      "name": "Gặp nghệ sĩ – Linh San & Bách Vũ",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "24 Lý Thái Tổ",
+      "event_type": "Trao đổi",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "14:00–16:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "14:00",
+      "end_time": "16:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85491,
+      "latitude": 21.03011,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03011,105.85491",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 131,
+      "name": "Workshop “Màu của lá”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "75 Hàng Trống",
+      "event_type": "Workshop",
+      "type_group": "Trải nghiệm & workshop",
+      "schedule_raw": "14:00–16:30 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "14:00",
+      "end_time": "16:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": null,
+      "latitude": null,
+      "coordinate_source": null,
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=75+H%C3%A0ng+Tr%E1%BB%91ng%2C+H%C3%A0+N%E1%BB%99i",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 132,
+      "name": "Chiếu phim “Hạ Hồi” & giao lưu",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "COMPLEX 01",
+      "event_type": "Phim",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "15:00–17:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "15:00",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.82647,
+      "latitude": 21.01029,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.01029,105.82647",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 133,
+      "name": "Talk “Câu chuyện chiếc ghế”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Sân mái Chợ Đồng Xuân",
+      "event_type": "Talk",
+      "type_group": "Talk & trao đổi",
+      "schedule_raw": "15:00–18:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "15:00",
+      "end_time": "18:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 134,
+      "name": "Nhạc phục vụ cộng đồng",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "19:15–19:45 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "19:15",
+      "end_time": "19:45",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 135,
+      "name": "“mười thương”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "19:30–21:30 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "19:30",
+      "end_time": "21:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 136,
+      "name": "Nhạc phục vụ cộng đồng",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Chợ Đồng Xuân",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "20:00–20:30; 20:45–21:15 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "20:00",
+      "end_time": "20:30",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.85004,
+      "latitude": 21.03814,
+      "coordinate_source": "HanoiMaps events dataset",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03814,105.85004",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 137,
+      "name": "Street Jazz",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Quảng trường Lotte",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "20:00–21:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "20:00",
+      "end_time": "21:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.8126,
+      "latitude": 21.03235,
+      "coordinate_source": "Lotte Center Hanoi public coordinates",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.03235,105.8126",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    },
+    {
+      "id": 138,
+      "name": "“Trôi”",
+      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "venue": "Bảo tàng Hà Nội",
+      "event_type": "Trình diễn",
+      "type_group": "Biểu diễn & phim",
+      "schedule_raw": "20:00–22:00 22/11",
+      "note": null,
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-22",
+      "start_time": "20:00",
+      "end_time": "22:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "longitude": 105.785776,
+      "latitude": 21.009212,
+      "coordinate_source": "Wikidata / public reference",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=21.009212,105.785776",
+      "filter_start_date": "2026-11-22",
+      "filter_end_date": "2026-11-22"
+    }
+  ]
+};
+
+</script>
+  <script>
+(() => {
+  "use strict";
+
+  const DATA = window.EVENT_DATA;
+  if (!DATA || !Array.isArray(DATA.events)) {
+    document.body.innerHTML = "<p style='padding:24px'>Không tải được dữ liệu sự kiện.</p>";
+    return;
+  }
+
+  const TYPE_COLORS = {
+    "Triển lãm & sắp đặt": "#6d28d9",
+    "Trải nghiệm & workshop": "#047857",
+    "Biểu diễn & phim": "#be123c",
+    "Talk & trao đổi": "#b45309",
+    "Lễ & khai mạc": "#0369a1",
+    "Khác": "#52525b"
+  };
+
+  const els = {
+    search: document.getElementById("search-input"),
+    date: document.getElementById("date-input"),
+    type: document.getElementById("type-select"),
+    hidePast: document.getElementById("hide-past"),
+    today: document.getElementById("today-button"),
+    clear: document.getElementById("clear-button"),
+    list: document.getElementById("event-list"),
+    empty: document.getElementById("empty-state"),
+    count: document.getElementById("result-count"),
+    summary: document.getElementById("filter-summary"),
+    meta: document.getElementById("data-meta"),
+    template: document.getElementById("event-card-template")
+  };
+
+  const dateFmt = new Intl.DateTimeFormat("vi-VN", {
+    weekday: "short", day: "2-digit", month: "2-digit", year: "numeric"
+  });
+
+  const params = new URLSearchParams(window.location.search);
+  els.search.value = params.get("q") || "";
+  els.date.value = params.get("date") || "";
+  els.type.value = params.get("type") || "";
+
+  const types = [...new Set(DATA.events.map(e => e.type_group).filter(Boolean))].sort();
+  for (const type of types) {
+    const option = document.createElement("option");
+    option.value = type;
+    option.textContent = type;
+    els.type.append(option);
+  }
+  if (params.get("type")) els.type.value = params.get("type");
+
+  els.meta.textContent =
+    `${DATA.meta.total_events} sự kiện · ${DATA.meta.mapped_events} có tọa độ · dữ liệu: ${DATA.meta.source_sheet}`;
+
+  document.body.dataset.mobileView = "list";
+
+  const map = new maplibregl.Map({
+    container: "map",
+    style: "https://tiles.openfreemap.org/styles/liberty",
+    center: [105.845, 21.028],
+    zoom: 11.7,
+    attributionControl: true
+  });
+
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+
+  let mapReady = false;
+  let selectedId = null;
+  let latestFiltered = [];
+
+  map.on("load", () => {
+    mapReady = true;
+
+    map.addSource("events", {
+      type: "geojson",
+      data: emptyGeoJSON(),
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 42
+    });
+
+    map.addLayer({
+      id: "clusters",
+      type: "circle",
+      source: "events",
+      filter: ["has", "point_count"],
+      paint: {
+        "circle-color": "#111827",
+        "circle-radius": [
+          "step", ["get", "point_count"],
+          17, 10, 21, 30, 26
+        ],
+        "circle-stroke-width": 2,
+        "circle-stroke-color": "#ffffff"
+      }
+    });
+
+    map.addLayer({
+      id: "cluster-count",
+      type: "symbol",
+      source: "events",
+      filter: ["has", "point_count"],
+      layout: {
+        "text-field": ["get", "point_count_abbreviated"],
+        "text-size": 12
+      },
+      paint: { "text-color": "#ffffff" }
+    });
+
+    map.addLayer({
+      id: "event-points",
+      type: "circle",
+      source: "events",
+      filter: ["!", ["has", "point_count"]],
+      paint: {
+        "circle-color": [
+          "match", ["get", "type_group"],
+          "Triển lãm & sắp đặt", TYPE_COLORS["Triển lãm & sắp đặt"],
+          "Trải nghiệm & workshop", TYPE_COLORS["Trải nghiệm & workshop"],
+          "Biểu diễn & phim", TYPE_COLORS["Biểu diễn & phim"],
+          "Talk & trao đổi", TYPE_COLORS["Talk & trao đổi"],
+          "Lễ & khai mạc", TYPE_COLORS["Lễ & khai mạc"],
+          TYPE_COLORS["Khác"]
+        ],
+        "circle-radius": 7,
+        "circle-stroke-width": 2,
+        "circle-stroke-color": "#ffffff"
+      }
+    });
+
+    map.on("mouseenter", "event-points", () => map.getCanvas().style.cursor = "pointer");
+    map.on("mouseleave", "event-points", () => map.getCanvas().style.cursor = "");
+
+    map.on("click", "clusters", async (ev) => {
+      const feature = map.queryRenderedFeatures(ev.point, { layers: ["clusters"] })[0];
+      if (!feature) return;
+      const clusterId = feature.properties.cluster_id;
+      const zoom = await map.getSource("events").getClusterExpansionZoom(clusterId);
+      map.easeTo({ center: feature.geometry.coordinates, zoom });
+    });
+
+    map.on("click", "event-points", (ev) => {
+      const feature = ev.features && ev.features[0];
+      if (!feature) return;
+      const id = Number(feature.properties.id);
+      const event = DATA.events.find(item => Number(item.id) === id);
+      if (event) selectEvent(event, true);
+    });
+
+    render();
+  });
+
+  function emptyGeoJSON() {
+    return { type: "FeatureCollection", features: [] };
+  }
+
+  function toGeoJSON(events) {
+    return {
+      type: "FeatureCollection",
+      features: events
+        .filter(e => Number.isFinite(e.longitude) && Number.isFinite(e.latitude))
+        .map(e => ({
+          type: "Feature",
+          id: e.id,
+          geometry: { type: "Point", coordinates: [e.longitude, e.latitude] },
+          properties: {
+            id: e.id,
+            name: e.name,
+            type_group: e.type_group,
+            venue: e.venue,
+            schedule_raw: e.schedule_raw
+          }
+        }))
+    };
+  }
+
+  function localISODate(date = new Date()) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  function safeDate(iso) {
+    if (!iso) return null;
+    const d = new Date(`${iso}T12:00:00`);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  function isWeekend(iso) {
+    const d = safeDate(iso);
+    if (!d) return false;
+    const day = d.getDay();
+    return day === 0 || day === 6;
+  }
+
+  function isOnSelectedDate(event, iso) {
+    if (!iso) return true;
+
+    if (event.recurrence === "weekends") return isWeekend(iso);
+
+    if (event.recurrence === "monthly_unspecified") {
+      return iso.slice(0, 7) === DATA.meta.data_as_of.slice(0, 7);
+    }
+
+    if (event.date_precision === "month" && event.start_date) {
+      return iso.slice(0, 7) === event.start_date.slice(0, 7);
+    }
+
+    const start = event.filter_start_date || event.start_date;
+    const end = event.filter_end_date || event.end_date || start;
+
+    if (!start && !end) return false;
+    if (start && end) return iso >= start && iso <= end;
+    if (start) return iso >= start;
+    return iso <= end;
+  }
+
+  function isPast(event, todayIso) {
+    if (event.recurrence) return false;
+    const end = event.end_date || event.start_date;
+    if (!end) return false;
+    return end < todayIso;
+  }
+
+  function normalizedText(value) {
+    return (value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLocaleLowerCase("vi")
+      .replace(/đ/g, "d");
+  }
+
+  function eventSortKey(event) {
+    const date = event.start_date || event.filter_start_date || event.end_date || "9999-12-31";
+    const time = event.start_time || "99:99";
+    return `${date}T${time}-${String(event.id).padStart(4, "0")}`;
+  }
+
+  function filteredEvents() {
+    const q = normalizedText(els.search.value.trim());
+    const selectedDate = els.date.value;
+    const selectedType = els.type.value;
+    const today = localISODate();
+
+    return DATA.events
+      .filter(event => {
+        if (els.hidePast.checked && !selectedDate && isPast(event, today)) return false;
+        if (selectedDate && !isOnSelectedDate(event, selectedDate)) return false;
+        if (selectedType && event.type_group !== selectedType) return false;
+
+        if (q) {
+          const haystack = normalizedText([
+            event.name, event.venue, event.event_type, event.type_group, event.schedule_raw, event.note
+          ].filter(Boolean).join(" "));
+          if (!haystack.includes(q)) return false;
+        }
+        return true;
+      })
+      .sort((a, b) => eventSortKey(a).localeCompare(eventSortKey(b), "vi"));
+  }
+
+  function validHttpUrl(url) {
+    if (!url) return null;
+    try {
+      const u = new URL(url);
+      return ["http:", "https:"].includes(u.protocol) ? u.href : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function render() {
+    latestFiltered = filteredEvents();
+    renderList(latestFiltered);
+    renderMap(latestFiltered);
+    renderStatus(latestFiltered);
+    syncQueryParams();
+  }
+
+  function renderList(events) {
+    els.list.replaceChildren();
+    els.empty.hidden = events.length !== 0;
+
+    const fragment = document.createDocumentFragment();
+
+    for (const event of events) {
+      const node = els.template.content.firstElementChild.cloneNode(true);
+      node.dataset.eventId = event.id;
+      if (Number(event.id) === selectedId) node.classList.add("is-selected");
+
+      node.querySelector(".event-type").textContent = event.event_type || event.type_group || "Sự kiện";
+
+      const mapped = Number.isFinite(event.longitude) && Number.isFinite(event.latitude);
+      const mapStatus = node.querySelector(".map-status");
+      mapStatus.textContent = mapped ? "● Có trên bản đồ" : "○ Chưa có tọa độ";
+      mapStatus.title = mapped
+        ? "Địa điểm đã có tọa độ"
+        : "Sự kiện vẫn có trong danh sách, nhưng chưa đặt marker để tránh sai vị trí.";
+
+      node.querySelector(".event-name").textContent = event.name || "Không tên";
+      node.querySelector(".event-time").textContent = `🗓 ${event.schedule_raw || "Chưa cập nhật thời gian"}`;
+      node.querySelector(".event-venue").textContent = `📍 ${event.venue || "Chưa cập nhật địa điểm"}`;
+
+      const noteEl = node.querySelector(".event-note");
+      if (event.note) {
+        noteEl.textContent = event.note;
+      } else {
+        noteEl.remove();
+      }
+
+      const eventUrl = validHttpUrl(event.url);
+      const eventLink = node.querySelector(".event-link");
+      if (eventUrl) eventLink.href = eventUrl;
+      else eventLink.hidden = true;
+
+      const mapsUrl = validHttpUrl(event.maps_url);
+      const mapsLink = node.querySelector(".maps-link");
+      if (mapsUrl) mapsLink.href = mapsUrl;
+      else mapsLink.hidden = true;
+
+      node.addEventListener("click", (ev) => {
+        if (ev.target.closest("a")) return;
+        selectEvent(event, false);
+      });
+
+      fragment.append(node);
+    }
+
+    els.list.append(fragment);
+  }
+
+  function renderMap(events) {
+    if (!mapReady) return;
+    map.getSource("events").setData(toGeoJSON(events));
+  }
+
+  function renderStatus(events) {
+    els.count.textContent = `${events.length} sự kiện`;
+
+    const bits = [];
+    if (els.date.value) {
+      const d = safeDate(els.date.value);
+      bits.push(d ? dateFmt.format(d) : els.date.value);
+    } else if (els.hidePast.checked) {
+      bits.push("đang diễn ra / sắp tới");
+    } else {
+      bits.push("toàn bộ dữ liệu");
+    }
+    if (els.type.value) bits.push(els.type.value);
+    if (els.search.value.trim()) bits.push(`“${els.search.value.trim()}”`);
+
+    els.summary.textContent = bits.join(" · ");
+  }
+
+  function popupContent(event) {
+    const root = document.createElement("div");
+
+    const title = document.createElement("h3");
+    title.className = "popup-title";
+    title.textContent = event.name;
+    root.append(title);
+
+    const time = document.createElement("p");
+    time.className = "popup-line";
+    time.textContent = `🗓 ${event.schedule_raw || "Chưa cập nhật"}`;
+    root.append(time);
+
+    const venue = document.createElement("p");
+    venue.className = "popup-line";
+    venue.textContent = `📍 ${event.venue || "Chưa cập nhật"}`;
+    root.append(venue);
+
+    const type = document.createElement("p");
+    type.className = "popup-line";
+    type.textContent = event.event_type || event.type_group || "";
+    root.append(type);
+
+    const actions = document.createElement("div");
+    actions.className = "popup-actions";
+
+    const eventUrl = validHttpUrl(event.url);
+    if (eventUrl) {
+      const a = document.createElement("a");
+      a.href = eventUrl;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Chi tiết ↗";
+      actions.append(a);
+    }
+
+    const mapsUrl = validHttpUrl(event.maps_url);
+    if (mapsUrl) {
+      const a = document.createElement("a");
+      a.href = mapsUrl;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Maps ↗";
+      actions.append(a);
+    }
+
+    root.append(actions);
+    return root;
+  }
+
+  function selectEvent(event, fromMap) {
+    selectedId = Number(event.id);
+
+    document.querySelectorAll(".event-card").forEach(card => {
+      card.classList.toggle("is-selected", Number(card.dataset.eventId) === selectedId);
+    });
+
+    const card = document.querySelector(`.event-card[data-event-id="${CSS.escape(String(event.id))}"]`);
+    if (fromMap && card) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    if (Number.isFinite(event.longitude) && Number.isFinite(event.latitude) && mapReady) {
+      map.easeTo({ center: [event.longitude, event.latitude], zoom: Math.max(map.getZoom(), 14), duration: 700 });
+      new maplibregl.Popup({ offset: 12 })
+        .setLngLat([event.longitude, event.latitude])
+        .setDOMContent(popupContent(event))
+        .addTo(map);
+
+      if (window.innerWidth <= 720 && !fromMap) setMobileView("map");
+    }
+  }
+
+  function syncQueryParams() {
+    const q = els.search.value.trim();
+    const date = els.date.value;
+    const type = els.type.value;
+
+    const next = new URLSearchParams();
+    if (date) next.set("date", date);
+    if (type) next.set("type", type);
+    if (q) next.set("q", q);
+
+    const query = next.toString();
+    const url = `${window.location.pathname}${query ? "?" + query : ""}${window.location.hash}`;
+    history.replaceState(null, "", url);
+  }
+
+  function setMobileView(view) {
+    document.body.dataset.mobileView = view;
+    document.querySelectorAll(".view-button").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.view === view);
+    });
+    if (view === "map") setTimeout(() => map.resize(), 60);
+  }
+
+  let searchTimer = null;
+  els.search.addEventListener("input", () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(render, 120);
+  });
+  els.date.addEventListener("change", render);
+  els.type.addEventListener("change", render);
+  els.hidePast.addEventListener("change", render);
+
+  els.today.addEventListener("click", () => {
+    els.date.value = localISODate();
+    els.hidePast.checked = false;
+    render();
+  });
+
+  els.clear.addEventListener("click", () => {
+    els.search.value = "";
+    els.date.value = "";
+    els.type.value = "";
+    els.hidePast.checked = true;
+    render();
+  });
+
+  document.querySelectorAll(".view-button").forEach(btn => {
+    btn.addEventListener("click", () => setMobileView(btn.dataset.view));
+  });
+
+  render();
+})();
+
+</script>
+</body>
+</html>
