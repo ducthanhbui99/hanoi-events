@@ -5,8 +5,8 @@
     "source_type": "google_sheets",
     "source_sheet": "Locations",
     "spreadsheet_id": "1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8",
-    "total_locations": 57,
-    "mapped_locations": 51,
+    "total_locations": 66,
+    "mapped_locations": 60,
     "unmapped_locations": 6,
     "note": "Locations are keyed by canonical venue name from the Google Sheet."
   },
@@ -295,6 +295,51 @@
       "latitude": null,
       "longitude": null,
       "coordinate_source": null
+    },
+    "Hoàng Thành Thăng Long": {
+      "latitude": 21.0353933162422,
+      "longitude": 105.840881668211,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Rạp Kim Mã, 1 Giang Văn Minh": {
+      "latitude": 21.0318748634196,
+      "longitude": 105.82699588412,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Bảo tàng Mỹ thuật Việt Nam, 66 Nguyễn Thái Học": {
+      "latitude": 21.0308169476153,
+      "longitude": 105.837292933995,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Bảo tàng Phụ nữ Việt Nam, 36 Lý Thường Kiệt": {
+      "latitude": 21.0235436297858,
+      "longitude": 105.852165439408,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Toong Co-working Space, 51 Phan Bội Châu": {
+      "latitude": 21.0242766162665,
+      "longitude": 105.843485552598,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Trung tâm chiếu phim quốc gia, 87 Láng Hạ": {
+      "latitude": 21.0168591566701,
+      "longitude": 105.815784280784,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Á Space, ngõ 59 Ngô Gia Tự": {
+      "latitude": 21.0607840898683,
+      "longitude": 105.893208254406,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Manzi Exhibition Space, ngõ Hàng Bún": {
+      "latitude": 21.0420043489474,
+      "longitude": 105.846004885404,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Quán Cầm, 6 Nguyễn Thượng Hiền": {
+      "latitude": 21.0190675404456,
+      "longitude": 105.843663724572,
+      "coordinate_source": "Google Sheet - Locations"
     }
   }
 }
