@@ -42,13 +42,12 @@ Category hiện không phải là filter trên giao diện nhưng vẫn được
 ## Nguồn dữ liệu master
 
 Google Sheet:
-https://docs.google.com/spreadsheets/d/1yUjw6cx4upm82AjxLo3U-xYfNFexxgALoTXel3ZouCk/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8/edit?usp=sharing
 
 - Sheet sự kiện: `Events`
-- Sheet địa điểm: `Location`
+- Sheet địa điểm: `Locations`
 - Output tương ứng: `events.json` và `locations.json`
 - Google Sheet này là source of truth cho các lần publish hàng tuần.
-
 ## Cập nhật hàng tuần
 
 Workflow đề xuất:
