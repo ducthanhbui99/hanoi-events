@@ -527,71 +527,51 @@ h1 {
   gap: 12px;
   margin-bottom: 10px;
 }
-.date-filter-wrap { position: relative; display: inline-flex; }
-.date-filter-wrap:focus-within .calendar-filter {
-  border-color: #6b7280;
-  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.12);
-}
-.calendar-filter {
-  min-height: 44px;
+.date-filter-wrap {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 6px;
+}
+.date-picker-input {
+  min-height: 44px;
+  min-width: 158px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 9px 12px;
+  padding: 8px 10px;
   background: var(--panel);
   color: var(--text);
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(0,0,0,.04);
-  font-weight: 750;
+  outline: none;
+  color-scheme: light;
 }
-.calendar-filter:hover { border-color: #9ca3af; }
-.calendar-filter.is-active { border-color: #9ca3af; background: #fafafa; }
-.calendar-icon {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  flex: 0 0 auto;
+.date-picker-input:hover { border-color: #9ca3af; }
+.date-picker-input:focus {
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.12);
+}
+.date-picker-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 .calendar-clear {
-  position: absolute;
-  z-index: 3;
-  right: 5px;
-  top: 50%;
-  transform: translateY(-50%);
+  flex: 0 0 44px;
   width: 44px;
   height: 44px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  line-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  line-height: 1;
   text-align: center;
   color: var(--muted);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 500;
   cursor: pointer;
 }
 .calendar-clear:hover,
-.calendar-clear:focus-visible { background: #ececea; color: var(--text); }
-.date-picker-input {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  border: 0;
-}
-.date-filter-wrap.has-date .calendar-filter { padding-right: 48px; }
-.date-filter-wrap.has-date .date-picker-input {
-  right: 44px;
-  width: calc(100% - 44px);
+.calendar-clear:focus-visible {
+  border-color: #9ca3af;
+  background: #ececea;
+  color: var(--text);
 }
 .workspace {
   height: calc(100vh - 78px);
@@ -612,8 +592,7 @@ h1 {
     min-height: 280px;
   }
   .mobile-view-switch { display: inline-flex; }
-  .calendar-filter { min-height: 44px; padding: 7px 10px; font-size: 13px; }
-  .calendar-icon { width: 18px; height: 18px; }
+  .date-picker-input { min-height: 44px; min-width: 145px; font-size: 16px; }
   .view-button { min-height: 44px; }
 
   @media (pointer: coarse) {
@@ -633,12 +612,6 @@ h1 {
   <main class="app-shell">
     <section class="compact-toolbar" aria-label="Chọn ngày và chế độ hiển thị">
       <div class="date-filter-wrap" id="date-filter-wrap">
-        <div class="calendar-filter" id="calendar-button" aria-hidden="true">
-          <svg class="calendar-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M7 3v3M17 3v3M4.5 9h15M6 5h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"></path>
-          </svg>
-          <span id="calendar-label">Chọn ngày</span>
-        </div>
         <input id="date-input" class="date-picker-input" type="date" aria-label="Chọn ngày sự kiện" />
         <button id="calendar-clear" class="calendar-clear" type="button" hidden aria-label="Bỏ chọn ngày">×</button>
       </div>
@@ -1012,18 +985,11 @@ class SimpleOSMMap {
 
   const els = {
     date: document.getElementById("date-input"),
-    calendarButton: document.getElementById("calendar-button"),
-    calendarLabel: document.getElementById("calendar-label"),
     calendarClear: document.getElementById("calendar-clear"),
-    dateWrap: document.getElementById("date-filter-wrap"),
     list: document.getElementById("event-list"),
     empty: document.getElementById("empty-state"),
     template: document.getElementById("event-card-template")
   };
-
-  const dateFmt = new Intl.DateTimeFormat("vi-VN", {
-    day: "2-digit", month: "2-digit", year: "numeric"
-  });
 
   const params = new URLSearchParams(window.location.search);
   els.date.value = params.get("date") || "";
@@ -1060,12 +1026,6 @@ class SimpleOSMMap {
       console.error("Map initialization failed:", err);
       showMapError("Có lỗi khi khởi tạo bản đồ.");
     }
-  }
-
-  function safeDate(iso) {
-    if (!iso) return null;
-    const d = new Date(`${iso}T12:00:00`);
-    return Number.isNaN(d.getTime()) ? null : d;
   }
 
   function isOnSelectedDate(event, iso) {
@@ -1187,16 +1147,7 @@ class SimpleOSMMap {
   }
 
   function updateDateControl() {
-    const hasDate = Boolean(els.date.value);
-    if (hasDate) {
-      const d = safeDate(els.date.value);
-      els.calendarLabel.textContent = d ? dateFmt.format(d) : els.date.value;
-    } else {
-      els.calendarLabel.textContent = "Chọn ngày";
-    }
-    els.calendarClear.hidden = !hasDate;
-    els.calendarButton.classList.toggle("is-active", hasDate);
-    els.dateWrap.classList.toggle("has-date", hasDate);
+    els.calendarClear.hidden = !els.date.value;
   }
 
   function syncQueryParams() {
@@ -1223,7 +1174,16 @@ class SimpleOSMMap {
     els.date.value = "";
     render();
   });
-  els.date.addEventListener("change", render);
+  let dateRenderFrame = null;
+  const renderDateChange = () => {
+    if (dateRenderFrame) cancelAnimationFrame(dateRenderFrame);
+    dateRenderFrame = requestAnimationFrame(() => {
+      dateRenderFrame = null;
+      render();
+    });
+  };
+  els.date.addEventListener("input", renderDateChange);
+  els.date.addEventListener("change", renderDateChange);
 
   document.querySelectorAll(".view-button").forEach(btn => {
     btn.addEventListener("click", () => setMobileView(btn.dataset.view));
