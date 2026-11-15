@@ -639,7 +639,7 @@ h1 {
         <div id="map"></div>
         <div class="map-note">
           <span class="dot dot-mapped"></span>
-          Marker chỉ hiển thị cho địa điểm đã có tọa độ.<span class="touch-zoom-hint"> Dùng 2 ngón tay để zoom.</span>
+          Marker chỉ hiển thị cho địa điểm đã có tọa độ.<span class="touch-zoom-hint"> Chụm/mở 2 ngón tay để zoom.</span>
         </div>
       </section>
     </section>
@@ -721,6 +721,10 @@ class SimpleOSMMap {
       return Math.hypot(dx, dy);
     };
 
+    const isInteractiveTarget = (target) =>
+      target && target.closest &&
+      target.closest(".simple-map-marker, .simple-map-controls, .simple-map-popup, a");
+
     const startSingleFingerDrag = (point) => {
       this.drag = {
         pointerId: point.pointerId,
@@ -742,8 +746,12 @@ class SimpleOSMMap {
       this.container.classList.remove("is-dragging");
     };
 
+    // Pointer Events remain the desktop / mouse / pen path.
+    // Touch pointers are handled separately below with native Touch Events
+    // because iOS Safari is more reliable for two-finger gestures that way.
     this.container.addEventListener("pointerdown", (e) => {
-      if (e.target.closest(".simple-map-marker, .simple-map-controls, .simple-map-popup, a")) return;
+      if (e.pointerType === "touch") return;
+      if (isInteractiveTarget(e.target)) return;
 
       const point = { pointerId: e.pointerId, x: e.clientX, y: e.clientY };
       this.activePointers.set(e.pointerId, point);
@@ -759,6 +767,7 @@ class SimpleOSMMap {
     });
 
     this.container.addEventListener("pointermove", (e) => {
+      if (e.pointerType === "touch") return;
       const point = this.activePointers.get(e.pointerId);
       if (!point) return;
 
@@ -776,13 +785,10 @@ class SimpleOSMMap {
         }
 
         const scale = distance / this.pinch.distance;
-
-        // Step zoom keeps the raster-tile renderer crisp while still supporting
-        // familiar two-finger pinch gestures on iOS and Android.
-        if (scale >= 1.22 && this.zoom < this.maxZoom) {
+        if (scale >= 1.10 && this.zoom < this.maxZoom) {
           this.setZoom(this.zoom + 1);
           this.pinch.distance = distance;
-        } else if (scale <= 0.82 && this.zoom > this.minZoom) {
+        } else if (scale <= 0.90 && this.zoom > this.minZoom) {
           this.setZoom(this.zoom - 1);
           this.pinch.distance = distance;
         }
@@ -798,6 +804,7 @@ class SimpleOSMMap {
     });
 
     const endPointer = (e) => {
+      if (e.pointerType === "touch") return;
       if (!this.activePointers.has(e.pointerId)) return;
 
       this.activePointers.delete(e.pointerId);
@@ -820,6 +827,103 @@ class SimpleOSMMap {
     };
     this.container.addEventListener("pointerup", endPointer);
     this.container.addEventListener("pointercancel", endPointer);
+
+    // Native touch path for iOS Safari and Android browsers.
+    // One finger pans; two fingers pinch. preventDefault() keeps the browser
+    // from interpreting the same gesture as page scroll / page zoom.
+    this.touchGesture = null;
+
+    const touchPoint = (touch) => ({ x: touch.clientX, y: touch.clientY });
+    const beginTouchGesture = (touches) => {
+      if (touches.length >= 2) {
+        const a = touchPoint(touches[0]);
+        const b = touchPoint(touches[1]);
+        this.touchGesture = {
+          mode: "pinch",
+          distance: Math.max(1, pointerDistance(a, b))
+        };
+        this.drag = null;
+        this.container.classList.remove("is-dragging");
+      } else if (touches.length === 1) {
+        const p = touchPoint(touches[0]);
+        this.touchGesture = {
+          mode: "pan",
+          x: p.x,
+          y: p.y,
+          centerWorld: this.lngLatToWorld(this.center[0], this.center[1], this.zoom)
+        };
+        this.container.classList.add("is-dragging");
+      } else {
+        this.touchGesture = null;
+        this.container.classList.remove("is-dragging");
+      }
+    };
+
+    this.container.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 1 && isInteractiveTarget(e.target)) return;
+      if (e.cancelable) e.preventDefault();
+      beginTouchGesture(e.touches);
+      this.closePopup();
+    }, { passive: false });
+
+    this.container.addEventListener("touchmove", (e) => {
+      if (e.cancelable) e.preventDefault();
+
+      if (e.touches.length >= 2) {
+        const a = touchPoint(e.touches[0]);
+        const b = touchPoint(e.touches[1]);
+        const distance = Math.max(1, pointerDistance(a, b));
+
+        if (!this.touchGesture || this.touchGesture.mode !== "pinch") {
+          this.touchGesture = { mode: "pinch", distance };
+          this.container.classList.remove("is-dragging");
+          return;
+        }
+
+        const scale = distance / this.touchGesture.distance;
+        if (scale >= 1.08 && this.zoom < this.maxZoom) {
+          this.setZoom(this.zoom + 1);
+          this.touchGesture.distance = distance;
+        } else if (scale <= 0.92 && this.zoom > this.minZoom) {
+          this.setZoom(this.zoom - 1);
+          this.touchGesture.distance = distance;
+        }
+        return;
+      }
+
+      if (e.touches.length === 1) {
+        const p = touchPoint(e.touches[0]);
+
+        if (!this.touchGesture || this.touchGesture.mode !== "pan") {
+          beginTouchGesture(e.touches);
+          return;
+        }
+
+        const dx = p.x - this.touchGesture.x;
+        const dy = p.y - this.touchGesture.y;
+        const world = {
+          x: this.touchGesture.centerWorld.x - dx,
+          y: this.touchGesture.centerWorld.y - dy
+        };
+        this.center = this.worldToLngLat(world.x, world.y, this.zoom);
+        this.requestRender();
+      }
+    }, { passive: false });
+
+    const endTouch = (e) => {
+      if (e.cancelable) e.preventDefault();
+      beginTouchGesture(e.touches);
+    };
+    this.container.addEventListener("touchend", endTouch, { passive: false });
+    this.container.addEventListener("touchcancel", endTouch, { passive: false });
+
+    // Safari-specific gesture events can otherwise trigger browser-level zoom.
+    const preventGesture = (e) => {
+      if (e.cancelable) e.preventDefault();
+    };
+    this.container.addEventListener("gesturestart", preventGesture, { passive: false });
+    this.container.addEventListener("gesturechange", preventGesture, { passive: false });
+    this.container.addEventListener("gestureend", preventGesture, { passive: false });
 
     if (window.ResizeObserver) {
       this.resizeObserver = new ResizeObserver(() => this.requestRender());
