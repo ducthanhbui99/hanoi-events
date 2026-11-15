@@ -1,66 +1,73 @@
 # Hanoi Events
 
-Website tĩnh (static site) để hiển thị danh sách sự kiện Hà Nội trên **Map + List**, không cần backend và không cần API key.
+Static website hiển thị sự kiện Hà Nội trên **Map + List**, deploy bằng GitHub Pages.
 
-## Dữ liệu
+## Kiến trúc
 
-- Nguồn: `Hanoi Event - To Share.xlsx`
-- Sheet: `16 Nov`
-- Số sự kiện: **138**
-- Có tọa độ để đặt marker: **86**
-- Chưa có tọa độ: **52** (vẫn hiện trong List view)
-- Ngày snapshot dùng khi chuẩn hóa các mốc "Đến ...": **2026-11-16**
+Repository hiện tách thành 3 file chính:
 
-Website giữ nguyên `Thời gian` gốc trong file để hiển thị. Các trường `start_date/end_date/start_time/end_time` trong `events.json` được chuẩn hóa để phục vụ lọc/sắp xếp.
+- `index.html` — giao diện, bộ lọc ngày, bản đồ và logic hiển thị.
+- `events.json` — danh sách sự kiện; đây là file cần cập nhật thường xuyên.
+- `locations.json` — thư viện địa điểm → latitude/longitude; tọa độ được tái sử dụng giữa các tuần.
 
-## Chức năng
+Website tải `events.json` và `locations.json` khi mở trang, sau đó ghép tọa độ vào event bằng tên địa điểm.
 
-- Bản đồ MapLibre + OpenFreeMap
-- Danh sách sự kiện responsive
-- Tìm theo tên/địa điểm
-- Lọc theo ngày
-- Lọc theo loại sự kiện
-- Ẩn sự kiện đã kết thúc
-- Cluster marker
-- Popup chi tiết
-- Link nguồn sự kiện
-- Link Google Maps
-- URL chia sẻ bộ lọc, ví dụ `?date=2026-11-22&type=Bi%E1%BB%83u%20di%E1%BB%85n%20%26%20phim`
+## Dataset hiện tại
+
+- Sự kiện: **177**
+- Địa điểm đã lưu tọa độ: **44**
+- Sự kiện hiện có marker: **137**
+- Sự kiện chưa có marker: **40**
+
+Các event chưa có tọa độ vẫn xuất hiện trong danh sách.
+
+## Quy tắc ngày
+
+- Có ngày bắt đầu và kết thúc: sự kiện tồn tại trong toàn bộ khoảng ngày, tính cả hai đầu.
+- Chỉ có ngày bắt đầu: sự kiện tồn tại từ ngày bắt đầu trở đi.
+- Chỉ có ngày kết thúc: sự kiện tồn tại đến hết ngày kết thúc.
+- Không có cả ngày bắt đầu và kết thúc: sự kiện luôn tồn tại.
+
+## Category
+
+Dữ liệu dùng 4 nhóm:
+
+1. Triển lãm & Trưng bày
+2. Trình diễn
+3. Trải nghiệm, giao lưu
+4. Tọa đàm, workshop, trao đổi
+
+Category hiện không phải là filter trên giao diện nhưng vẫn được lưu trong `events.json`.
+
+## Cập nhật hàng tuần
+
+Workflow đề xuất:
+
+1. Chuẩn hóa danh sách sự kiện tuần mới.
+2. Cập nhật `events.json`.
+3. Với venue mới, nếu có tọa độ xác minh được thì bổ sung vào `locations.json`.
+4. Không cần sửa `index.html` trừ khi thay đổi giao diện hoặc logic.
+5. Commit vào branch `main`; GitHub Pages tự deploy.
+
+Một event trong `events.json` không cần chứa latitude/longitude. Website tự tìm tọa độ theo trường `venue` trong `locations.json`.
 
 ## Chạy local
 
-Có thể mở `index.html` trực tiếp bằng trình duyệt (cần Internet để tải MapLibre và bản đồ nền).
+Do website dùng `fetch()` để đọc JSON, không nên mở trực tiếp bằng `file://`.
 
-Hoặc chạy một local web server:
+Chạy local server:
 
 ```bash
 python -m http.server 8000
 ```
 
-Sau đó mở `http://localhost:8000`.
+Sau đó mở:
 
-## Đưa lên GitHub Pages
-
-1. Tạo một public repository, ví dụ `hanoi-events`.
-2. Upload toàn bộ file trong thư mục này vào root repository.
-3. Vào **Settings → Pages**.
-4. Chọn **Deploy from a branch**.
-5. Chọn branch `main`, folder `/ (root)`.
-6. Website sẽ có dạng `https://<username>.github.io/hanoi-events/`.
-
-## Cập nhật dữ liệu
-
-Source dùng bởi website là `events.js`; `events.json` là bản JSON tương đương để dễ tích hợp về sau.
-
-Khi cập nhật dataset, nên regenerate cả hai file để tránh lệch dữ liệu.
-
-## Tọa độ
-
-Các địa điểm chưa xác định chắc tọa độ được liệt kê trong `UNMAPPED_LOCATIONS.md`. Các mục này không có marker nhưng có thể có link Google Maps Search.
+`http://localhost:8000`
 
 ## Stack
 
-- MapLibre GL JS 6.18.0
-- OpenFreeMap style: `https://tiles.openfreemap.org/styles/liberty`
 - HTML/CSS/JavaScript thuần
+- CARTO Voyager raster basemap
 - GitHub Pages
+- Không có backend/database
