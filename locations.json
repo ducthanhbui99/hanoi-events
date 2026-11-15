@@ -2,229 +2,299 @@
   "meta": {
     "title": "Hanoi Events location library",
     "updated_at": "2026-11-15",
-    "total_locations": 44,
-    "note": "Exact venue names used by events.json. Coordinates are applied client-side by matching venue text."
+    "source_type": "google_sheets",
+    "source_sheet": "Locations",
+    "spreadsheet_id": "1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8",
+    "total_locations": 57,
+    "mapped_locations": 52,
+    "unmapped_locations": 5,
+    "note": "Locations are keyed by canonical venue name from the Google Sheet."
   },
   "locations": {
-    "Nhà hát Tuổi Trẻ - 11 Ngô Thì Nhậm": {
+    "Chưa rõ (nhắn BTC)": {
+      "latitude": null,
+      "longitude": null,
+      "coordinate_source": null
+    },
+    "Kỳ Lân House, 34C Trần Phú": {
+      "latitude": 21.0312303766413,
+      "longitude": 105.844361548627,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Nhà hát Tuổi Trẻ, 11 Ngô Thì Nhậm": {
       "latitude": 21.01772,
       "longitude": 105.85306,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Nhà hát Kịch Việt Nam, 1 Tràng Tiền": {
+      "latitude": 21.0242631166578,
+      "longitude": 105.859500736984,
+      "coordinate_source": "Google Sheet - Locations"
     },
     "Bảo tàng Vũ Dân Tân, 443 Ngọc Thụy": {
       "latitude": 21.063609,
       "longitude": 105.865696,
-      "coordinate_source": "HanoiMaps events dataset / Google Maps link"
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "Trung tâm Giao lưu Văn hóa Nhật Bản tại Việt Nam": {
+    "Trung tâm Giao lưu Văn hóa Nhật Bản tại Việt Nam, 27 Quang Trung": {
       "latitude": 21.02179,
       "longitude": 105.8488,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
     },
     "Sóng Sánh Café, 48 Ngọc Hà": {
       "latitude": 21.034763,
       "longitude": 105.831525,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
     },
     "15 Ngô Quyền, Hoàn Kiếm": {
       "latitude": 21.025413,
       "longitude": 105.856375,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "Indochine House, Tầng 3, số 8 Tràng Thi": {
+    "Indochine House, 8 Tràng Thi": {
       "latitude": 21.02671,
       "longitude": 105.84944,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "Trung tâm Giao lưu Văn hóa Phố cổ Hà Nội – 50 Đào Duy Từ": {
+    "Ngôi nhà Di sản, 87 Mã Mây": {
+      "latitude": 21.0344273147999,
+      "longitude": 105.853609614167,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Trung tâm Giao lưu Văn hóa Phố cổ Hà Nội, 50 Đào Duy Từ": {
       "latitude": 21.03552,
       "longitude": 105.85279,
-      "coordinate_source": "OpenStreetMap/Mapcarta"
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "Đình Kim Ngân – 42–44 Hàng Bạc": {
+    "Trung tâm Thông tin Văn hóa Hồ Gươm, 2 Lê Thái Tổ": {
+      "latitude": 21.0320627327862,
+      "longitude": 105.851824854718,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Đình Kim Ngân, 42–44 Hàng Bạc": {
       "latitude": 21.03413,
       "longitude": 105.85291,
-      "coordinate_source": "OpenStreetMap/GeoView"
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "Di tích 40 Lãn Ông": {
-      "latitude": 21.03543,
-      "longitude": 105.84871,
-      "coordinate_source": "HanoiMaps events dataset"
+    "Trung tâm Văn hóa Nghệ thuật, 22 Hàng Buồm": {
+      "latitude": 21.0361577267479,
+      "longitude": 105.852711839276,
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "Tòa nhà Di sản 24 Lý Thái Tổ": {
-      "latitude": 21.03011,
-      "longitude": 105.85491,
-      "coordinate_source": "HanoiMaps events dataset"
-    },
-    "Chợ Đồng Xuân": {
-      "latitude": 21.03814,
-      "longitude": 105.85004,
-      "coordinate_source": "Existing verified website coordinate"
-    },
-    "Tháp nước Hàng Đậu": {
-      "latitude": 21.03127,
-      "longitude": 105.85395,
-      "coordinate_source": "HanoiMaps events dataset"
-    },
-    "Rạp Hồng Hà (51A Đường Thành)": {
-      "latitude": 21.031509594663003,
-      "longitude": 105.84740276431498,
-      "coordinate_source": "Manual - Google Maps"
-    },
-    "Nhà hát Tuổi trẻ": {
-      "latitude": 21.01772,
-      "longitude": 105.85306,
-      "coordinate_source": "HanoiMaps events dataset"
-    },
-    "bờ vở sông Hồng": {
-      "latitude": 21.060171261102397,
-      "longitude": 105.83770699519673,
-      "coordinate_source": "Manual - Google Maps"
-    },
-    "DUYÊN – Rạp Đông Đô, 18 phố Lương Ngọc Quyến": {
-      "latitude": 21.03494,
-      "longitude": 105.85278,
-      "coordinate_source": "Existing verified website coordinate"
-    },
-    "Rạp Chuông Vàng, 72 phố Hàng Bạc": {
-      "latitude": 21.0341,
-      "longitude": 105.8532,
-      "coordinate_source": "Kho dữ liệu Văn hóa / public cultural data"
-    },
-    "Sân đình làng Triều Khúc": {
-      "latitude": 20.98012,
-      "longitude": 105.80261,
-      "coordinate_source": "HanoiMaps events dataset"
-    },
-    "Bảo tàng Hà Nội": {
-      "latitude": 21.009212,
-      "longitude": 105.785776,
-      "coordinate_source": "Existing verified website coordinate"
-    },
-    "TT Giao lưu Văn hóa Phổ Cổ 50 Đào Duy Từ": {
-      "latitude": 21.03552,
-      "longitude": 105.85279,
-      "coordinate_source": "OpenStreetMap/Mapcarta"
-    },
-    "47 Hàng Dầu": {
-      "latitude": 21.03046,
-      "longitude": 105.85403,
-      "coordinate_source": "HanoiMaps events dataset"
+    "Đình Hà Vĩ, 11 Hàng Hòm": {
+      "latitude": 21.0322714901955,
+      "longitude": 105.849288437524,
+      "coordinate_source": "Google Sheet - Locations"
     },
     "Hội quán Phúc Kiến, 40 Lãn Ông": {
       "latitude": 21.03543,
       "longitude": 105.84871,
-      "coordinate_source": "Existing verified website coordinate"
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Trung tâm Thông tin Di sản Phố cổ, 28 Hàng Buồm": {
+      "latitude": 21.0360673389527,
+      "longitude": 105.852088920711,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Đình Yên Thái, 8 Tạm Thương": {
+      "latitude": 21.0314783114112,
+      "longitude": 105.847927503067,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Đình Tú Thị, 2 Yên Thái": {
+      "latitude": 21.0320732030506,
+      "longitude": 105.847903557738,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Tòa nhà Di sản, 24 Lý Thái Tổ": {
+      "latitude": 21.03011,
+      "longitude": 105.85491,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Long Biên Art Space": {
+      "latitude": 21.045631541581,
+      "longitude": 105.866264081331,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Sóng Mây Gallery.S, 48 đường 5 Khu F361 An Dương": {
+      "latitude": 21.0512771468885,
+      "longitude": 105.845472937524,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Viện Pháp tại Việt Nam, 15 Thiền Quang": {
+      "latitude": 21.0198809234314,
+      "longitude": 105.843092337524,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Chợ Đồng Xuân": {
+      "latitude": 21.03814,
+      "longitude": 105.85004,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Tháp nước Hàng Đậu": {
+      "latitude": 21.03127,
+      "longitude": 105.85395,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Rạp Hồng Hà, 51A Đường Thành": {
+      "latitude": 21.03150959,
+      "longitude": 105.84740276,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Bờ vở sông Hồng": {
+      "latitude": 21.06017126,
+      "longitude": 105.837707,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "DUYÊN – Rạp Đông Đô, 18 Lương Ngọc Quyến": {
+      "latitude": 21.03494,
+      "longitude": 105.85278,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Rạp Chuông Vàng, 72 phố Hàng Bạc": {
+      "latitude": 21.0341,
+      "longitude": 105.8532,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Sân đình làng Triều Khúc": {
+      "latitude": 20.98012,
+      "longitude": 105.80261,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Bảo tàng Hà Nội": {
+      "latitude": 21.009212,
+      "longitude": 105.785776,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Quảng trường Sáng tạo": {
+      "latitude": 21.0296282263915,
+      "longitude": 105.854399101905,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Văn Miếu – Quốc Tử Giám": {
+      "latitude": 21.0281775666761,
+      "longitude": 105.83593741663,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "47 Hàng Dầu": {
+      "latitude": 21.03046,
+      "longitude": 105.85403,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Phố Phùng Hưng": {
+      "latitude": null,
+      "longitude": null,
+      "coordinate_source": null
     },
     "Công viên Thống Nhất": {
       "latitude": 21.015761,
       "longitude": 105.844819,
-      "coordinate_source": "Existing verified website coordinate"
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "47 Tràng Tiền": {
+      "latitude": 21.0251431360637,
+      "longitude": 105.854103183231,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "61 Tràng Tiền": {
+      "latitude": 21.0252340580357,
+      "longitude": 105.853419859931,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Làng Khai Cuốc & phố cổ": {
+      "latitude": null,
+      "longitude": null,
+      "coordinate_source": null
     },
     "Sân sau Chợ Đồng Xuân": {
       "latitude": 21.03814,
       "longitude": 105.85004,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
     },
     "Tầng 3 Chợ Đồng Xuân": {
       "latitude": 21.03814,
       "longitude": 105.85004,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
     },
     "Sân mái Chợ Đồng Xuân": {
       "latitude": 21.03814,
       "longitude": 105.85004,
-      "coordinate_source": "Existing verified website coordinate"
+      "coordinate_source": "Google Sheet - Locations"
     },
     "Quảng trường Lotte": {
       "latitude": 21.03235,
       "longitude": 105.8126,
-      "coordinate_source": "Existing verified website coordinate"
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "Hội quán Phúc Kiến": {
-      "latitude": 21.03543,
-      "longitude": 105.84871,
-      "coordinate_source": "HanoiMaps events dataset"
+    "45 Tràng Tiền": {
+      "latitude": 21.0251431360637,
+      "longitude": 105.854103183231,
+      "coordinate_source": "Google Sheet - Locations"
     },
     "Villa 49 Trần Hưng Đạo": {
       "latitude": 21.020781,
       "longitude": 105.851957,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Nương Náu Art Hub": {
+      "latitude": 21.0199301354876,
+      "longitude": 105.846474353485,
+      "coordinate_source": "Google Sheet - Locations"
     },
     "COMPLEX 01": {
       "latitude": 21.01029,
       "longitude": 105.82647,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
     },
     "Tầng 4 Chợ Đồng Xuân": {
       "latitude": 21.03814,
       "longitude": 105.85004,
-      "coordinate_source": "HanoiMaps events dataset"
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "40 Lãn Ông": {
-      "latitude": 21.03543,
-      "longitude": 105.84871,
-      "coordinate_source": "HanoiMaps events dataset"
+    "19 Hàng Buồm": {
+      "latitude": 21.0358617809991,
+      "longitude": 105.852345413702,
+      "coordinate_source": "Google Sheet - Locations"
     },
     "40 Tăng Bạt Hổ": {
-      "latitude": 21.01632965706199,
-      "longitude": 105.85844586227938,
-      "coordinate_source": "Manual - Google Maps"
+      "latitude": 21.01632966,
+      "longitude": 105.85844586,
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "49 Trần Hưng Đạo": {
-      "latitude": 21.020781,
-      "longitude": 105.851957,
-      "coordinate_source": "HanoiMaps events dataset"
-    },
-    "24 Lý Thái Tổ": {
-      "latitude": 21.03011,
-      "longitude": 105.85491,
-      "coordinate_source": "Existing verified website coordinate"
-    },
-    "75 Hàng Trống": {
-      "latitude": 21.029444,
-      "longitude": 105.849167,
-      "coordinate_source": "Public official gazette coordinate"
-    },
-    "85 Hàng Gai": {
-      "latitude": 21.03165,
-      "longitude": 105.8499,
-      "coordinate_source": "OpenStreetMap-derived public reference"
-    },
-    "Quảng trường trước chợ Đồng Xuân": {
-      "latitude": 21.03814,
-      "longitude": 105.85004,
-      "coordinate_source": "Matched to Chợ Đồng Xuân"
-    },
-    "Rạp Chuông Vàng": {
-      "latitude": 21.0341,
-      "longitude": 105.8532,
-      "coordinate_source": "Existing verified website coordinate"
-    },
-    "COMPLEX 01, Kim Liên": {
-      "latitude": 21.01029,
-      "longitude": 105.82647,
-      "coordinate_source": "Matched to COMPLEX 01"
-    },
-    "DUYÊN, Rạp Đông Đô": {
-      "latitude": 21.03494,
-      "longitude": 105.85278,
-      "coordinate_source": "Existing verified website coordinate"
+    "Phố cổ": {
+      "latitude": null,
+      "longitude": null,
+      "coordinate_source": null
     },
     "Đình Nam Hương, 75 Hàng Trống": {
       "latitude": 21.029444,
       "longitude": 105.849167,
-      "coordinate_source": "Public official gazette coordinate"
+      "coordinate_source": "Google Sheet - Locations"
     },
-    "Bờ vở sông Hồng": {
-      "latitude": 21.060171261102397,
-      "longitude": 105.83770699519673,
-      "coordinate_source": "Manual - Google Maps"
+    "4 Hàng Quạt": {
+      "latitude": 21.0330838400082,
+      "longitude": 105.850144332064,
+      "coordinate_source": "Google Sheet - Locations"
     },
     "Đình Cổ Vũ, 85 Hàng Gai": {
       "latitude": 21.03165,
       "longitude": 105.8499,
-      "coordinate_source": "OpenStreetMap-derived public reference"
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Làng Văn hóa các dân tộc": {
+      "latitude": null,
+      "longitude": null,
+      "coordinate_source": null
+    },
+    "Quảng trường Đông Kinh Nghĩa Thục": {
+      "latitude": 21.0319763754154,
+      "longitude": 105.851552350037,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Đồng Mô": {
+      "latitude": null,
+      "longitude": null,
+      "coordinate_source": null
     }
   }
 }
