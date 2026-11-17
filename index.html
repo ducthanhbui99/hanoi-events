@@ -7,6 +7,10 @@
   <meta name="theme-color" content="#111827" />
   <title>Hanoi Events</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
 :root {
   --bg: #f5f5f3;
@@ -17,6 +21,7 @@
   --accent: #111827;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   --radius: 16px;
+  --font-sans: "Be Vietnam Pro", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -26,10 +31,10 @@ html, body {
   min-height: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-sans);
 }
 
-button, input, select { font: inherit; }
+button, input, select, textarea { font: inherit; }
 button, input { -webkit-tap-highlight-color: transparent; }
 
 a { color: inherit; }
@@ -238,12 +243,22 @@ h1 {
   font-weight: 750;
 }
 
-.event-actions a {
-  text-decoration: none;
+.event-actions a,
+.event-actions button,
+.popup-actions a,
+.popup-actions button {
+  padding: 0;
+  border: 0;
   border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.event-actions a[hidden] { display: none; }
+.event-actions a[hidden],
+.event-actions button[hidden] { display: none; }
 
 .map-panel { position: relative; }
 
@@ -392,6 +407,7 @@ h1 {
 
 .simple-map {
   position: relative;
+  font-family: var(--font-sans);
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -448,6 +464,26 @@ h1 {
 }
 .simple-map-marker:hover::after,
 .simple-map-marker:focus-visible::after { width: 20px; height: 20px; }
+.simple-map-marker[data-count]:not([data-count="1"])::before {
+  content: attr(data-count);
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 3px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: #fff;
+  color: #111827;
+  box-shadow: 0 1px 6px rgba(0,0,0,.22);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+  transform: translateX(4px);
+}
 .simple-map-marker,
 .simple-map-popup a,
 .simple-map-controls button {
@@ -486,7 +522,10 @@ h1 {
 .simple-map-popup {
   position: absolute;
   z-index: 9;
-  width: min(300px, calc(100% - 28px));
+  width: min(360px, calc(100% - 28px));
+  max-height: min(520px, calc(100% - 30px));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 13px;
   border-radius: 12px;
   background: #fff;
@@ -506,7 +545,45 @@ h1 {
 }
 .simple-map-popup h3 { margin: 0 0 7px; font-size: 15px; line-height: 1.3; }
 .simple-map-popup p { margin: 5px 0; color: #52525b; line-height: 1.4; }
-.simple-map-popup .popup-actions { position: relative; z-index: 2; margin-top: 9px; }
+.popup-venue-title {
+  margin: 0 0 3px !important;
+  color: #111827 !important;
+  font-size: 13px;
+  font-weight: 700;
+}
+.popup-event-count {
+  margin: 0 0 9px !important;
+  font-size: 11px;
+}
+.popup-event-list {
+  display: flex;
+  flex-direction: column;
+}
+.popup-event-item {
+  padding: 10px 0;
+  border-top: 1px solid #e5e7eb;
+}
+.popup-event-item:first-child { border-top: 0; padding-top: 4px; }
+.popup-event-name {
+  margin: 0 0 5px !important;
+  color: #151515 !important;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35 !important;
+}
+.popup-event-time,
+.popup-event-venue {
+  margin: 0 0 3px !important;
+  font-size: 11px;
+}
+.simple-map-popup .popup-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 7px;
+}
 .simple-map-popup .popup-actions a {
   position: relative;
   z-index: 3;
@@ -659,7 +736,9 @@ h1 {
 
   @media (pointer: coarse) {
     .event-actions a,
-    .popup-actions a {
+    .event-actions button,
+    .popup-actions a,
+    .popup-actions button {
       display: inline-flex;
       align-items: center;
       min-height: 44px;
@@ -704,7 +783,7 @@ h1 {
         <div id="map"></div>
         <div class="map-note">
           <span class="dot dot-mapped"></span>
-          Marker chỉ hiển thị cho địa điểm đã có tọa độ.<span class="touch-zoom-hint"> Chụm/mở 2 ngón tay để zoom.</span>
+          Mỗi marker đại diện cho một vị trí; chạm để xem tất cả sự kiện tại đó.<span class="touch-zoom-hint"> Chụm/mở 2 ngón tay để zoom.</span>
         </div>
       </section>
     </section>
@@ -722,6 +801,7 @@ h1 {
       <p class="event-note"></p>
       <div class="event-actions">
         <a class="event-link" target="_blank" rel="noopener noreferrer">Chi tiết ↗</a>
+        <button class="calendar-action" type="button">Thêm lịch</button>
       </div>
     </article>
   </template>
@@ -750,7 +830,7 @@ class SimpleOSMMap {
     this.tileSize = 256;
     this.events = [];
     this.onEventClick = options.onEventClick || null;
-    this.popupEvent = null;
+    this.popupEvents = null;
     this.drag = null;
     this.activePointers = new Map();
     this.pinch = null;
@@ -1112,7 +1192,13 @@ class SimpleOSMMap {
     if (!Number.isFinite(event.longitude) || !Number.isFinite(event.latitude)) return;
     this.zoom = Math.max(this.zoom, 14);
     this.center = this.constrainCenter([event.longitude, event.latitude], this.zoom);
-    this.popupEvent = event;
+    this.popupEvents = this.events.filter(candidate =>
+      Number.isFinite(candidate.longitude) &&
+      Number.isFinite(candidate.latitude) &&
+      Math.abs(candidate.longitude - event.longitude) < 0.000001 &&
+      Math.abs(candidate.latitude - event.latitude) < 0.000001
+    );
+    if (!this.popupEvents.length) this.popupEvents = [event];
     this.render();
   }
 
@@ -1124,7 +1210,7 @@ class SimpleOSMMap {
   render() {
     this.renderTiles();
     this.renderMarkers();
-    if (this.popupEvent) this.renderPopup(this.popupEvent);
+    if (this.popupEvents && this.popupEvents.length) this.renderPopup(this.popupEvents);
   }
 
   renderTiles() {
@@ -1170,66 +1256,140 @@ class SimpleOSMMap {
     const v = this.viewport();
     this.markerLayer.innerHTML = "";
     const frag = document.createDocumentFragment();
+    const groups = new Map();
 
     for (const event of this.events) {
       if (!Number.isFinite(event.longitude) || !Number.isFinite(event.latitude)) continue;
-      const world = this.lngLatToWorld(event.longitude, event.latitude, this.zoom);
+      const key = event.latitude.toFixed(6) + "," + event.longitude.toFixed(6);
+      if (!groups.has(key)) {
+        groups.set(key, {
+          longitude: event.longitude,
+          latitude: event.latitude,
+          events: []
+        });
+      }
+      groups.get(key).events.push(event);
+    }
+
+    for (const group of groups.values()) {
+      const world = this.lngLatToWorld(group.longitude, group.latitude, this.zoom);
       const x = world.x - v.left;
       const y = world.y - v.top;
       if (x < -30 || x > v.w + 30 || y < -30 || y > v.h + 30) continue;
+
+      const venues = [...new Set(group.events.map(event => event.venue).filter(Boolean))];
+      const venueLabel = venues.length === 1
+        ? venues[0]
+        : (venues[0] ? venues[0] + " +" + String(venues.length - 1) + " không gian" : "Địa điểm sự kiện");
 
       const marker = document.createElement("button");
       marker.type = "button";
       marker.className = "simple-map-marker";
       marker.style.left = x + "px";
       marker.style.top = y + "px";
-      marker.title = event.name || "Sự kiện";
-      marker.setAttribute("aria-label", event.name || "Sự kiện");
+      marker.dataset.count = String(group.events.length);
+      marker.title = group.events.length > 1
+        ? group.events.length + " sự kiện · " + venueLabel
+        : (group.events[0].name || "Sự kiện");
+      marker.setAttribute("aria-label", marker.title);
       marker.addEventListener("click", (e) => {
         e.stopPropagation();
-        this.popupEvent = event;
-        this.renderPopup(event);
-        if (this.onEventClick) this.onEventClick(event);
+        this.popupEvents = group.events;
+        this.renderPopup(group.events);
       });
       frag.append(marker);
     }
     this.markerLayer.append(frag);
   }
 
-  renderPopup(event) {
+  renderPopup(events) {
     this.closePopup(false);
-    if (!Number.isFinite(event.longitude) || !Number.isFinite(event.latitude)) return;
+    const group = Array.isArray(events) ? events : [events];
+    const first = group[0];
+    if (!first || !Number.isFinite(first.longitude) || !Number.isFinite(first.latitude)) return;
+
     const v = this.viewport();
-    const world = this.lngLatToWorld(event.longitude, event.latitude, this.zoom);
+    const world = this.lngLatToWorld(first.longitude, first.latitude, this.zoom);
     let x = world.x - v.left;
     let y = world.y - v.top;
-    x = Math.max(160, Math.min(v.w - 160, x));
-    y = Math.max(130, Math.min(v.h - 20, y));
+    const halfWidth = Math.min(180, Math.max(140, (v.w - 28) / 2));
+    x = Math.max(halfWidth, Math.min(v.w - halfWidth, x));
+    y = Math.max(150, Math.min(v.h - 20, y));
 
     const popup = document.createElement("div");
     popup.className = "simple-map-popup";
     popup.style.left = x + "px";
     popup.style.top = y + "px";
 
-    const title = document.createElement("h3");
-    title.textContent = event.name || "Sự kiện";
-    const time = document.createElement("p");
-    time.textContent = "🗓 " + (event.schedule_raw || "Chưa cập nhật thời gian");
+    const venues = [...new Set(group.map(event => event.venue).filter(Boolean))];
     const venue = document.createElement("p");
-    venue.textContent = "📍 " + (event.venue || "Chưa cập nhật địa điểm");
-    popup.append(title, time, venue);
-
-    const actions = document.createElement("div");
-    actions.className = "popup-actions";
-    if (event.url) {
-      const a = document.createElement("a");
-      a.href = event.url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.textContent = "Chi tiết ↗";
-      actions.append(a);
+    venue.className = "popup-venue-title";
+    if (venues.length === 1) {
+      venue.textContent = "📍 " + venues[0];
+    } else if (venues.length > 1) {
+      venue.textContent = "📍 " + venues[0] + " +" + String(venues.length - 1) + " không gian cùng vị trí";
+    } else {
+      venue.textContent = "📍 Địa điểm sự kiện";
     }
-    popup.append(actions);
+    popup.append(venue);
+
+    const count = document.createElement("p");
+    count.className = "popup-event-count";
+    count.textContent = group.length === 1 ? "1 sự kiện" : group.length + " sự kiện tại vị trí này";
+    popup.append(count);
+
+    const list = document.createElement("div");
+    list.className = "popup-event-list";
+
+    for (const event of group) {
+      const item = document.createElement("div");
+      item.className = "popup-event-item";
+
+      const title = document.createElement("p");
+      title.className = "popup-event-name";
+      title.textContent = event.name || "Sự kiện";
+
+      const time = document.createElement("p");
+      time.className = "popup-event-time";
+      time.textContent = "🗓 " + (event.schedule_raw || "Chưa cập nhật thời gian");
+
+      item.append(title, time);
+
+      if (venues.length > 1 && event.venue) {
+        const eventVenue = document.createElement("p");
+        eventVenue.className = "popup-event-venue";
+        eventVenue.textContent = "📍 " + event.venue;
+        item.append(eventVenue);
+      }
+
+      const actions = document.createElement("div");
+      actions.className = "popup-actions";
+
+      if (event.url) {
+        const detail = document.createElement("a");
+        detail.href = event.url;
+        detail.target = "_blank";
+        detail.rel = "noopener noreferrer";
+        detail.textContent = "Chi tiết ↗";
+        actions.append(detail);
+      }
+
+      if (event.start_date || event.filter_start_date || event.end_date) {
+        const calendar = document.createElement("button");
+        calendar.type = "button";
+        calendar.textContent = "Thêm lịch";
+        calendar.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (window.HanoiEventsCalendar) window.HanoiEventsCalendar(event);
+        });
+        actions.append(calendar);
+      }
+
+      item.append(actions);
+      list.append(item);
+    }
+
+    popup.append(list);
     popup.addEventListener("click", (e) => e.stopPropagation());
     this.container.append(popup);
     this.popupNode = popup;
@@ -1238,7 +1398,7 @@ class SimpleOSMMap {
   closePopup(clearEvent = true) {
     if (this.popupNode) this.popupNode.remove();
     this.popupNode = null;
-    if (clearEvent) this.popupEvent = null;
+    if (clearEvent) this.popupEvents = null;
   }
 }
 
@@ -1388,6 +1548,89 @@ class SimpleOSMMap {
     }
   }
 
+  function calendarEscape(value) {
+    return String(value || "")
+      .replace(/\\/g, "\\\\")
+      .replace(/\n/g, "\\n")
+      .replace(/,/g, "\\,")
+      .replace(/;/g, "\\;");
+  }
+
+  function compactDate(iso) {
+    return String(iso || "").replace(/-/g, "");
+  }
+
+  function addDaysIso(iso, days) {
+    const d = new Date(iso + "T12:00:00+07:00");
+    d.setUTCDate(d.getUTCDate() + days);
+    return [
+      d.getUTCFullYear(),
+      String(d.getUTCMonth() + 1).padStart(2, "0"),
+      String(d.getUTCDate()).padStart(2, "0")
+    ].join("-");
+  }
+
+  function utcCalendarStamp(dateIso, time, addMinutes = 0) {
+    const d = new Date(dateIso + "T" + time + ":00+07:00");
+    if (addMinutes) d.setUTCMinutes(d.getUTCMinutes() + addMinutes);
+    return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+  }
+
+  function downloadCalendarEvent(event) {
+    const startDate = event.start_date || event.filter_start_date || event.end_date;
+    if (!startDate) return;
+
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Hanoi Events//VI",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      "BEGIN:VEVENT",
+      "UID:hanoi-events-" + String(event.id || Date.now()) + "@ducthanhbui99.github.io",
+      "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z"),
+      "SUMMARY:" + calendarEscape(event.name || "Sự kiện ở Hà Nội"),
+      "LOCATION:" + calendarEscape(event.venue || "")
+    ];
+
+    if (event.start_time) {
+      const endDate = event.end_date || startDate;
+      lines.push("DTSTART:" + utcCalendarStamp(startDate, event.start_time));
+      if (event.end_time) {
+        lines.push("DTEND:" + utcCalendarStamp(endDate, event.end_time));
+      } else {
+        lines.push("DTEND:" + utcCalendarStamp(startDate, event.start_time, 90));
+      }
+    } else {
+      const endExclusive = addDaysIso(event.end_date || startDate, 1);
+      lines.push(
+        "DTSTART;VALUE=DATE:" + compactDate(startDate),
+        "DTEND;VALUE=DATE:" + compactDate(endExclusive)
+      );
+    }
+
+    if (event.url) {
+      lines.push(
+        "URL:" + calendarEscape(event.url),
+        "DESCRIPTION:" + calendarEscape("Chi tiết: " + event.url)
+      );
+    }
+
+    lines.push("END:VEVENT", "END:VCALENDAR");
+
+    const blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+    const href = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = href;
+    a.download = "hanoi-event-" + String(event.id || "event") + ".ics";
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(href), 1000);
+  }
+
+  window.HanoiEventsCalendar = downloadCalendarEvent;
+
   function render() {
     latestFiltered = filteredEvents();
     renderList(latestFiltered);
@@ -1428,8 +1671,17 @@ class SimpleOSMMap {
       if (eventUrl) eventLink.href = eventUrl;
       else eventLink.hidden = true;
 
+      const calendarAction = node.querySelector(".calendar-action");
+      const hasCalendarDate = Boolean(event.start_date || event.filter_start_date || event.end_date);
+      calendarAction.hidden = !hasCalendarDate;
+      calendarAction.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        downloadCalendarEvent(event);
+      });
+
       node.addEventListener("click", (ev) => {
-        if (ev.target.closest("a")) return;
+        if (ev.target.closest("a, button")) return;
         selectEvent(event, false);
       });
 
