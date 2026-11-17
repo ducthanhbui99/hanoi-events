@@ -1,12 +1,12 @@
 {
   "meta": {
     "title": "Hanoi Events location library",
-    "updated_at": "2026-11-15",
+    "updated_at": "2026-11-17",
     "source_type": "google_sheets",
     "source_sheet": "Locations",
     "spreadsheet_id": "1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8",
-    "total_locations": 66,
-    "mapped_locations": 60,
+    "total_locations": 67,
+    "mapped_locations": 61,
     "unmapped_locations": 6,
     "note": "Locations are keyed by canonical venue name from the Google Sheet."
   },
@@ -132,8 +132,8 @@
       "coordinate_source": "Google Sheet - Locations"
     },
     "Tháp nước Hàng Đậu": {
-      "latitude": 21.03127,
-      "longitude": 105.85395,
+      "latitude": 21.0400883281488,
+      "longitude": 105.847386342552,
       "coordinate_source": "Google Sheet - Locations"
     },
     "Rạp Hồng Hà, 51A Đường Thành": {
@@ -339,6 +339,11 @@
     "Quán Cầm, 6 Nguyễn Thượng Hiền": {
       "latitude": 21.0190675404456,
       "longitude": 105.843663724572,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Bản Phố, 5 ngõ phố Nguyễn Thái Học": {
+      "latitude": 21.0300041761228,
+      "longitude": 105.835385575012,
       "coordinate_source": "Google Sheet - Locations"
     }
   }
