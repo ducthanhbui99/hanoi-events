@@ -2,13 +2,13 @@
   "meta": {
     "title": "Hanoi Events",
     "subtitle": "Sự kiện văn hóa & sáng tạo tại Hà Nội",
-    "data_as_of": "2026-11-15",
+    "data_as_of": "2026-11-17",
     "source_type": "google_sheets",
     "source_sheet": "Events",
     "source_file": "Hanoi Events - Master",
     "spreadsheet_id": "1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8",
-    "total_events": 180,
-    "mapped_events": 167,
+    "total_events": 179,
+    "mapped_events": 166,
     "unmapped_events": 13,
     "timezone": "Asia/Saigon"
   },
@@ -1175,11 +1175,11 @@
     {
       "id": 62,
       "name": "Hà Nội Mở 2 “Thành phố không lề”",
-      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
+      "url": "https://web.facebook.com/61580623072288/posts/tr%C6%B0ng-b%C3%A0y-h%C3%A0-n%E1%BB%99i-m%E1%BB%9F-2-th%C3%A0nh-ph%E1%BB%91-kh%C3%B4ng-l%E1%BB%81english-belowh%C3%A0-n%E1%BB%99i-m%E1%BB%9F-th%C3%A0nh-ph%E1%BB%91-kh%C3%B4ng-l/122144097051020769/?_rdc=1&_rdr#",
       "venue": "COMPLEX 01",
       "event_type": "Triển lãm & Trưng bày",
       "type_group": "Triển lãm & Trưng bày",
-      "schedule_raw": "21/11/2026 – 28/11/2026",
+      "schedule_raw": "21/11/2026 – 28/11/2026 · 09:00-17;))",
       "note": null,
       "start_date": "2026-11-21",
       "end_date": "2026-11-28",
@@ -2832,39 +2832,20 @@
       "venue": "Chợ Đồng Xuân",
       "event_type": "Trình diễn",
       "type_group": "Trình diễn",
-      "schedule_raw": "25/11/2026 · 18:00-18:30",
+      "schedule_raw": "25/11/2026 – 26/11/2026",
       "note": null,
       "start_date": "2026-11-25",
-      "end_date": "2026-11-25",
-      "start_time": "18:00",
-      "end_time": "18:30",
-      "date_precision": "single",
+      "end_date": "2026-11-26",
+      "start_time": null,
+      "end_time": null,
+      "date_precision": "range",
       "recurrence": null,
       "filter_start_date": "2026-11-25",
-      "filter_end_date": "2026-11-25",
+      "filter_end_date": "2026-11-26",
       "status": "Active"
     },
     {
       "id": 150,
-      "name": "Nhạc phục vụ cộng đồng",
-      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Chợ Đồng Xuân",
-      "event_type": "Trình diễn",
-      "type_group": "Trình diễn",
-      "schedule_raw": "25/11/2026 · 19:00-19:30; 19:45-20:15",
-      "note": null,
-      "start_date": "2026-11-25",
-      "end_date": "2026-11-25",
-      "start_time": "19:00",
-      "end_time": "19:30",
-      "date_precision": "single",
-      "recurrence": null,
-      "filter_start_date": "2026-11-25",
-      "filter_end_date": "2026-11-25",
-      "status": "Active"
-    },
-    {
-      "id": 151,
       "name": "Múa rối đương đại “Phá Rối”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "DUYÊN – Rạp Đông Đô, 18 Lương Ngọc Quyến",
@@ -2883,7 +2864,7 @@
       "status": "Active"
     },
     {
-      "id": 152,
+      "id": 151,
       "name": "Lớp thực hành Nghe sâu",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Chợ Đồng Xuân",
@@ -2902,26 +2883,7 @@
       "status": "Active"
     },
     {
-      "id": 153,
-      "name": "Nhạc phục vụ cộng đồng",
-      "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
-      "venue": "Chợ Đồng Xuân",
-      "event_type": "Trình diễn",
-      "type_group": "Trình diễn",
-      "schedule_raw": "26/11/2026 · 18:00-18:30",
-      "note": null,
-      "start_date": "2026-11-26",
-      "end_date": "2026-11-26",
-      "start_time": "18:00",
-      "end_time": "18:30",
-      "date_precision": "single",
-      "recurrence": null,
-      "filter_start_date": "2026-11-26",
-      "filter_end_date": "2026-11-26",
-      "status": "Active"
-    },
-    {
-      "id": 154,
+      "id": 152,
       "name": "Chiếu phim “Song Lang” và giao lưu",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "COMPLEX 01",
@@ -2940,7 +2902,7 @@
       "status": "Active"
     },
     {
-      "id": 155,
+      "id": 153,
       "name": "Cải lương đương đại “Vẫn vậy, mà khác”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Rạp Chuông Vàng, 72 phố Hàng Bạc",
@@ -2959,7 +2921,7 @@
       "status": "Active"
     },
     {
-      "id": 156,
+      "id": 154,
       "name": "“Kiến tạo tương lai từ di sản đô thị”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "40 Tăng Bạt Hổ",
@@ -2978,7 +2940,7 @@
       "status": "Active"
     },
     {
-      "id": 157,
+      "id": 155,
       "name": "“Tranh Hàng Trống: Cắt & Ghép”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Đình Nam Hương, 75 Hàng Trống",
@@ -2997,7 +2959,7 @@
       "status": "Active"
     },
     {
-      "id": 158,
+      "id": 156,
       "name": "Trải nghiệm “Tuyến đường sinh thái bờ vở sông Hồng”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Bờ vở sông Hồng",
@@ -3016,7 +2978,7 @@
       "status": "Active"
     },
     {
-      "id": 159,
+      "id": 157,
       "name": "Chiếu phim cộng đồng",
       "url": "https://www.instagram.com/p/DfwTpOgidGm/?img_index=4",
       "venue": "Chợ Đồng Xuân",
@@ -3035,7 +2997,7 @@
       "status": "Active"
     },
     {
-      "id": 160,
+      "id": 158,
       "name": "Biểu diễn & giao lưu Gánh Cải lương Thiên Lý",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "COMPLEX 01",
@@ -3054,7 +3016,7 @@
       "status": "Active"
     },
     {
-      "id": 161,
+      "id": 159,
       "name": "Workshop “Chợ phiên”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Hội quán Phúc Kiến, 40 Lãn Ông",
@@ -3073,7 +3035,7 @@
       "status": "Active"
     },
     {
-      "id": 162,
+      "id": 160,
       "name": "“Lao động sáng tạo trong phát triển Công nghiệp văn hóa”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Bảo tàng Hà Nội",
@@ -3092,7 +3054,7 @@
       "status": "Active"
     },
     {
-      "id": 163,
+      "id": 161,
       "name": "“Kế thừa và kiến tạo trong phát triển kiến trúc Việt Nam”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "40 Tăng Bạt Hổ",
@@ -3111,7 +3073,7 @@
       "status": "Active"
     },
     {
-      "id": 164,
+      "id": 162,
       "name": "Workshop Tranh khắc gỗ",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Đình Cổ Vũ, 85 Hàng Gai",
@@ -3130,7 +3092,7 @@
       "status": "Active"
     },
     {
-      "id": 165,
+      "id": 163,
       "name": "Tour Nghệ thuật “Mạch sống vô hình”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Tòa nhà Di sản, 24 Lý Thái Tổ",
@@ -3149,7 +3111,7 @@
       "status": "Active"
     },
     {
-      "id": 166,
+      "id": 164,
       "name": "Trà đá Pavilion",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Công viên Thống Nhất",
@@ -3168,7 +3130,7 @@
       "status": "Active"
     },
     {
-      "id": 167,
+      "id": 165,
       "name": "Nhạc phục vụ cộng đồng",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Chợ Đồng Xuân",
@@ -3187,7 +3149,7 @@
       "status": "Active"
     },
     {
-      "id": 168,
+      "id": 166,
       "name": "Gala bế mạc “Hà Nội, Những Vang Động”",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Chợ Đồng Xuân",
@@ -3206,7 +3168,7 @@
       "status": "Active"
     },
     {
-      "id": 169,
+      "id": 167,
       "name": "Culture Show: Xẩm, Ca trù",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Quảng trường Lotte",
@@ -3225,7 +3187,7 @@
       "status": "Active"
     },
     {
-      "id": 170,
+      "id": 168,
       "name": "Street Jazz",
       "url": "https://www.threads.com/@lehoithietkesangtaohanoi/post/DfqvuINk2PN/media?xmt=AQF0Ywi5gjV5PcwKsVMccloE3lGuiqRBXVMCprYJIji5D5o",
       "venue": "Quảng trường Lotte",
@@ -3244,7 +3206,7 @@
       "status": "Active"
     },
     {
-      "id": 171,
+      "id": 169,
       "name": "Tour đêm \"Giải mã Hoàng Thành Thăng Long\" (thứ 6 & thứ 7 hàng tuần)",
       "url": "https://www.facebook.com/ditichhoangthanhthanglong/posts/pfbid0MN74afzxsHgSgbXsZih4HkGN84YnpmkQ2Dn3pHvgvD9EQUWonXKEj8k6RtfqrCe3l",
       "venue": "Hoàng Thành Thăng Long",
@@ -3263,7 +3225,7 @@
       "status": "Active"
     },
     {
-      "id": 172,
+      "id": 170,
       "name": "Vở chèo \"Quan Âm Thị Kính\"",
       "url": "https://sktt.vn/su-kien-bieu-dien-vo-cheo-quan-am-thi-kinh-28-11-2026/",
       "venue": "Rạp Kim Mã, 1 Giang Văn Minh",
@@ -3282,7 +3244,7 @@
       "status": "Active"
     },
     {
-      "id": 173,
+      "id": 171,
       "name": "Triển lãm nhóm \"Thất Tinh\"",
       "url": "https://www.facebook.com/baotangmythuat/posts/pfbid0sWZMr9feE1cDGjsZAyBzTTwwDPdTtVvLW5WchsCW6HPXxdWPDALCrCspQqfR41Djl",
       "venue": "Bảo tàng Mỹ thuật Việt Nam, 66 Nguyễn Thái Học",
@@ -3301,7 +3263,7 @@
       "status": "Active"
     },
     {
-      "id": 174,
+      "id": 172,
       "name": "Triển lãm \"Một Bát Thương\"",
       "url": "https://www.facebook.com/baotangphunu/posts/pfbid0yYaTAwERVDfzCmGC3bEFh4Xzwho8Fh2yMpMExQEp7uioV9Y565bNpefjPFfQu7aal",
       "venue": "Bảo tàng Phụ nữ Việt Nam, 36 Lý Thường Kiệt",
@@ -3320,7 +3282,7 @@
       "status": "Active"
     },
     {
-      "id": 175,
+      "id": 173,
       "name": "WORKSHOP: SÁNG TẠO NHÂN VẬT CHO ỐNG KÍNH HOẠT HÌNH",
       "url": "https://www.facebook.com/tolopuppettheatre/posts/pfbid02gydtQSRKL9fSFT4GecroiXzS7wzvdycJGeCovVHz4tbEr9eAwLUHAKsvv5aNafU1l",
       "venue": "Toong Co-working Space, 51 Phan Bội Châu",
@@ -3339,7 +3301,7 @@
       "status": "Active"
     },
     {
-      "id": 176,
+      "id": 174,
       "name": "European Film Fest",
       "url": "https://bio.site/euffvietnam?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAcGRvZgJzcnRjBmFwcF9pZA85MzY2MTk3NDMzOTI0NTkAAadbaE3M3M2XwvrDkKUxLIeUiBp97u31cRhDyzFiyP8Dc3l7t_4fe-zDih0QNg_aem_uQ7PfziAU3EUdECcCPAYpg",
       "venue": "Trung tâm chiếu phim quốc gia, 87 Láng Hạ",
@@ -3358,7 +3320,7 @@
       "status": "Active"
     },
     {
-      "id": 177,
+      "id": 175,
       "name": "Tự sự Tối thứ tư",
       "url": "https://www.facebook.com/events/1480198380975655",
       "venue": "Á Space, ngõ 59 Ngô Gia Tự",
@@ -3377,7 +3339,7 @@
       "status": "Active"
     },
     {
-      "id": 178,
+      "id": 176,
       "name": "Mở xưởng \"Những ghi chép vô nghĩa về hai con nước\"",
       "url": "https://www.instagram.com/p/DfwTdNlgbCH/?hl=en&img_index=1",
       "venue": "Manzi Exhibition Space, ngõ Hàng Bún",
@@ -3396,7 +3358,7 @@
       "status": "Active"
     },
     {
-      "id": 179,
+      "id": 177,
       "name": "Open Mic Vui Ca Tự Do (tối thứ 5 hàng tuần)",
       "url": "https://www.facebook.com/quannhaccam/?locale=vi_VN",
       "venue": "Quán Cầm, 6 Nguyễn Thượng Hiền",
@@ -3415,7 +3377,7 @@
       "status": "Active"
     },
     {
-      "id": 180,
+      "id": 178,
       "name": "Đêm Cầm Ca (tối thứ 6 hàng tuần)",
       "url": "https://www.facebook.com/quannhaccam/?locale=vi_VN",
       "venue": "Quán Cầm, 6 Nguyễn Thượng Hiền",
@@ -3431,6 +3393,25 @@
       "recurrence": null,
       "filter_start_date": null,
       "filter_end_date": null,
+      "status": "Active"
+    },
+    {
+      "id": 179,
+      "name": "Triển lãm \"Góc nhà sau lưng mây\"",
+      "url": "https://web.facebook.com/ChaiTrongMay/posts/ch%C3%ADnh-th%E1%BB%A9c-c%C3%B4ng-b%E1%BB%91-tri%E1%BB%83n-l%C3%A3m-g%C3%B3c-nh%C3%A0-sau-l%C6%B0ng-m%C3%A2yn%E1%BA%BFu-ch%C6%B0a-c%C3%B3-d%E1%BB%8Bp-l%C3%AAn-s%C3%AC-th%C3%A2u-ch%E1%BA%A3/122131446555483075/?_rdc=1&_rdr#",
+      "venue": "Bản Phố, 5 ngõ phố Nguyễn Thái Học",
+      "event_type": "Triển lãm & Trưng bày",
+      "type_group": "Triển lãm & Trưng bày",
+      "schedule_raw": "21/11/2026 · 08:30-17:00",
+      "note": null,
+      "start_date": "2026-11-21",
+      "end_date": "2026-11-21",
+      "start_time": "08:30",
+      "end_time": "17:00",
+      "date_precision": "single",
+      "recurrence": null,
+      "filter_start_date": "2026-11-21",
+      "filter_end_date": "2026-11-21",
       "status": "Active"
     }
   ]
