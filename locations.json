@@ -1,13 +1,13 @@
 {
   "meta": {
     "title": "Hanoi Events location library",
-    "updated_at": "2026-11-17",
+    "updated_at": "2026-11-19",
     "source_type": "google_sheets",
     "source_sheet": "Locations",
     "spreadsheet_id": "1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8",
-    "total_locations": 67,
-    "mapped_locations": 61,
-    "unmapped_locations": 6,
+    "total_locations": 69,
+    "mapped_locations": 62,
+    "unmapped_locations": 7,
     "note": "Locations are keyed by canonical venue name from the Google Sheet."
   },
   "locations": {
@@ -345,6 +345,16 @@
       "latitude": 21.0300041761228,
       "longitude": 105.835385575012,
       "coordinate_source": "Google Sheet - Locations"
+    },
+    "Cục Văn Thư Lưu Trữ Nhà Nước, 12 Đào Tấn": {
+      "latitude": 21.032804426422,
+      "longitude": 105.810374003611,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Online": {
+      "latitude": null,
+      "longitude": null,
+      "coordinate_source": null
     }
   }
 }
