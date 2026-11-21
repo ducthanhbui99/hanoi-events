@@ -1,12 +1,12 @@
 {
   "meta": {
     "title": "Hanoi Events location library",
-    "updated_at": "2026-11-19",
+    "updated_at": "2026-11-21",
     "source_type": "google_sheets",
     "source_sheet": "Locations",
     "spreadsheet_id": "1ZRB-PNCzlr3oUZLuDVxXnS4odvZ5Vzp0u4cA-t8lpz8",
-    "total_locations": 69,
-    "mapped_locations": 62,
+    "total_locations": 73,
+    "mapped_locations": 66,
     "unmapped_locations": 7,
     "note": "Locations are keyed by canonical venue name from the Google Sheet."
   },
@@ -355,6 +355,26 @@
       "latitude": null,
       "longitude": null,
       "coordinate_source": null
+    },
+    "Art Space, 42 Yết Kiêu": {
+      "latitude": 21.0221511687927,
+      "longitude": 105.842937427678,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Hãng phim Tài liệu và Khoa học Trung ương, 465 Hoàng Hoa Thám": {
+      "latitude": 21.043892136038,
+      "longitude": 105.814139089986,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Lớp học Hồng Xiêm, số 2 ngõ Hàng Bún": {
+      "latitude": 21.0420035086821,
+      "longitude": 105.845678620331,
+      "coordinate_source": "Google Sheet - Locations"
+    },
+    "Chau & Co Gallery, 298 Võ Chí Công": {
+      "latitude": 21.0706487613611,
+      "longitude": 105.809613570616,
+      "coordinate_source": "Google Sheet - Locations"
     }
   }
 }
