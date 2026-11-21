@@ -1374,7 +1374,7 @@ class SimpleOSMMap {
         actions.append(detail);
       }
 
-      if (event.start_date || event.filter_start_date || event.end_date) {
+      if (event.recurrence || event.start_date || event.filter_start_date || event.end_date) {
         const calendar = document.createElement("button");
         calendar.type = "button";
         calendar.textContent = "Thêm lịch";
@@ -1508,13 +1508,113 @@ class SimpleOSMMap {
     }
   }
 
+  function parseRecurrence(rule) {
+    if (!rule) return null;
+    const parts = {};
+    for (const token of String(rule).split(";")) {
+      const [key, ...rest] = token.split("=");
+      if (!key || !rest.length) continue;
+      parts[key.trim().toUpperCase()] = rest.join("=").trim().toUpperCase();
+    }
+    return parts.FREQ ? parts : null;
+  }
+
+  function isoDateUtc(iso) {
+    return new Date(iso + "T00:00:00Z");
+  }
+
+  function daysBetweenIso(a, b) {
+    return Math.floor((isoDateUtc(b) - isoDateUtc(a)) / 86400000);
+  }
+
+  function monthsBetweenIso(a, b) {
+    const da = isoDateUtc(a);
+    const db = isoDateUtc(b);
+    return (db.getUTCFullYear() - da.getUTCFullYear()) * 12 +
+      (db.getUTCMonth() - da.getUTCMonth());
+  }
+
+  function recurrenceMatchesDate(event, iso) {
+    const rule = parseRecurrence(event.recurrence);
+    if (!rule) return true;
+
+    const start = event.filter_start_date || event.start_date;
+    const end = event.filter_end_date || event.end_date;
+    if (start && iso < start) return false;
+    if (end && iso > end) return false;
+
+    const interval = Math.max(1, Number.parseInt(rule.INTERVAL || "1", 10) || 1);
+    const date = isoDateUtc(iso);
+    const dayCodes = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
+    const dayCode = dayCodes[date.getUTCDay()];
+
+    if (rule.FREQ === "DAILY") {
+      if (interval === 1 || !start) return true;
+      return daysBetweenIso(start, iso) % interval === 0;
+    }
+
+    if (rule.FREQ === "WEEKLY") {
+      const byDays = (rule.BYDAY || "")
+        .split(",")
+        .map(value => value.trim())
+        .filter(Boolean);
+      const effectiveDays = byDays.length
+        ? byDays
+        : (start ? [dayCodes[isoDateUtc(start).getUTCDay()]] : []);
+      if (effectiveDays.length && !effectiveDays.includes(dayCode)) return false;
+      if (interval === 1 || !start) return true;
+      const dayDiff = daysBetweenIso(start, iso);
+      return dayDiff >= 0 && Math.floor(dayDiff / 7) % interval === 0;
+    }
+
+    if (rule.FREQ === "MONTHLY") {
+      if (start && interval > 1) {
+        const monthDiff = monthsBetweenIso(start, iso);
+        if (monthDiff < 0 || monthDiff % interval !== 0) return false;
+      }
+
+      const byDays = (rule.BYDAY || "")
+        .split(",")
+        .map(value => value.trim())
+        .filter(Boolean);
+      if (!byDays.length) {
+        return start ? date.getUTCDate() === isoDateUtc(start).getUTCDate() : true;
+      }
+
+      const day = date.getUTCDate();
+      const daysInMonth = new Date(Date.UTC(
+        date.getUTCFullYear(),
+        date.getUTCMonth() + 1,
+        0
+      )).getUTCDate();
+
+      return byDays.some(token => {
+        const match = token.match(/^(-?\d+)?(MO|TU|WE|TH|FR|SA|SU)$/);
+        if (!match || match[2] !== dayCode) return false;
+        if (!match[1]) return true;
+
+        const ordinal = Number(match[1]);
+        if (ordinal > 0) {
+          return Math.floor((day - 1) / 7) + 1 === ordinal;
+        }
+        return -(Math.floor((daysInMonth - day) / 7) + 1) === ordinal;
+      });
+    }
+
+    return true;
+  }
+
   function isOnSelectedDate(event, iso) {
     if (!iso) return true;
+
+    if (event.recurrence) {
+      return recurrenceMatchesDate(event, iso);
+    }
 
     const start = event.filter_start_date || event.start_date;
     const end = event.filter_end_date || event.end_date;
 
-    // Date rules:
+    // Non-recurring date rules:
     // 1) Start + end: active throughout the inclusive date range.
     // 2) Start only: active indefinitely from the start date onward.
     // 3) End only: active indefinitely up to and including the end date.
@@ -1570,6 +1670,34 @@ class SimpleOSMMap {
     ].join("-");
   }
 
+  function todayInHanoi() {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Ho_Chi_Minh",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).formatToParts(new Date());
+    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    return values.year + "-" + values.month + "-" + values.day;
+  }
+
+  function nextOccurrenceDate(event, fromIso = todayInHanoi()) {
+    if (!event.recurrence) {
+      return event.start_date || event.filter_start_date || event.end_date || null;
+    }
+
+    const start = event.filter_start_date || event.start_date;
+    const end = event.filter_end_date || event.end_date;
+    let cursor = start && start > fromIso ? start : fromIso;
+
+    for (let i = 0; i < 730; i += 1) {
+      if (end && cursor > end) return null;
+      if (recurrenceMatchesDate(event, cursor)) return cursor;
+      cursor = addDaysIso(cursor, 1);
+    }
+    return null;
+  }
+
   function utcCalendarStamp(dateIso, time, addMinutes = 0) {
     const d = new Date(dateIso + "T" + time + ":00+07:00");
     if (addMinutes) d.setUTCMinutes(d.getUTCMinutes() + addMinutes);
@@ -1577,7 +1705,9 @@ class SimpleOSMMap {
   }
 
   function downloadCalendarEvent(event) {
-    const startDate = event.start_date || event.filter_start_date || event.end_date;
+    const startDate = event.recurrence
+      ? nextOccurrenceDate(event)
+      : (event.start_date || event.filter_start_date || event.end_date);
     if (!startDate) return;
 
     const lines = [
@@ -1594,19 +1724,30 @@ class SimpleOSMMap {
     ];
 
     if (event.start_time) {
-      const endDate = event.end_date || startDate;
+      const occurrenceEndDate = event.recurrence ? startDate : (event.end_date || startDate);
       lines.push("DTSTART:" + utcCalendarStamp(startDate, event.start_time));
       if (event.end_time) {
-        lines.push("DTEND:" + utcCalendarStamp(endDate, event.end_time));
+        lines.push("DTEND:" + utcCalendarStamp(occurrenceEndDate, event.end_time));
       } else {
         lines.push("DTEND:" + utcCalendarStamp(startDate, event.start_time, 90));
       }
     } else {
-      const endExclusive = addDaysIso(event.end_date || startDate, 1);
+      const occurrenceEnd = addDaysIso(
+        event.recurrence ? startDate : (event.end_date || startDate),
+        1
+      );
       lines.push(
         "DTSTART;VALUE=DATE:" + compactDate(startDate),
-        "DTEND;VALUE=DATE:" + compactDate(endExclusive)
+        "DTEND;VALUE=DATE:" + compactDate(occurrenceEnd)
       );
+    }
+
+    if (event.recurrence) {
+      let rrule = String(event.recurrence).trim();
+      if (event.end_date && !/(^|;)(UNTIL|COUNT)=/i.test(rrule)) {
+        rrule += ";UNTIL=" + compactDate(event.end_date) + "T165959Z";
+      }
+      lines.push("RRULE:" + rrule);
     }
 
     if (event.url) {
@@ -1628,7 +1769,6 @@ class SimpleOSMMap {
     a.remove();
     setTimeout(() => URL.revokeObjectURL(href), 1000);
   }
-
   window.HanoiEventsCalendar = downloadCalendarEvent;
 
   function render() {
@@ -1672,7 +1812,7 @@ class SimpleOSMMap {
       else eventLink.hidden = true;
 
       const calendarAction = node.querySelector(".calendar-action");
-      const hasCalendarDate = Boolean(event.start_date || event.filter_start_date || event.end_date);
+      const hasCalendarDate = Boolean(event.recurrence || event.start_date || event.filter_start_date || event.end_date);
       calendarAction.hidden = !hasCalendarDate;
       calendarAction.addEventListener("click", (ev) => {
         ev.preventDefault();
